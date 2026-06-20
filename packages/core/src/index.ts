@@ -16,6 +16,8 @@ export * from "./composer/ScreenZoneDebug";
 export * from "./composer/ScreenZoneComposer";
 export * from "./constraints/DistanceClamp";
 export * from "./constraints/YawPitchClamp";
+export * from "./constraints/Confiner2D";
+export * from "./constraints/Confiner3D";
 export * from "./math/Vec2";
 export * from "./debug/DebugDraw";
 export * from "./math/Vec3";
