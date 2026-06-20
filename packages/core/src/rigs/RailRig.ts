@@ -1,6 +1,11 @@
 import type { ControlChannel } from "../channels/ControlChannel";
 import { QUAT_IDENTITY } from "../math/Quat";
-import { clampPathT, type CameraPath, type PathSample } from "../path/CameraPath";
+import {
+  clampPathT,
+  isProjectableCameraPath,
+  type CameraPath,
+  type PathSample
+} from "../path/CameraPath";
 import {
   createCameraState,
   type CameraDebugState,
@@ -23,6 +28,10 @@ export type RailRigDriver =
   | {
       readonly type: "input";
       readonly channel: number | ControlChannel<number>;
+    }
+  | {
+      readonly type: "targetProjection";
+      readonly target: Vec3Like;
     };
 
 export interface RailRigConfig {
@@ -62,6 +71,10 @@ export function resolveRailRigDriverT(
     return clampPathT(resolveInputDriver(driver.channel));
   }
 
+  if (driver.type === "targetProjection") {
+    return 0;
+  }
+
   const duration = driver.duration;
   if (!Number.isFinite(duration) || duration <= Number.EPSILON) {
     return clampPathT(driver.offsetT ?? 0);
@@ -86,12 +99,23 @@ function createDebugState(config: RailRigConfig, sample: PathSample): CameraDebu
   };
 }
 
+function resolveRailRigSample(config: RailRigConfig, context: RailRigEvaluationContext): PathSample {
+  if (config.driver.type === "targetProjection") {
+    if (!isProjectableCameraPath(config.path)) {
+      throw new Error("RailRig targetProjection driver requires a projectable camera path.");
+    }
+
+    return config.path.projectPoint(config.driver.target);
+  }
+
+  return config.path.sampleAtT(resolveRailRigDriverT(config.driver, context));
+}
+
 export function evaluateRailRig(
   config: RailRigConfig,
   context: RailRigEvaluationContext = {}
 ): CameraState {
-  const t = resolveRailRigDriverT(config.driver, context);
-  const sample = config.path.sampleAtT(t);
+  const sample = resolveRailRigSample(config, context);
   const debug = createDebugState(config, sample);
 
   return createCameraState({

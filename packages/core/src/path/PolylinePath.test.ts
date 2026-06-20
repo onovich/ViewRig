@@ -34,6 +34,23 @@ describe("PolylinePath", () => {
     expect(path.sampleAtT(0.25).position).toEqual({ x: 0, y: 0, z: -2.5 });
     expect(path.sampleAtT(2).position).toEqual({ x: 0, y: 0, z: -10 });
     expect(path.sampleAtDistance(-5).position).toEqual({ x: 0, y: 0, z: 0 });
+    expect(path.sampleAtT(0).position).toEqual({ x: 0, y: 0, z: 0 });
+    expect(path.sampleAtT(1).position).toEqual({ x: 0, y: 0, z: -10 });
+  });
+
+  it("projects target points to the nearest path sample", () => {
+    const path = createPolylinePath({
+      points: [
+        [0, 0, 0],
+        [0, 0, -4],
+        [4, 0, -4]
+      ]
+    });
+
+    expect(path.projectPoint([2, 0, -10]).position).toEqual({ x: 2, y: 0, z: -4 });
+    expect(path.projectPoint([-2, 0, -2]).position).toEqual({ x: 0, y: 0, z: -2 });
+    expect(path.projectPoint([-10, 0, 0]).position).toEqual({ x: 0, y: 0, z: 0 });
+    expect(path.projectPoint([10, 0, -4]).position).toEqual({ x: 4, y: 0, z: -4 });
   });
 
   it("handles a single-point path with stable defaults", () => {

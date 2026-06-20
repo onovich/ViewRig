@@ -1,10 +1,10 @@
-import { vec3Distance, vec3Lerp, vec3Normalize, vec3Sub } from "../math/Vec3";
+import { vec3Distance, vec3Dot, vec3LengthSq, vec3Lerp, vec3Normalize, vec3Sub } from "../math/Vec3";
 import { snapshotVec3, type Vec3Like, type Vec3Snapshot } from "../state/SnapshotTypes";
 import {
   clampPathDistance,
   clampPathT,
   snapshotPathSample,
-  type CameraPath,
+  type ProjectableCameraPath,
   type PathSample
 } from "./CameraPath";
 
@@ -13,7 +13,7 @@ export interface PolylinePathConfig {
   readonly up?: Vec3Like;
 }
 
-export interface PolylinePath extends CameraPath {
+export interface PolylinePath extends ProjectableCameraPath {
   readonly points: readonly Vec3Snapshot[];
   readonly segmentLengths: readonly number[];
   readonly cumulativeDistances: readonly number[];
@@ -108,6 +108,39 @@ export function createPolylinePath(config: PolylinePathConfig): PolylinePath {
     });
   }
 
+  function projectPoint(point: Vec3Like): PathSample {
+    const target = snapshotVec3(point);
+
+    if (points.length === 1 || totalLength <= Number.EPSILON) {
+      return sampleAtDistance(0);
+    }
+
+    let bestDistanceAlongPath = 0;
+    let bestDistanceToTargetSq = Number.POSITIVE_INFINITY;
+
+    for (let i = 0; i < segmentLengths.length; i += 1) {
+      const segmentLength = segmentLengths[i]!;
+      if (segmentLength <= Number.EPSILON) {
+        continue;
+      }
+
+      const start = points[i]!;
+      const end = points[i + 1]!;
+      const segment = vec3Sub(end, start);
+      const targetOffset = vec3Sub(target, start);
+      const localT = clampPathT(vec3Dot(targetOffset, segment) / vec3LengthSq(segment));
+      const projected = vec3Lerp(start, end, localT);
+      const distanceToTargetSq = vec3LengthSq(vec3Sub(target, projected));
+
+      if (distanceToTargetSq < bestDistanceToTargetSq) {
+        bestDistanceToTargetSq = distanceToTargetSq;
+        bestDistanceAlongPath = cumulativeDistances[i]! + segmentLength * localT;
+      }
+    }
+
+    return sampleAtDistance(bestDistanceAlongPath);
+  }
+
   return Object.freeze({
     points,
     segmentLengths,
@@ -115,6 +148,7 @@ export function createPolylinePath(config: PolylinePathConfig): PolylinePath {
     up,
     length: totalLength,
     sampleAtT: (t: number) => sampleAtDistance(clampPathT(t) * totalLength),
-    sampleAtDistance
+    sampleAtDistance,
+    projectPoint
   });
 }

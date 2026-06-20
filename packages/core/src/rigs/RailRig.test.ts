@@ -58,4 +58,26 @@ describe("RailRig", () => {
       z: -1
     });
   });
+
+  it("samples a target-projected rail position", () => {
+    const projectedPath = createPolylinePath({
+      points: [
+        [0, 0, 0],
+        [0, 0, -4],
+        [4, 0, -4]
+      ]
+    });
+    const state = evaluateRailRig({
+      path: projectedPath,
+      driver: { type: "targetProjection", target: [2, 0, -10] },
+      debugId: "rail-project"
+    });
+
+    expect(state.position).toEqual({ x: 2, y: 0, z: -4 });
+    expect(state.debug?.metadata).toEqual({
+      railT: 0.75,
+      railDistance: 6,
+      driver: "targetProjection"
+    });
+  });
 });

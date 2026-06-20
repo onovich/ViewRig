@@ -22,6 +22,14 @@ export interface CameraPath {
   sampleAtDistance(distance: number): PathSample;
 }
 
+export interface ProjectableCameraPath extends CameraPath {
+  projectPoint(point: Vec3Like): PathSample;
+}
+
+export function isProjectableCameraPath(path: CameraPath): path is ProjectableCameraPath {
+  return "projectPoint" in path && typeof path.projectPoint === "function";
+}
+
 export function clampPathT(t: number): number {
   if (!Number.isFinite(t)) {
     return 0;
