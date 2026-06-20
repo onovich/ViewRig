@@ -1,7 +1,12 @@
 export const VIEWRIG_CORE_PACKAGE = "@viewrig/core";
 
+export * from "./channels/ControlChannel";
 export * from "./conventions/CoordinateConvention";
 export * from "./conventions/ScreenSpace";
+export * from "./state/CameraState";
+export * from "./state/LensState";
+export * from "./state/SnapshotTypes";
+export * from "./world/WorldProbe";
 
 export interface ViewRigPackageInfo {
   readonly name: string;
