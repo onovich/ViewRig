@@ -17,6 +17,7 @@ export * from "./math/Damping";
 export * from "./pose/RuntimeCameraPoseMapper";
 export * from "./rigs/FixedPoseSolver";
 export * from "./rigs/FollowRig";
+export * from "./rigs/FirstPersonRig";
 export * from "./rigs/OrbitRig";
 export * from "./state/CameraState";
 export * from "./state/LensState";
