@@ -67,5 +67,6 @@ ViewRig 的核心目标是提供一套纯 TypeScript 的相机姿态求解和 ri
 - [M7 Validation Report](docs/ViewRig_M7_Validation_Report.md)
 - [Sinan Internal POC Adapter Design](docs/sinan-cooperation/viewrig-sinan-internal-poc-adapter-2026-06-20.md)
 - [M8 Validation Report](docs/ViewRig_M8_Validation_Report.md)
+- [v0.1 API Surface](docs/ViewRig_v0.1_API_Surface.md)
 - [Sinan CameraShot Optional Solver Mode](docs/sinan-cooperation/viewrig-camera-shot-optional-solver-mode-2026-06-20.md)
 - [M0-M8 Goal 模式执行指南](docs/ViewRig_M0-M8_Goal模式执行指南.md)
