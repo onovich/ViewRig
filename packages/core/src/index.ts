@@ -1,5 +1,6 @@
 export const VIEWRIG_CORE_PACKAGE = "@viewrig/core";
 
+export * from "./brain/CameraBrain";
 export * from "./brain/VirtualCamera";
 export * from "./channels/ControlChannel";
 export * from "./conventions/CoordinateConvention";
