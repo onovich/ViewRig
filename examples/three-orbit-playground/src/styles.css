@@ -45,6 +45,20 @@ input {
   width: 100%;
 }
 
+.toggle {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.toggle input {
+  width: auto;
+}
+
+output {
+  color: #68e6a6;
+  min-height: 20px;
+}
+
 pre {
   margin: 0;
   padding: 12px;
