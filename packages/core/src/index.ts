@@ -27,6 +27,7 @@ export * from "./math/Quat";
 export * from "./math/Damping";
 export * from "./math/Projection";
 export * from "./path/CameraPath";
+export * from "./path/PolylinePath";
 export * from "./pose/RuntimeCameraPoseMapper";
 export * from "./rigs/FixedPoseSolver";
 export * from "./rigs/FollowRig";
