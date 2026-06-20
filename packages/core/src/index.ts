@@ -12,6 +12,7 @@ export * from "./channels/ZoomChannel";
 export * from "./conventions/CoordinateConvention";
 export * from "./conventions/ScreenSpace";
 export * from "./composer/RectNdc";
+export * from "./composer/ScreenZoneDebug";
 export * from "./composer/ScreenZoneComposer";
 export * from "./math/Vec2";
 export * from "./debug/DebugDraw";
