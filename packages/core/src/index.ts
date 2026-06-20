@@ -1,6 +1,7 @@
 export const VIEWRIG_CORE_PACKAGE = "@viewrig/core";
 
 export * from "./brain/Activation";
+export * from "./brain/Blend";
 export * from "./brain/CameraBrain";
 export * from "./brain/VirtualCamera";
 export * from "./channels/ControlChannel";
