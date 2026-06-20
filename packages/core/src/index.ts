@@ -7,6 +7,7 @@ export * from "./math/Vec2";
 export * from "./math/Vec3";
 export * from "./math/Quat";
 export * from "./math/Damping";
+export * from "./rigs/FixedPoseSolver";
 export * from "./state/CameraState";
 export * from "./state/LensState";
 export * from "./state/SnapshotTypes";
