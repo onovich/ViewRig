@@ -30,6 +30,7 @@ export * from "./state/CameraState";
 export * from "./state/LensState";
 export * from "./state/SnapshotTypes";
 export * from "./world/WorldProbe";
+export * from "./world/WorldProbeFallback";
 
 export interface ViewRigPackageInfo {
   readonly name: string;
