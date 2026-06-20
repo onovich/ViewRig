@@ -38,8 +38,9 @@ C:\Users\Administrator\.codex\skills\project-ops-workflow\scripts\ops\ReleaseDry
 ## Validate Sequence
 
 docsCheck
+structureCheck
 
-The current docs check verifies `README.md` and the `docs\ViewRig_*.md` design document entry without embedding non-ASCII paths in `cmd.exe` commands.
+The current validation verifies `README.md`, the `docs\ViewRig_*.md` design document entry, and `pnpm boundary:check` for core host-dependency and Sinan adapter boundary rules.
 
 ## Dev Server
 

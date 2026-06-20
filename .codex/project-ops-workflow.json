@@ -5,7 +5,8 @@
   "projectName": "ViewRig",
   "repoRoot": "D:\\LabProjects\\Engine\\ViewRig",
   "validateSequence": [
-    "docsCheck"
+    "docsCheck",
+    "structureCheck"
   ],
   "operations": {
     "envCheck": {
@@ -33,7 +34,9 @@
       "commands": []
     },
     "structureCheck": {
-      "commands": []
+      "commands": [
+        "pnpm boundary:check"
+      ]
     },
     "codegen": {
       "commands": []

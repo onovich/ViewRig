@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "tsc -b",
+    "boundary:check": "node scripts/check-boundaries.mjs",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
     "test:browser": "pnpm --dir examples/three-orbit-playground build && pnpm --dir examples/three-orbit-playground smoke",
