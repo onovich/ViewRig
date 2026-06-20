@@ -55,4 +55,5 @@ ViewRig 的核心目标是提供一套纯 TypeScript 的相机姿态求解和 ri
 - [完整设计文档](docs/ViewRig_视角_设计文档.md)
 - [Sinan 合作评估与研发计划](docs/ViewRig_Sinan_合作评估与研发计划.md)
 - [技术架构设计与开发计划](docs/ViewRig_技术架构设计与开发计划.md)
+- [Coordinate Convention](docs/ViewRig_Coordinate_Convention.md)
 - [M0-M8 Goal 模式执行指南](docs/ViewRig_M0-M8_Goal模式执行指南.md)
