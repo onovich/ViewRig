@@ -63,4 +63,5 @@ ViewRig 的核心目标是提供一套纯 TypeScript 的相机姿态求解和 ri
 - [M4 Validation Report](docs/ViewRig_M4_Validation_Report.md)
 - [Composer And Debug Data](docs/ViewRig_Composer_Debug_Data.md)
 - [M5 Validation Report](docs/ViewRig_M5_Validation_Report.md)
+- [M6 Validation Report](docs/ViewRig_M6_Validation_Report.md)
 - [M0-M8 Goal 模式执行指南](docs/ViewRig_M0-M8_Goal模式执行指南.md)
