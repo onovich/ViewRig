@@ -10,3 +10,8 @@ export const testingPackageInfo = {
 export function describeTestingRuntime(): string {
   return `${VIEWRIG_TESTING_PACKAGE} uses ${VIEWRIG_CORE_PACKAGE}`;
 }
+
+export * from "./fakes/FakeChannel";
+export * from "./fakes/FakeTarget";
+export * from "./fakes/FakeWorldProbe";
+export * from "./trace/GoldenTrace";
