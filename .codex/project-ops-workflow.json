@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "initializedMarker": "codex-project-ops-workflow: initialized",
+  "initializedAt": "2026-06-20 19:23:39 +08:00",
+  "projectName": "ViewRig",
+  "repoRoot": "D:\\LabProjects\\Engine\\ViewRig",
+  "validateSequence": [
+    "docsCheck"
+  ],
+  "operations": {
+    "envCheck": {
+      "commands": []
+    },
+    "restoreDeps": {
+      "commands": []
+    },
+    "installDeps": {
+      "commands": []
+    },
+    "build": {
+      "commands": []
+    },
+    "test": {
+      "commands": []
+    },
+    "lint": {
+      "commands": []
+    },
+    "format": {
+      "commands": []
+    },
+    "typecheck": {
+      "commands": []
+    },
+    "structureCheck": {
+      "commands": []
+    },
+    "codegen": {
+      "commands": []
+    },
+    "docsCheck": {
+      "commands": [
+        "if not exist README.md exit /b 1",
+        "dir /b docs\\ViewRig_*.md >nul 2>nul"
+      ]
+    },
+    "smoke": {
+      "commands": [],
+      "urls": []
+    },
+    "package": {
+      "commands": []
+    },
+    "releaseDryRun": {
+      "commands": []
+    }
+  },
+  "devServer": {
+    "startCommand": "",
+    "healthUrl": "",
+    "readyText": "",
+    "startupTimeoutSeconds": 30,
+    "pidFile": ".codex/project-ops-devserver.pid"
+  },
+  "forbiddenPolicy": "Do not run destructive clean/reset/deploy commands unless the user explicitly asks."
+}

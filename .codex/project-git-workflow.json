@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "initializedMarker": "codex-project-git-workflow: initialized",
+  "initializedAt": "2026-06-20 19:23:39 +08:00",
+  "projectName": "ViewRig",
+  "repoRoot": "D:\\LabProjects\\Engine\\ViewRig",
+  "safeDirectory": "D:/LabProjects/Engine/ViewRig",
+  "statusCommand": "git -c safe.directory=D:/LabProjects/Engine/ViewRig status --short --branch",
+  "validationCommands": [],
+  "stagingPolicy": "all changes",
+  "commitCommand": "",
+  "pushCommand": "git -c safe.directory=D:/LabProjects/Engine/ViewRig push -u origin HEAD",
+  "docsRequirement": "Keep README.md and docs/ViewRig_视角_设计文档.md aligned when project positioning changes.",
+  "forbiddenCommands": "Do not force-push. Do not run destructive git commands unless the user explicitly asks for the specific operation."
+}

@@ -1,0 +1,66 @@
+# AGENTS.md
+
+## Global Codex Notes
+
+### Skill Creation And Installation
+
+When creating or updating local Codex skills, make the skill files compatible with both model-side loading and the Codex UI skill picker.
+
+- Write `SKILL.md` and `agents/openai.yaml` as UTF-8 without BOM. PowerShell `Set-Content -Encoding UTF8` can add a BOM on this Windows setup; prefer `.NET` `UTF8Encoding($false)` or verify bytes after writing.
+- A skill may work through `$skill-name` while still failing to appear in the UI `@` picker if metadata files contain a BOM or stale plugin cache is being scanned.
+- Compare against known-good skills such as `inscape-dev-host-smoke`: both `SKILL.md` and `agents/openai.yaml` should start directly with `---` or `interface:`, not `EF BB BF`.
+- For plugin-packaged skills, bump the plugin version/cachebuster, reinstall with the real Codex CLI from `config.toml` (`CODEX_CLI_PATH`), and remove stale cache versions for that plugin when testing UI discovery.
+- After installing or changing skills, restart Codex and test both paths: explicit `$SkillName` loading and UI `@SkillName` autocomplete.
+- Prefer memorable no-hyphen display names for skills users should invoke from the UI, for example `InitFlow`, `GitFlow`, and `OpsFlow`, while keeping lower-case folder names valid.
+
+Useful byte check on Windows:
+
+```powershell
+$bytes = [System.IO.File]::ReadAllBytes('C:\path\to\SKILL.md')
+$bytes[0..2] -join ' '
+```
+
+If the first three bytes are `239 187 191`, the file has a UTF-8 BOM and should be rewritten without BOM.
+
+## Project Baseline
+
+- ViewRig / 视角 is an engine-agnostic TypeScript camera rig library for games.
+- The core should stay independent from Three.js, Babylon.js, PlayCanvas, WebGPU, DOM, React, and physics engines.
+- The main runtime contract is `CameraState`: core computes it, adapters apply it to real engine cameras.
+- Keep concepts small and composable: `CameraBrain`, `VirtualCamera`, `Rig`, `Aim`, `Composer`, `Constraint`, `ControlChannel`, `WorldProbe`, and `Adapter`.
+- Prefer low-allocation runtime design, half-life damping, ESM-first packaging, and testable pure data pipelines.
+- Treat [docs/ViewRig_视角_设计文档.md](docs/ViewRig_视角_设计文档.md) as the current source of product and architecture intent.
+
+<!-- codex-init-flow: initialized -->
+
+## Codex Project Workflow
+
+Initialization status: initialized
+Initialized at: 2026-06-20 19:23:39 +08:00
+Project root: D:\LabProjects\Engine\ViewRig
+Initial git remote: git@github.com:onovich/ViewRig.git
+
+Use these workflow skills for routine Codex work in this project:
+
+- `init-flow`: initialize or refresh this project document and workflow configuration.
+- `project-git-workflow` / `git-flow`: use for git status, validation, commit, push, stash, ignore, and guarded discard operations.
+- `project-ops-workflow` / `ops-flow`: use for environment checks, dependencies, build, test, lint, format, typecheck, dev server, smoke, package, and release dry-run operations.
+
+Prefer the configured wrappers instead of guessing project commands:
+
+```powershell
+C:\Users\Administrator\.codex\skills\project-git-workflow\scripts\git\Status.cmd
+C:\Users\Administrator\.codex\skills\project-git-workflow\scripts\git\CommitAndPush.cmd -Message "commit message" -Paths path\to\file,other\file
+C:\Users\Administrator\.codex\skills\project-git-workflow\scripts\git\Stash.cmd -StashMessage "reason"
+C:\Users\Administrator\.codex\skills\project-git-workflow\scripts\git\DiscardPaths.cmd -ConfirmDangerous -Paths path\to\file
+C:\Users\Administrator\.codex\skills\project-ops-workflow\scripts\ops\Validate.cmd
+```
+
+Project-specific workflow configs live at:
+
+- `.codex/project-git-workflow.json`
+- `.codex/project-ops-workflow.json`
+
+Do not silently fall back to generic git/build/test behavior when those configs exist. Update this section and the workflow configs deliberately when project policy changes.
+
+<!-- /codex-init-flow -->
