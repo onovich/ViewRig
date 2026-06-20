@@ -12,7 +12,7 @@
     "build": "tsc -b",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
-    "test:browser": "pnpm --dir examples/three-orbit-playground smoke",
+    "test:browser": "pnpm --dir examples/three-orbit-playground build && pnpm --dir examples/three-orbit-playground smoke",
     "test:watch": "vitest",
     "docs:check": "node scripts/check-docs.mjs"
   },
