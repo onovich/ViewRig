@@ -14,6 +14,8 @@ export * from "./conventions/ScreenSpace";
 export * from "./composer/RectNdc";
 export * from "./composer/ScreenZoneDebug";
 export * from "./composer/ScreenZoneComposer";
+export * from "./constraints/DistanceClamp";
+export * from "./constraints/YawPitchClamp";
 export * from "./math/Vec2";
 export * from "./debug/DebugDraw";
 export * from "./math/Vec3";
