@@ -33,6 +33,7 @@ export * from "./rigs/FixedPoseSolver";
 export * from "./rigs/FollowRig";
 export * from "./rigs/FirstPersonRig";
 export * from "./rigs/OrbitRig";
+export * from "./rigs/RailRig";
 export * from "./rigs/ThirdPersonRig";
 export * from "./state/CameraState";
 export * from "./state/LensState";
