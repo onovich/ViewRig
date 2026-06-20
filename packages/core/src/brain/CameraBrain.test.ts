@@ -1,7 +1,26 @@
 import { describe, expect, it } from "vitest";
+import type { ControlChannel } from "../channels/ControlChannel";
 import { evaluateFixedPose } from "../rigs/FixedPoseSolver";
 import { CameraBrain } from "./CameraBrain";
 import { createVirtualCamera } from "./VirtualCamera";
+
+function createScalarChannel(id: string, initial: number): ControlChannel<number> {
+  let value = initial;
+  return {
+    id,
+    get value() {
+      return value;
+    },
+    update: () => undefined,
+    set: (next) => {
+      value = next;
+    },
+    add: (delta) => {
+      value += delta;
+    },
+    snapshot: () => value
+  };
+}
 
 describe("CameraBrain add/remove/activate/update", () => {
   it("adds, lists, and removes virtual cameras", () => {
@@ -102,6 +121,50 @@ describe("CameraBrain add/remove/activate/update", () => {
       transition: "cut"
     });
     expect(state?.position).toEqual({ x: 2, y: 0, z: 0 });
+  });
+
+  it("blends from the previous output to the newly activated camera", () => {
+    const brain = new CameraBrain();
+    brain.add(createVirtualCamera({
+      id: "a",
+      evaluate: () => evaluateFixedPose({ position: [0, 0, 0] })
+    }));
+    brain.add(createVirtualCamera({
+      id: "b",
+      evaluate: () => evaluateFixedPose({ position: [10, 0, 0] })
+    }));
+
+    brain.activate("a");
+    brain.update({ dt: 0.016, time: 0 });
+    brain.activate("b", { transition: "blend", blend: { duration: 1 } });
+
+    expect(brain.update({ dt: 0.5, time: 0.5 })?.position).toEqual({ x: 5, y: 0, z: 0 });
+    expect(brain.update({ dt: 0.5, time: 1 })?.position).toEqual({ x: 10, y: 0, z: 0 });
+  });
+
+  it("inherits channel snapshots before matchThenBlend evaluation", () => {
+    const source = createScalarChannel("sourceZoom", 10);
+    const target = createScalarChannel("targetZoom", 0);
+    const brain = new CameraBrain();
+    brain.add(createVirtualCamera({
+      id: "a",
+      evaluate: () => evaluateFixedPose({ position: [0, 0, 0] })
+    }));
+    brain.add(createVirtualCamera({
+      id: "b",
+      evaluate: () => evaluateFixedPose({ position: [target.value, 0, 0] })
+    }));
+
+    brain.activate("a");
+    brain.update({ dt: 0.016, time: 0 });
+    brain.activate("b", {
+      transition: "matchThenBlend",
+      blend: { duration: 1 },
+      inheritChannels: [{ from: source, to: target }]
+    });
+
+    expect(target.value).toBe(10);
+    expect(brain.update({ dt: 1, time: 1 })?.position).toEqual({ x: 10, y: 0, z: 0 });
   });
 
   it("throws when activating an unknown camera", () => {

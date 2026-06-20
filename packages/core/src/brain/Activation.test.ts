@@ -15,4 +15,9 @@ describe("activation policy", () => {
       force: true
     });
   });
+
+  it("accepts blend and matchThenBlend transitions", () => {
+    expect(normalizeActivationOptions({ transition: "blend" }).transition).toBe("blend");
+    expect(normalizeActivationOptions({ transition: "matchThenBlend" }).transition).toBe("matchThenBlend");
+  });
 });

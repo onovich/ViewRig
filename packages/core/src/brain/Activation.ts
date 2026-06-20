@@ -1,7 +1,12 @@
-export type ActivationTransition = "cut";
+import type { BlendOptions } from "./Blend";
+import type { ChannelInheritancePair } from "../channels/ChannelInheritance";
+
+export type ActivationTransition = "cut" | "blend" | "matchThenBlend";
 
 export interface CameraActivationOptions {
   readonly transition?: ActivationTransition;
+  readonly blend?: BlendOptions;
+  readonly inheritChannels?: readonly ChannelInheritancePair[];
   readonly force?: boolean;
 }
 

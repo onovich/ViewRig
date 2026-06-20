@@ -4,6 +4,7 @@ export * from "./brain/Activation";
 export * from "./brain/Blend";
 export * from "./brain/CameraBrain";
 export * from "./brain/VirtualCamera";
+export * from "./channels/ChannelInheritance";
 export * from "./channels/ControlChannel";
 export * from "./conventions/CoordinateConvention";
 export * from "./conventions/ScreenSpace";

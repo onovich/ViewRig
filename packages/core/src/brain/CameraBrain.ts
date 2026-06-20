@@ -1,9 +1,11 @@
 import type { CameraState } from "../state/CameraState";
+import { inheritControlChannels } from "../channels/ChannelInheritance";
 import {
   normalizeActivationOptions,
   type CameraActivationOptions,
   type CameraActivationRecord
 } from "./Activation";
+import { blendCameraState, blendProgress, type BlendOptions } from "./Blend";
 import { evaluateVirtualCamera, isVirtualCameraEnabled, type VirtualCamera } from "./VirtualCamera";
 
 export interface CameraBrainUpdateContext {
@@ -16,6 +18,12 @@ export class CameraBrain {
   #activeId: string | null = null;
   #output: CameraState | null = null;
   #activation: CameraActivationRecord | null = null;
+  #blend: {
+    toId: string;
+    fromState: CameraState;
+    elapsed: number;
+    options: BlendOptions;
+  } | null = null;
 
   get activeId(): string | null {
     return this.#activeId;
@@ -71,6 +79,24 @@ export class CameraBrain {
       toId: id,
       transition: normalized.transition
     });
+
+    if (normalized.transition === "matchThenBlend" && options.inheritChannels !== undefined) {
+      inheritControlChannels(options.inheritChannels);
+    }
+
+    if (normalized.transition === "blend" || normalized.transition === "matchThenBlend") {
+      this.#blend = this.#output === null
+        ? null
+        : {
+            toId: id,
+            fromState: this.#output,
+            elapsed: 0,
+            options: options.blend ?? { duration: 0 }
+          };
+    } else {
+      this.#blend = null;
+    }
+
     this.#activeId = id;
 
     if (normalized.transition === "cut") {
@@ -86,11 +112,29 @@ export class CameraBrain {
     }
 
     this.#activeId = camera.id;
-    this.#output = evaluateVirtualCamera(camera, {
+    const targetState = evaluateVirtualCamera(camera, {
       ...context,
       ...(this.#output === null ? {} : { previous: this.#output })
     });
 
+    if (targetState === null) {
+      this.#output = null;
+      return null;
+    }
+
+    if (this.#blend !== null && this.#blend.toId === camera.id) {
+      this.#blend.elapsed += context.dt;
+      const progress = blendProgress(this.#blend.elapsed, this.#blend.options);
+      this.#output = blendCameraState(this.#blend.fromState, targetState, progress);
+
+      if (progress >= 1) {
+        this.#blend = null;
+      }
+
+      return this.#output;
+    }
+
+    this.#output = targetState;
     return this.#output;
   }
 
