@@ -3,7 +3,7 @@ export type ChannelDelta<TValue> = TValue extends object ? Partial<TValue> : TVa
 export interface ControlChannel<TValue> {
   readonly id: string;
   readonly value: TValue;
-  readonly target?: TValue;
+  readonly target?: TValue | undefined;
   update(dt: number): void;
   set(value: TValue): void;
   add(delta: ChannelDelta<TValue>): void;
