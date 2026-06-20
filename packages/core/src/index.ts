@@ -5,6 +5,7 @@ export * from "./conventions/CoordinateConvention";
 export * from "./conventions/ScreenSpace";
 export * from "./math/Vec2";
 export * from "./math/Vec3";
+export * from "./math/Quat";
 export * from "./state/CameraState";
 export * from "./state/LensState";
 export * from "./state/SnapshotTypes";
