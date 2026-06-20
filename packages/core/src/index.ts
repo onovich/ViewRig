@@ -14,6 +14,7 @@ export * from "./conventions/ScreenSpace";
 export * from "./composer/RectNdc";
 export * from "./composer/ScreenZoneComposer";
 export * from "./math/Vec2";
+export * from "./debug/DebugDraw";
 export * from "./math/Vec3";
 export * from "./math/Quat";
 export * from "./math/Damping";
