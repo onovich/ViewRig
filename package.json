@@ -1,0 +1,23 @@
+{
+  "name": "viewrig",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Engine-agnostic camera pose solver and rig algorithms for games.",
+  "packageManager": "pnpm@11.8.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "docs:check": "node scripts/check-docs.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.2",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
+  }
+}

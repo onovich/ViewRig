@@ -2,14 +2,14 @@
 
 Engine-agnostic camera rigs for games.
 
-ViewRig is a TypeScript camera rig library for games. It provides virtual cameras,
-first-person and third-person rigs, orbit cameras, rail cameras, camera blending,
-dead zones, soft zones, hard limits, confiners, and collision constraints without
-depending on a specific engine.
+ViewRig is a TypeScript camera pose solver and camera rig library for games. It
+provides virtual cameras, first-person and third-person rigs, orbit cameras, rail
+cameras, camera blending, dead zones, soft zones, hard limits, confiners, and
+collision constraints without depending on a specific engine.
 
 ## 当前定位
 
-ViewRig 的核心目标是提供一套纯 TypeScript 的相机控制数据管线，而不是替代渲染引擎自带的真实 Camera。多个 `VirtualCamera` 产出候选 `CameraState`，由 `CameraBrain` 选择、切换或混合，最终通过 Three.js、Babylon.js、PlayCanvas 或自研引擎的 adapter 写入真实相机。
+ViewRig 的核心目标是提供一套纯 TypeScript 的相机姿态求解和 rig 算法数据管线，而不是替代宿主引擎的真实 Camera、导演系统或镜头事实源。多个 `VirtualCamera` 产出候选 `CameraState`，由 `CameraBrain` 选择、切换或混合，最终通过 Three.js、Babylon.js、PlayCanvas、Sinan 或自研引擎的 adapter 写入真实相机。
 
 第一版重点覆盖 Web 游戏和跨引擎项目中最常见的视角需求：
 
@@ -42,13 +42,17 @@ ViewRig 的核心目标是提供一套纯 TypeScript 的相机控制数据管线
 
 ## MVP 路线
 
-1. Core 状态系统：`CameraState`、`LensState`、`CameraTarget`、`CameraBrain`、`VirtualCamera`、`Blend`、`ChannelStore`、half-life damping。
-2. 基础 Rig：`FixedRig`、`FirstPersonRig`、`ThirdPersonRig`、`OrbitRig`、`YawPitchChannel`、`ZoomChannel`。
-3. 构图：`ScreenZoneComposer`、dead / soft / hard、projection helper、debug zone overlay。
-4. 约束：`Confiner2D`、`Confiner3D`、`OcclusionConstraint`、`CollisionConstraint`、`WorldProbe` adapters。
-5. 轨道：`CameraPath`、`RailRig`、`PolylinePath`、`SplinePath`、多种 driver。
-6. 生态包：`@viewrig/input`、`@viewrig/adapter-three`、`@viewrig/adapter-babylon`、`@viewrig/debug`、examples、docs。
+1. Contract Foundation：坐标约定、`CameraState`、`LensState`、`WorldProbe`、`ControlChannel`。
+2. Deterministic Trace Core：小数学层、half-life damping、golden trace harness、fixed pose solver spike。
+3. Brain And Blend：`VirtualCamera`、`CameraBrain`、`cut`、`blend`、`matchThenBlend`、channel inheritance。
+4. Gameplay Rigs：`FollowRig`、`OrbitRig`、`FirstPersonRig`、`ThirdPersonRig`、`YawPitchChannel`、`ZoomChannel`。
+5. Composer And Constraints：`ScreenZoneComposer`、dead / soft / hard、debug data、`WorldProbe` constraints。
+6. Adapters And POCs：`@viewrig/adapter-three`、debug overlay、Sinan repo 内部 POC adapter。
+7. Rail And CameraShot Enhancement：`CameraPath`、`RailRig`、path drivers、Sinan CameraShot optional solver mode。
 
 ## 文档
 
 - [完整设计文档](docs/ViewRig_视角_设计文档.md)
+- [Sinan 合作评估与研发计划](docs/ViewRig_Sinan_合作评估与研发计划.md)
+- [技术架构设计与开发计划](docs/ViewRig_技术架构设计与开发计划.md)
+- [M0-M8 Goal 模式执行指南](docs/ViewRig_M0-M8_Goal模式执行指南.md)
