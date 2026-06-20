@@ -1,4 +1,9 @@
 import type { CameraState } from "../state/CameraState";
+import {
+  normalizeActivationOptions,
+  type CameraActivationOptions,
+  type CameraActivationRecord
+} from "./Activation";
 import { evaluateVirtualCamera, isVirtualCameraEnabled, type VirtualCamera } from "./VirtualCamera";
 
 export interface CameraBrainUpdateContext {
@@ -10,6 +15,7 @@ export class CameraBrain {
   readonly #cameras = new Map<string, VirtualCamera>();
   #activeId: string | null = null;
   #output: CameraState | null = null;
+  #activation: CameraActivationRecord | null = null;
 
   get activeId(): string | null {
     return this.#activeId;
@@ -17,6 +23,10 @@ export class CameraBrain {
 
   get output(): CameraState | null {
     return this.#output;
+  }
+
+  get activation(): CameraActivationRecord | null {
+    return this.#activation;
   }
 
   add(camera: VirtualCamera): this {
@@ -46,12 +56,26 @@ export class CameraBrain {
     return Object.freeze([...this.#cameras.values()]);
   }
 
-  activate(id: string): void {
+  activate(id: string, options: CameraActivationOptions = {}): void {
     if (!this.#cameras.has(id)) {
       throw new Error(`Cannot activate unknown virtual camera: ${id}`);
     }
 
+    const normalized = normalizeActivationOptions(options);
+    if (this.#activeId === id && !normalized.force) {
+      return;
+    }
+
+    this.#activation = Object.freeze({
+      fromId: this.#activeId,
+      toId: id,
+      transition: normalized.transition
+    });
     this.#activeId = id;
+
+    if (normalized.transition === "cut") {
+      this.#output = null;
+    }
   }
 
   update(context: CameraBrainUpdateContext): CameraState | null {

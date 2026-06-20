@@ -75,6 +75,35 @@ describe("CameraBrain add/remove/activate/update", () => {
     expect(brain.update({ dt: 0.016, time: 1 })?.position).toEqual({ x: 1, y: 0, z: 0 });
   });
 
+  it("cuts to a newly activated camera without passing stale previous output", () => {
+    const brain = new CameraBrain();
+    brain.add(createVirtualCamera({
+      id: "a",
+      evaluate: ({ previous }) => evaluateFixedPose({
+        position: previous === undefined ? [1, 0, 0] : [99, 0, 0]
+      })
+    }));
+    brain.add(createVirtualCamera({
+      id: "b",
+      evaluate: ({ previous }) => evaluateFixedPose({
+        position: previous === undefined ? [2, 0, 0] : [99, 0, 0]
+      })
+    }));
+
+    brain.activate("a");
+    expect(brain.update({ dt: 0.016, time: 0 })?.position).toEqual({ x: 1, y: 0, z: 0 });
+
+    brain.activate("b", { transition: "cut" });
+    const state = brain.update({ dt: 0.016, time: 1 });
+
+    expect(brain.activation).toEqual({
+      fromId: "a",
+      toId: "b",
+      transition: "cut"
+    });
+    expect(state?.position).toEqual({ x: 2, y: 0, z: 0 });
+  });
+
   it("throws when activating an unknown camera", () => {
     const brain = new CameraBrain();
 
