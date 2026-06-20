@@ -6,6 +6,7 @@ export * from "./brain/CameraBrain";
 export * from "./brain/VirtualCamera";
 export * from "./channels/ChannelInheritance";
 export * from "./channels/ControlChannel";
+export * from "./channels/ShoulderChannel";
 export * from "./channels/YawPitchChannel";
 export * from "./channels/ZoomChannel";
 export * from "./conventions/CoordinateConvention";

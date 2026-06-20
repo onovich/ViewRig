@@ -1,7 +1,7 @@
 import type { ControlChannel } from "../channels/ControlChannel";
 import type { YawPitchValue } from "../channels/YawPitchChannel";
 import { quatFromAxisAngle, quatMul, degreesToRadians } from "../math/Quat";
-import { vec3Add } from "../math/Vec3";
+import { vec3Add, vec3Scale } from "../math/Vec3";
 import { createCameraState, type CameraDebugState, type CameraState } from "../state/CameraState";
 import type { LensState } from "../state/LensState";
 import type { Vec3Like } from "../state/SnapshotTypes";
@@ -11,6 +11,8 @@ export interface ThirdPersonRigConfig {
   readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
   readonly distance: number;
   readonly pivotOffset?: Vec3Like;
+  readonly shoulder?: number | ControlChannel<number>;
+  readonly shoulderOffset?: Vec3Like;
   readonly lens?: LensState;
   readonly debugId?: string;
 }
@@ -21,6 +23,14 @@ export interface ThirdPersonRigEvaluationContext {
 
 function resolveLook(look: YawPitchValue | ControlChannel<YawPitchValue>): YawPitchValue {
   return "snapshot" in look ? look.snapshot() : look;
+}
+
+function resolveShoulder(shoulder: number | ControlChannel<number> | undefined): number {
+  if (shoulder === undefined) {
+    return 0;
+  }
+
+  return typeof shoulder === "number" ? shoulder : shoulder.snapshot();
 }
 
 function createDebugState(config: ThirdPersonRigConfig): CameraDebugState | undefined {
@@ -40,6 +50,8 @@ export function evaluateThirdPersonRig(
   const pitch = degreesToRadians(look.pitch);
   const cosPitch = Math.cos(pitch);
   const pivot = vec3Add(config.target, config.pivotOffset ?? [0, 1.5, 0]);
+  const shoulder = resolveShoulder(config.shoulder);
+  const shoulderOffset = vec3Scale(config.shoulderOffset ?? [0, 0, 0], shoulder);
   const cameraOffset = {
     x: Math.sin(yaw) * cosPitch * config.distance,
     y: Math.sin(pitch) * config.distance,
@@ -52,7 +64,7 @@ export function evaluateThirdPersonRig(
   const debug = createDebugState(config);
 
   return createCameraState({
-    position: vec3Add(pivot, cameraOffset),
+    position: vec3Add(vec3Add(pivot, cameraOffset), shoulderOffset),
     rotation,
     ...(config.lens === undefined ? {} : { lens: config.lens }),
     ...(context.time === undefined ? {} : { time: context.time }),
