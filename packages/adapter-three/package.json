@@ -10,13 +10,18 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -b",
     "typecheck": "tsc -b --pretty false",
-    "test": "vitest run"
+    "test": "vitest --root ../.. run ../../packages/adapter-three/src/index.test.ts ../../packages/adapter-three/src/three-integration.test.ts"
   },
   "dependencies": {
     "@viewrig/core": "workspace:*"
+  },
+  "devDependencies": {
+    "three": "^0.184.0"
   }
 }

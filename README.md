@@ -50,6 +50,7 @@ pnpm test:browser
 
 API reports live in `api-reports/`. TypeDoc HTML is generated into `generated-docs/api/workspace` and is intentionally ignored by git.
 Browser smoke notes live in [ViewRig v0.2 Browser Smoke](docs/ViewRig_v0.2_Browser_Smoke.md).
+Three integration smoke notes live in [ViewRig v0.2 Three Integration Smoke](docs/ViewRig_v0.2_Three_Integration_Smoke.md).
 
 ## MVP 路线
 
