@@ -45,9 +45,11 @@ ViewRig 的核心目标是提供一套纯 TypeScript 的相机姿态求解和 ri
 ```powershell
 pnpm api:check
 pnpm docs:api
+pnpm test:browser
 ```
 
 API reports live in `api-reports/`. TypeDoc HTML is generated into `generated-docs/api/workspace` and is intentionally ignored by git.
+Browser smoke notes live in [ViewRig v0.2 Browser Smoke](docs/ViewRig_v0.2_Browser_Smoke.md).
 
 ## MVP 路线
 
