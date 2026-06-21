@@ -54,6 +54,8 @@ Three integration smoke notes live in [ViewRig v0.2 Three Integration Smoke](doc
 Playground bundler smoke notes live in [ViewRig v0.2 Playground Bundler Smoke](docs/ViewRig_v0.2_Playground_Bundler_Smoke.md).
 Debug renderer boundary notes live in [ViewRig v0.2 Debug Renderer Boundary](docs/ViewRig_v0.2_Debug_Renderer_Boundary.md).
 Package dry-run notes live in [ViewRig v0.2 Package Dry-Run](docs/ViewRig_v0.2_Package_Dry_Run.md).
+Release notes draft lives in [ViewRig v0.2 Release Notes Draft](docs/ViewRig_v0.2_Release_Notes_Draft.md).
+Changesets and provenance plan lives in [ViewRig v0.2 Changesets And Provenance Plan](docs/ViewRig_v0.2_Changesets_And_Provenance.md).
 
 ## MVP 路线
 
