@@ -60,10 +60,17 @@ if (existsSync("packages/sinan")) {
   failures.push("packages/sinan must not exist before a public Sinan adapter is approved.");
 }
 
+if (existsSync("packages/debug-three")) {
+  failures.push("packages/debug-three is deferred for v0.2; keep Three debug rendering out of public packages.");
+}
+
 for (const path of walkFiles("packages", (file) => file.endsWith("package.json"))) {
   const manifest = readJson(path);
   if (manifest.name === "@viewrig/sinan") {
     fail(path, "@viewrig/sinan is out of scope for M0-M8.");
+  }
+  if (manifest.name === "@viewrig/debug-three") {
+    fail(path, "@viewrig/debug-three is deferred for v0.2.");
   }
 }
 

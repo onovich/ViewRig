@@ -52,6 +52,7 @@ API reports live in `api-reports/`. TypeDoc HTML is generated into `generated-do
 Browser smoke notes live in [ViewRig v0.2 Browser Smoke](docs/ViewRig_v0.2_Browser_Smoke.md).
 Three integration smoke notes live in [ViewRig v0.2 Three Integration Smoke](docs/ViewRig_v0.2_Three_Integration_Smoke.md).
 Playground bundler smoke notes live in [ViewRig v0.2 Playground Bundler Smoke](docs/ViewRig_v0.2_Playground_Bundler_Smoke.md).
+Debug renderer boundary notes live in [ViewRig v0.2 Debug Renderer Boundary](docs/ViewRig_v0.2_Debug_Renderer_Boundary.md).
 
 ## MVP 路线
 
