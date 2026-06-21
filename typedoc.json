@@ -1,8 +1,13 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["packages/core/src/index.ts"],
-  "tsconfig": "packages/core/tsconfig.json",
-  "out": "generated-docs/api/core",
+  "name": "ViewRig API",
+  "entryPoints": [
+    "packages/core/src/index.ts",
+    "packages/testing/src/index.ts",
+    "packages/adapter-three/src/index.ts"
+  ],
+  "tsconfig": "tsconfig.typedoc.json",
+  "out": "generated-docs/api/workspace",
   "cleanOutputDir": true,
   "excludePrivate": true,
   "excludeProtected": true,

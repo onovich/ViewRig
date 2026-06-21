@@ -40,6 +40,15 @@ ViewRig 的核心目标是提供一套纯 TypeScript 的相机姿态求解和 ri
 - API Extractor / TypeDoc 管理公共 API 稳定性和文档。
 - Changesets + npm provenance / trusted publishing 管理发布。
 
+## API Docs
+
+```powershell
+pnpm api:check
+pnpm docs:api
+```
+
+API reports live in `api-reports/`. TypeDoc HTML is generated into `generated-docs/api/workspace` and is intentionally ignored by git.
+
 ## MVP 路线
 
 1. Contract Foundation：坐标约定、`CameraState`、`LensState`、`WorldProbe`、`ControlChannel`。

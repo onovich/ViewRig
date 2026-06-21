@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@viewrig/core": ["packages/core/src/index.ts"],
+      "@viewrig/testing": ["packages/testing/src/index.ts"],
+      "@viewrig/adapter-three": ["packages/adapter-three/src/index.ts"]
+    }
+  },
+  "include": ["packages/*/src/**/*.ts"],
+  "exclude": ["packages/*/src/**/*.test.ts"]
+}
