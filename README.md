@@ -71,3 +71,4 @@ ViewRig 的核心目标是提供一套纯 TypeScript 的相机姿态求解和 ri
 - [M0-M8 Final Report](docs/ViewRig_M0-M8_Final_Report.md)
 - [Sinan CameraShot Optional Solver Mode](docs/sinan-cooperation/viewrig-camera-shot-optional-solver-mode-2026-06-20.md)
 - [M0-M8 Goal 模式执行指南](docs/ViewRig_M0-M8_Goal模式执行指南.md)
+- [v0.2 Goal 模式执行指南](docs/ViewRig_v0.2_Goal模式执行指南.md)

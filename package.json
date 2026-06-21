@@ -9,6 +9,8 @@
     "node": ">=24.0.0"
   },
   "scripts": {
+    "api:check": "node scripts/api-report.mjs --check",
+    "api:report": "node scripts/api-report.mjs --write",
     "build": "tsc -b",
     "boundary:check": "node scripts/check-boundaries.mjs",
     "typecheck": "tsc -b --pretty false",

@@ -35,6 +35,7 @@
     },
     "structureCheck": {
       "commands": [
+        "pnpm api:check",
         "pnpm boundary:check"
       ]
     },

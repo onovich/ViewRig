@@ -40,7 +40,7 @@ C:\Users\Administrator\.codex\skills\project-ops-workflow\scripts\ops\ReleaseDry
 docsCheck
 structureCheck
 
-The current validation verifies `README.md`, the `docs\ViewRig_*.md` design document entry, and `pnpm boundary:check` for core host-dependency and Sinan adapter boundary rules.
+The current validation verifies `README.md`, the `docs\ViewRig_*.md` design document entry, `pnpm api:check` for public API report drift, and `pnpm boundary:check` for core host-dependency and Sinan adapter boundary rules.
 
 ## Dev Server
 
