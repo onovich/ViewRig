@@ -9,6 +9,16 @@ const packages = [
     name: "@viewrig/core",
     entry: "packages/core/src/index.ts",
     report: "api-reports/core.api.md"
+  },
+  {
+    name: "@viewrig/testing",
+    entry: "packages/testing/src/index.ts",
+    report: "api-reports/testing.api.md"
+  },
+  {
+    name: "@viewrig/adapter-three",
+    entry: "packages/adapter-three/src/index.ts",
+    report: "api-reports/adapter-three.api.md"
   }
 ];
 
@@ -98,7 +108,12 @@ function renderReport(packageConfig) {
     "## Exported Modules"
   ];
 
-  for (const specifier of collectExportStars(entrySource)) {
+  const exportStars = collectExportStars(entrySource);
+  if (exportStars.length === 0) {
+    lines.push("", "- none");
+  }
+
+  for (const specifier of exportStars) {
     const modulePath = resolve(dirname(entryPath), `${specifier}.ts`);
     const source = readSource(modulePath);
     lines.push("", `### \`${specifier}\``, "", renderExportList(collectExportedNames(source)));
