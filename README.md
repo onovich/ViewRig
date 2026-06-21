@@ -57,6 +57,7 @@ Package dry-run notes live in [ViewRig v0.2 Package Dry-Run](docs/ViewRig_v0.2_P
 Release notes draft lives in [ViewRig v0.2 Release Notes Draft](docs/ViewRig_v0.2_Release_Notes_Draft.md).
 Changesets and provenance plan lives in [ViewRig v0.2 Changesets And Provenance Plan](docs/ViewRig_v0.2_Changesets_And_Provenance.md).
 R13 API docs buffer report lives in [ViewRig v0.2 R13 API Docs Buffer Report](docs/ViewRig_v0.2_R13_API_Docs_Buffer_Report.md).
+R14 browser smoke buffer report lives in [ViewRig v0.2 R14 Browser Smoke Buffer Report](docs/ViewRig_v0.2_R14_Browser_Smoke_Buffer_Report.md).
 
 ## MVP 路线
 
