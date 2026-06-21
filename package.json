@@ -13,6 +13,7 @@
     "api:report": "node scripts/api-report.mjs --write",
     "build": "tsc -b",
     "boundary:check": "node scripts/check-boundaries.mjs",
+    "docs:api": "typedoc --options typedoc.json",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
     "test:browser": "pnpm --dir examples/three-orbit-playground build && pnpm --dir examples/three-orbit-playground smoke",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "24.13.2",
+    "typedoc": "^0.28.19",
     "typescript": "6.0.3",
     "vitest": "4.1.9"
   }
