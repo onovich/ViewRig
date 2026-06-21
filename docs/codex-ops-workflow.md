@@ -42,6 +42,14 @@ structureCheck
 
 The current validation verifies `README.md`, the `docs\ViewRig_*.md` design document entry, `pnpm api:check` for public API report drift, and `pnpm boundary:check` for core host-dependency and Sinan adapter boundary rules.
 
+## Package Dry-Run
+
+Package command: `pnpm package:dry-run`
+
+Release dry-run command: `pnpm release:dry-run`
+
+The package dry-run checks package metadata and `pnpm pack --dry-run` output for `@viewrig/core`, `@viewrig/testing`, and `@viewrig/adapter-three`. Packages remain `private: true`; this workflow does not publish.
+
 ## Dev Server
 
 Start command: ``

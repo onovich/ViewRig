@@ -53,6 +53,7 @@ Browser smoke notes live in [ViewRig v0.2 Browser Smoke](docs/ViewRig_v0.2_Brows
 Three integration smoke notes live in [ViewRig v0.2 Three Integration Smoke](docs/ViewRig_v0.2_Three_Integration_Smoke.md).
 Playground bundler smoke notes live in [ViewRig v0.2 Playground Bundler Smoke](docs/ViewRig_v0.2_Playground_Bundler_Smoke.md).
 Debug renderer boundary notes live in [ViewRig v0.2 Debug Renderer Boundary](docs/ViewRig_v0.2_Debug_Renderer_Boundary.md).
+Package dry-run notes live in [ViewRig v0.2 Package Dry-Run](docs/ViewRig_v0.2_Package_Dry_Run.md).
 
 ## MVP 路线
 

@@ -53,10 +53,14 @@
       "urls": []
     },
     "package": {
-      "commands": []
+      "commands": [
+        "pnpm package:dry-run"
+      ]
     },
     "releaseDryRun": {
-      "commands": []
+      "commands": [
+        "pnpm release:dry-run"
+      ]
     }
   },
   "devServer": {
