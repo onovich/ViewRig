@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, extname, isAbsolute, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
@@ -42,6 +42,30 @@ for (const token of ["canvas", "input", "output", "pre"]) {
 
 if (!existsSync(resolve(dist, "index.html"))) {
   throw new Error("Missing playground dist/index.html. Run `pnpm --dir examples/three-orbit-playground build` before smoke.");
+}
+
+const buildInfoPath = resolve(dist, "viewrig-build.json");
+if (!existsSync(buildInfoPath)) {
+  throw new Error("Missing playground dist/viewrig-build.json. Run the playground build before smoke.");
+}
+
+const buildInfo = JSON.parse(readFileSync(buildInfoPath, "utf8"));
+if (buildInfo.mode !== "vite" && buildInfo.mode !== "lightweight") {
+  throw new Error(`Unknown playground build mode: ${JSON.stringify(buildInfo)}`);
+}
+
+if (buildInfo.mode === "vite") {
+  const distHtml = readFileSync(resolve(dist, "index.html"), "utf8");
+  const assetsDir = resolve(dist, "assets");
+  const assets = existsSync(assetsDir) ? readdirSync(assetsDir) : [];
+
+  if (distHtml.includes("./src/main.js")) {
+    throw new Error("Vite build did not replace the source module entry.");
+  }
+
+  if (!assets.some((asset) => asset.endsWith(".js"))) {
+    throw new Error("Vite build did not emit a JavaScript bundle asset.");
+  }
 }
 
 const mimeTypes = new Map([
@@ -239,7 +263,7 @@ try {
     throw new Error(`Browser console errors: ${consoleErrors.join(" | ")}`);
   }
 
-  console.log(`three-orbit-playground browser smoke passed (${launched.label})`);
+  console.log(`three-orbit-playground browser smoke passed (${launched.label}, ${buildInfo.mode})`);
 } finally {
   await browser?.close();
   await closeServer(server);

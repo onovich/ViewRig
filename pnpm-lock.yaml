@@ -24,7 +24,11 @@ importers:
         specifier: 4.1.9
         version: 4.1.9(@types/node@24.13.2)(vite@8.0.16(@types/node@24.13.2)(yaml@2.9.0))
 
-  examples/three-orbit-playground: {}
+  examples/three-orbit-playground:
+    devDependencies:
+      vite:
+        specifier: ^8.0.16
+        version: 8.0.16(@types/node@24.13.2)(yaml@2.9.0)
 
   packages/adapter-three:
     dependencies:
