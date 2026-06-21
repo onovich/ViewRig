@@ -11,6 +11,7 @@ Status: R10 release notes draft, not a published release.
 - Added real Three integration smoke for `@viewrig/adapter-three`.
 - Documented the v0.2 debug renderer boundary and deferred public `@viewrig/debug-three`.
 - Added package dry-run validation for tarball contents without publishing.
+- Added Sinan POC-2 Follow/Orbit and POC-3 CameraShot Enhancement execution contracts.
 
 ## Package Status
 
