@@ -84,6 +84,7 @@ Changesets and provenance plan lives in [ViewRig v0.2 Changesets And Provenance 
 - [M7 Validation Report](docs/ViewRig_M7_Validation_Report.md)
 - [Sinan Internal POC Adapter Design](docs/sinan-cooperation/viewrig-sinan-internal-poc-adapter-2026-06-20.md)
 - [Sinan POC-2 Follow Orbit Contract](docs/sinan-cooperation/viewrig-sinan-poc-2-follow-orbit-contract-2026-06-21.md)
+- [Sinan POC-3 CameraShot Enhancement Contract](docs/sinan-cooperation/viewrig-sinan-poc-3-camera-shot-enhancement-contract-2026-06-21.md)
 - [M8 Validation Report](docs/ViewRig_M8_Validation_Report.md)
 - [v0.1 API Surface](docs/ViewRig_v0.1_API_Surface.md)
 - [M0-M8 Final Report](docs/ViewRig_M0-M8_Final_Report.md)
