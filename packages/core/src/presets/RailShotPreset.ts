@@ -15,6 +15,7 @@ import {
   type CameraPresetTuningControl
 } from "./CameraPreset.js";
 
+/** Input config for the rail/camera-shot preset. */
 export interface RailShotPresetConfig {
   readonly id?: string;
   readonly label?: string;
@@ -26,6 +27,7 @@ export interface RailShotPresetConfig {
   readonly debugId?: string;
 }
 
+/** Resolved rail/camera-shot preset config. */
 export interface RailShotPresetResolvedConfig {
   readonly path: CameraPath;
   readonly driver: RailRigDriver;
@@ -93,6 +95,7 @@ function createRailDriverTuning(
   return controls;
 }
 
+/** Applies rail-shot defaults. */
 export function resolveRailShotPresetConfig(config: RailShotPresetConfig): RailShotPresetResolvedConfig {
   const debugId = config.debugId ?? config.id ?? DEFAULT_RAIL_SHOT_PRESET_ID;
 
@@ -106,6 +109,7 @@ export function resolveRailShotPresetConfig(config: RailShotPresetConfig): RailS
   });
 }
 
+/** Creates a deterministic rail/camera-shot preset. */
 export function createRailShotPreset(
   config: RailShotPresetConfig
 ): CameraPreset<RailShotPresetResolvedConfig> {
@@ -149,6 +153,7 @@ export function createRailShotPreset(
   });
 }
 
+/** Evaluates a rail-shot preset without retaining the preset object. */
 export function evaluateRailShotPreset(
   config: RailShotPresetConfig,
   context: CameraPresetEvaluationContext = {}

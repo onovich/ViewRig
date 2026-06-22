@@ -10,6 +10,7 @@ import {
   type CameraPresetEvaluationContext
 } from "./CameraPreset.js";
 
+/** Input config for the third-person gameplay preset. */
 export interface ThirdPersonGameplayPresetConfig {
   readonly id?: string;
   readonly label?: string;
@@ -23,6 +24,7 @@ export interface ThirdPersonGameplayPresetConfig {
   readonly debugId?: string;
 }
 
+/** Resolved config with third-person gameplay defaults applied. */
 export interface ThirdPersonGameplayPresetResolvedConfig {
   readonly target: Vec3Like;
   readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
@@ -44,6 +46,7 @@ function resolveShoulderValue(shoulder: number | ControlChannel<number>): number
   return typeof shoulder === "number" ? shoulder : shoulder.snapshot();
 }
 
+/** Applies default distance, pivot, shoulder, and debug id values. */
 export function resolveThirdPersonGameplayPresetConfig(
   config: ThirdPersonGameplayPresetConfig
 ): ThirdPersonGameplayPresetResolvedConfig {
@@ -61,6 +64,7 @@ export function resolveThirdPersonGameplayPresetConfig(
   });
 }
 
+/** Creates a shoulder-ready third-person gameplay preset. */
 export function createThirdPersonGameplayPreset(
   config: ThirdPersonGameplayPresetConfig
 ): CameraPreset<ThirdPersonGameplayPresetResolvedConfig> {
@@ -129,6 +133,7 @@ export function createThirdPersonGameplayPreset(
   });
 }
 
+/** Evaluates a third-person gameplay preset without retaining the preset object. */
 export function evaluateThirdPersonGameplayPreset(
   config: ThirdPersonGameplayPresetConfig,
   context: CameraPresetEvaluationContext = {}

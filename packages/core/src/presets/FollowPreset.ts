@@ -8,6 +8,7 @@ import {
   type CameraPresetEvaluationContext
 } from "./CameraPreset.js";
 
+/** Input config for the follow showcase preset. */
 export interface FollowShowcasePresetConfig {
   readonly id?: string;
   readonly label?: string;
@@ -17,6 +18,7 @@ export interface FollowShowcasePresetConfig {
   readonly debugId?: string;
 }
 
+/** Resolved follow showcase config with defaults applied. */
 export interface FollowShowcasePresetResolvedConfig {
   readonly target: FollowTargetSample;
   readonly offset: Vec3Like;
@@ -27,6 +29,7 @@ export interface FollowShowcasePresetResolvedConfig {
 export const DEFAULT_FOLLOW_SHOWCASE_PRESET_ID = "follow-showcase";
 export const DEFAULT_FOLLOW_SHOWCASE_OFFSET = [0, 2, -6] as const;
 
+/** Applies follow showcase defaults. */
 export function resolveFollowShowcasePresetConfig(
   config: FollowShowcasePresetConfig
 ): FollowShowcasePresetResolvedConfig {
@@ -40,6 +43,7 @@ export function resolveFollowShowcasePresetConfig(
   });
 }
 
+/** Creates a simple follow preset for actors or anchors. */
 export function createFollowShowcasePreset(
   config: FollowShowcasePresetConfig
 ): CameraPreset<FollowShowcasePresetResolvedConfig> {
@@ -105,6 +109,7 @@ export function createFollowShowcasePreset(
   });
 }
 
+/** Evaluates a follow showcase preset without retaining the preset object. */
 export function evaluateFollowShowcasePreset(
   config: FollowShowcasePresetConfig,
   context: CameraPresetEvaluationContext = {}

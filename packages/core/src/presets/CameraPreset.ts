@@ -1,6 +1,7 @@
 import type { DebugDrawCommand } from "../debug/DebugDraw.js";
 import type { CameraDebugState, CameraState } from "../state/CameraState.js";
 
+/** Camera role exposed by a v0.5 preset. */
 export type CameraPresetMode =
   | "thirdPerson"
   | "orbit"
@@ -8,8 +9,10 @@ export type CameraPresetMode =
   | "firstPerson"
   | "railShot";
 
+/** Scalar value shape used by preset tuning summaries. */
 export type CameraPresetTuningValue = string | number | boolean;
 
+/** One UI-friendly tuning control reported by a preset evaluation. */
 export interface CameraPresetTuningControl {
   readonly id: string;
   readonly label: string;
@@ -20,12 +23,14 @@ export interface CameraPresetTuningControl {
   readonly unit?: string;
 }
 
+/** Optional frame context passed to preset evaluation. */
 export interface CameraPresetEvaluationContext {
   readonly dt?: number;
   readonly previous?: CameraState;
   readonly time?: number;
 }
 
+/** Renderer-agnostic debug and tuning summary for a preset result. */
 export interface CameraPresetDebugSummary {
   readonly presetId: string;
   readonly label: string;
@@ -37,6 +42,7 @@ export interface CameraPresetDebugSummary {
   readonly notes: readonly string[];
 }
 
+/** Input shape for creating a preset debug summary. */
 export interface CameraPresetDebugSummaryInput {
   readonly presetId: string;
   readonly label: string;
@@ -48,16 +54,20 @@ export interface CameraPresetDebugSummaryInput {
   readonly notes?: readonly string[];
 }
 
+/** Full preset evaluation result: state, debug summary, and draw commands. */
 export interface CameraPresetEvaluation {
   readonly state: CameraState;
   readonly debug: CameraPresetDebugSummary;
   readonly draw: readonly DebugDrawCommand[];
 }
 
+/** Either a full evaluation or its extracted debug summary. */
 export type CameraPresetDebugSource = CameraPresetDebugSummary | CameraPresetEvaluation;
 
+/** Map of tuning control ids to their current values. */
 export type CameraPresetTuningSnapshot = Readonly<Record<string, CameraPresetTuningValue>>;
 
+/** Compact status object for playgrounds, smoke tests, and diagnostics. */
 export interface CameraPresetDebugStatus {
   readonly presetId: string;
   readonly label: string;
@@ -68,6 +78,7 @@ export interface CameraPresetDebugStatus {
   readonly notes: readonly string[];
 }
 
+/** Reusable preset object with typed config and explicit evaluation. */
 export interface CameraPreset<TConfig = unknown> {
   readonly id: string;
   readonly label: string;
@@ -76,6 +87,7 @@ export interface CameraPreset<TConfig = unknown> {
   evaluate(context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
 }
 
+/** Declarative descriptor consumed by defineCameraPreset. */
 export interface CameraPresetDescriptor<TConfig> {
   readonly id: string;
   readonly label: string;
@@ -104,6 +116,7 @@ function mergeDebugMetadata(
   });
 }
 
+/** Creates a frozen debug summary from preset and CameraState metadata. */
 export function createCameraPresetDebugSummary(
   input: CameraPresetDebugSummaryInput
 ): CameraPresetDebugSummary {
@@ -119,6 +132,7 @@ export function createCameraPresetDebugSummary(
   });
 }
 
+/** Creates a frozen preset evaluation result. */
 export function createCameraPresetEvaluation(
   state: CameraState,
   debug: CameraPresetDebugSummary,
@@ -131,10 +145,12 @@ export function createCameraPresetEvaluation(
   });
 }
 
+/** Extracts the debug summary from either a summary or full evaluation. */
 export function getCameraPresetDebugSummary(source: CameraPresetDebugSource): CameraPresetDebugSummary {
   return "state" in source ? source.debug : source;
 }
 
+/** Finds a tuning control by id. */
 export function findCameraPresetTuningControl(
   source: CameraPresetDebugSource,
   id: string
@@ -142,6 +158,7 @@ export function findCameraPresetTuningControl(
   return getCameraPresetDebugSummary(source).tuning.find((control) => control.id === id);
 }
 
+/** Converts tuning controls into an id/value snapshot. */
 export function createCameraPresetTuningSnapshot(source: CameraPresetDebugSource): CameraPresetTuningSnapshot {
   const summary = getCameraPresetDebugSummary(source);
   const entries = summary.tuning.map((control) => [control.id, control.value] as const);
@@ -149,6 +166,7 @@ export function createCameraPresetTuningSnapshot(source: CameraPresetDebugSource
   return Object.freeze(Object.fromEntries(entries) as Record<string, CameraPresetTuningValue>);
 }
 
+/** Creates a compact status object from preset debug data. */
 export function createCameraPresetDebugStatus(source: CameraPresetDebugSource): CameraPresetDebugStatus {
   const summary = getCameraPresetDebugSummary(source);
 
@@ -163,6 +181,7 @@ export function createCameraPresetDebugStatus(source: CameraPresetDebugSource): 
   });
 }
 
+/** Defines a reusable preset from a typed descriptor. */
 export function defineCameraPreset<TConfig>(
   descriptor: CameraPresetDescriptor<TConfig>
 ): CameraPreset<TConfig> {

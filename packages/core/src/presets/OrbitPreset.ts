@@ -10,6 +10,7 @@ import {
   type CameraPresetEvaluationContext
 } from "./CameraPreset.js";
 
+/** Input config for the orbit showcase preset. */
 export interface OrbitShowcasePresetConfig {
   readonly id?: string;
   readonly label?: string;
@@ -21,6 +22,7 @@ export interface OrbitShowcasePresetConfig {
   readonly debugId?: string;
 }
 
+/** Resolved orbit showcase config with defaults applied. */
 export interface OrbitShowcasePresetResolvedConfig {
   readonly target: Vec3Like;
   readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
@@ -38,6 +40,7 @@ function resolveDistanceValue(distance: number | ControlChannel<number>): number
   return typeof distance === "number" ? distance : distance.snapshot();
 }
 
+/** Applies orbit showcase defaults. */
 export function resolveOrbitShowcasePresetConfig(
   config: OrbitShowcasePresetConfig
 ): OrbitShowcasePresetResolvedConfig {
@@ -53,6 +56,7 @@ export function resolveOrbitShowcasePresetConfig(
   });
 }
 
+/** Creates an orbit showcase preset for object or actor inspection. */
 export function createOrbitShowcasePreset(
   config: OrbitShowcasePresetConfig
 ): CameraPreset<OrbitShowcasePresetResolvedConfig> {
@@ -109,6 +113,7 @@ export function createOrbitShowcasePreset(
   });
 }
 
+/** Evaluates an orbit showcase preset without retaining the preset object. */
 export function evaluateOrbitShowcasePreset(
   config: OrbitShowcasePresetConfig,
   context: CameraPresetEvaluationContext = {}

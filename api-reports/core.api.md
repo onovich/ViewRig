@@ -139,7 +139,7 @@ export interface CameraPath {
     sampleAtT(t: number): PathSample;
 }
 
-// @public (undocumented)
+// @public
 export interface CameraPreset<TConfig = unknown> {
     // (undocumented)
     readonly config: TConfig;
@@ -153,10 +153,10 @@ export interface CameraPreset<TConfig = unknown> {
     readonly mode: CameraPresetMode;
 }
 
-// @public (undocumented)
+// @public
 export type CameraPresetDebugSource = CameraPresetDebugSummary | CameraPresetEvaluation;
 
-// @public (undocumented)
+// @public
 export interface CameraPresetDebugStatus {
     // (undocumented)
     readonly label: string;
@@ -174,7 +174,7 @@ export interface CameraPresetDebugStatus {
     readonly tuning: CameraPresetTuningSnapshot;
 }
 
-// @public (undocumented)
+// @public
 export interface CameraPresetDebugSummary {
     // (undocumented)
     readonly label: string;
@@ -194,7 +194,7 @@ export interface CameraPresetDebugSummary {
     readonly tuning: readonly CameraPresetTuningControl[];
 }
 
-// @public (undocumented)
+// @public
 export interface CameraPresetDebugSummaryInput {
     // (undocumented)
     readonly label: string;
@@ -214,7 +214,7 @@ export interface CameraPresetDebugSummaryInput {
     readonly tuning?: readonly CameraPresetTuningControl[];
 }
 
-// @public (undocumented)
+// @public
 export interface CameraPresetDescriptor<TConfig> {
     // (undocumented)
     readonly config: TConfig;
@@ -232,7 +232,7 @@ export interface CameraPresetDescriptor<TConfig> {
     readonly mode: CameraPresetMode;
 }
 
-// @public (undocumented)
+// @public
 export interface CameraPresetEvaluation {
     // (undocumented)
     readonly debug: CameraPresetDebugSummary;
@@ -242,7 +242,7 @@ export interface CameraPresetEvaluation {
     readonly state: CameraState;
 }
 
-// @public (undocumented)
+// @public
 export interface CameraPresetEvaluationContext {
     // (undocumented)
     readonly dt?: number;
@@ -252,10 +252,10 @@ export interface CameraPresetEvaluationContext {
     readonly time?: number;
 }
 
-// @public (undocumented)
+// @public
 export type CameraPresetMode = "thirdPerson" | "orbit" | "follow" | "firstPerson" | "railShot";
 
-// @public (undocumented)
+// @public
 export interface CameraPresetTuningControl {
     // (undocumented)
     readonly id: string;
@@ -273,10 +273,10 @@ export interface CameraPresetTuningControl {
     readonly value: CameraPresetTuningValue;
 }
 
-// @public (undocumented)
+// @public
 export type CameraPresetTuningSnapshot = Readonly<Record<string, CameraPresetTuningValue>>;
 
-// @public (undocumented)
+// @public
 export type CameraPresetTuningValue = string | number | boolean;
 
 // @public (undocumented)
@@ -432,34 +432,34 @@ export const corePackageInfo: {
 // @public (undocumented)
 export function createCameraDebugFrame(state: CameraState, draw?: readonly DebugDrawCommand[]): CameraDebugFrame;
 
-// @public (undocumented)
+// @public
 export function createCameraPresetDebugStatus(source: CameraPresetDebugSource): CameraPresetDebugStatus;
 
-// @public (undocumented)
+// @public
 export function createCameraPresetDebugSummary(input: CameraPresetDebugSummaryInput): CameraPresetDebugSummary;
 
-// @public (undocumented)
+// @public
 export function createCameraPresetEvaluation(state: CameraState, debug: CameraPresetDebugSummary, draw?: readonly DebugDrawCommand[]): CameraPresetEvaluation;
 
-// @public (undocumented)
+// @public
 export function createCameraPresetTuningSnapshot(source: CameraPresetDebugSource): CameraPresetTuningSnapshot;
 
 // @public (undocumented)
 export function createCameraState(input: CameraStateInput): CameraState;
 
-// @public (undocumented)
+// @public
 export function createFirstPersonGameplayPreset(config: FirstPersonGameplayPresetConfig): CameraPreset<FirstPersonGameplayPresetResolvedConfig>;
 
-// @public (undocumented)
+// @public
 export function createFollowShowcasePreset(config: FollowShowcasePresetConfig): CameraPreset<FollowShowcasePresetResolvedConfig>;
 
-// @public (undocumented)
+// @public
 export function createOrbitShowcasePreset(config: OrbitShowcasePresetConfig): CameraPreset<OrbitShowcasePresetResolvedConfig>;
 
 // @public (undocumented)
 export function createPolylinePath(config: PolylinePathConfig): PolylinePath;
 
-// @public (undocumented)
+// @public
 export function createRailShotPreset(config: RailShotPresetConfig): CameraPreset<RailShotPresetResolvedConfig>;
 
 // @public (undocumented)
@@ -468,7 +468,7 @@ export function createScreenZoneDebugCommands(config: ScreenZoneComposerConfig, 
 // @public (undocumented)
 export function createShoulderChannel(id: string, options?: ShoulderChannelOptions): ShoulderChannel;
 
-// @public (undocumented)
+// @public
 export function createThirdPersonGameplayPreset(config: ThirdPersonGameplayPresetConfig): CameraPreset<ThirdPersonGameplayPresetResolvedConfig>;
 
 // @public (undocumented)
@@ -558,7 +558,7 @@ export const DEFAULT_THIRD_PERSON_GAMEPLAY_SHOULDER = 1;
 // @public (undocumented)
 export const DEFAULT_THIRD_PERSON_GAMEPLAY_SHOULDER_OFFSET: readonly [0.45, 0.05, 0];
 
-// @public (undocumented)
+// @public
 export function defineCameraPreset<TConfig>(descriptor: CameraPresetDescriptor<TConfig>): CameraPreset<TConfig>;
 
 // @public (undocumented)
@@ -574,7 +574,7 @@ export interface DistanceClampConfig {
     readonly target: Vec3Like;
 }
 
-// @public (undocumented)
+// @public
 export function evaluateFirstPersonGameplayPreset(config: FirstPersonGameplayPresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
 
 // @public (undocumented)
@@ -586,25 +586,25 @@ export function evaluateFixedPose(config: FixedPoseSolverConfig, context?: Fixed
 // @public (undocumented)
 export function evaluateFollowRig(config: FollowRigConfig, context?: FollowRigEvaluationContext): CameraState;
 
-// @public (undocumented)
+// @public
 export function evaluateFollowShowcasePreset(config: FollowShowcasePresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
 
 // @public (undocumented)
 export function evaluateOrbitRig(config: OrbitRigConfig, context?: OrbitRigEvaluationContext): CameraState;
 
-// @public (undocumented)
+// @public
 export function evaluateOrbitShowcasePreset(config: OrbitShowcasePresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
 
 // @public (undocumented)
 export function evaluateRailRig(config: RailRigConfig, context?: RailRigEvaluationContext): CameraState;
 
-// @public (undocumented)
+// @public
 export function evaluateRailShotPreset(config: RailShotPresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
 
 // @public (undocumented)
 export function evaluateScreenZoneComposer(camera: CameraState, target: Vec3Like, config: ScreenZoneComposerConfig, options?: ProjectToNdcOptions): ScreenZoneComposerResult;
 
-// @public (undocumented)
+// @public
 export function evaluateThirdPersonGameplayPreset(config: ThirdPersonGameplayPresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
 
 // @public (undocumented)
@@ -613,10 +613,10 @@ export function evaluateThirdPersonRig(config: ThirdPersonRigConfig, context?: T
 // @public (undocumented)
 export function evaluateVirtualCamera(camera: VirtualCamera, context: CameraEvaluationContext): CameraState | null;
 
-// @public (undocumented)
+// @public
 export function findCameraPresetTuningControl(source: CameraPresetDebugSource, id: string): CameraPresetTuningControl | undefined;
 
-// @public (undocumented)
+// @public
 export interface FirstPersonGameplayPresetConfig {
     // (undocumented)
     readonly debugId?: string;
@@ -634,7 +634,7 @@ export interface FirstPersonGameplayPresetConfig {
     readonly target: Vec3Like;
 }
 
-// @public (undocumented)
+// @public
 export interface FirstPersonGameplayPresetResolvedConfig {
     // (undocumented)
     readonly debugId: string;
@@ -708,7 +708,7 @@ export interface FollowRigEvaluationContext {
     readonly time?: number;
 }
 
-// @public (undocumented)
+// @public
 export interface FollowShowcasePresetConfig {
     // (undocumented)
     readonly debugId?: string;
@@ -724,7 +724,7 @@ export interface FollowShowcasePresetConfig {
     readonly target: FollowTargetSample;
 }
 
-// @public (undocumented)
+// @public
 export interface FollowShowcasePresetResolvedConfig {
     // (undocumented)
     readonly debugId: string;
@@ -746,7 +746,7 @@ export interface FollowTargetSample {
     readonly up?: Vec3Like;
 }
 
-// @public (undocumented)
+// @public
 export function getCameraPresetDebugSummary(source: CameraPresetDebugSource): CameraPresetDebugSummary;
 
 // @public (undocumented)
@@ -833,7 +833,7 @@ export interface OrbitRigEvaluationContext {
     readonly time?: number;
 }
 
-// @public (undocumented)
+// @public
 export interface OrbitShowcasePresetConfig {
     // (undocumented)
     readonly debugId?: string;
@@ -853,7 +853,7 @@ export interface OrbitShowcasePresetConfig {
     readonly target: Vec3Like;
 }
 
-// @public (undocumented)
+// @public
 export interface OrbitShowcasePresetResolvedConfig {
     // (undocumented)
     readonly debugId: string;
@@ -1043,7 +1043,7 @@ export interface RailRigEvaluationContext {
     readonly time?: number;
 }
 
-// @public (undocumented)
+// @public
 export interface RailShotPresetConfig {
     // (undocumented)
     readonly debugId?: string;
@@ -1063,7 +1063,7 @@ export interface RailShotPresetConfig {
     readonly up?: Vec3Like;
 }
 
-// @public (undocumented)
+// @public
 export interface RailShotPresetResolvedConfig {
     // (undocumented)
     readonly debugId: string;
@@ -1101,22 +1101,22 @@ export interface RectNdc {
     readonly size: ScreenPointNdc;
 }
 
-// @public (undocumented)
+// @public
 export function resolveFirstPersonGameplayPresetConfig(config: FirstPersonGameplayPresetConfig): FirstPersonGameplayPresetResolvedConfig;
 
-// @public (undocumented)
+// @public
 export function resolveFollowShowcasePresetConfig(config: FollowShowcasePresetConfig): FollowShowcasePresetResolvedConfig;
 
-// @public (undocumented)
+// @public
 export function resolveOrbitShowcasePresetConfig(config: OrbitShowcasePresetConfig): OrbitShowcasePresetResolvedConfig;
 
 // @public (undocumented)
 export function resolveRailRigDriverT(driver: RailRigDriver, context?: RailRigEvaluationContext): number;
 
-// @public (undocumented)
+// @public
 export function resolveRailShotPresetConfig(config: RailShotPresetConfig): RailShotPresetResolvedConfig;
 
-// @public (undocumented)
+// @public
 export function resolveThirdPersonGameplayPresetConfig(config: ThirdPersonGameplayPresetConfig): ThirdPersonGameplayPresetResolvedConfig;
 
 // @public (undocumented)
@@ -1219,7 +1219,7 @@ export function snapshotVec2(value: Vec2Like): Vec2Snapshot;
 // @public (undocumented)
 export function snapshotVec3(value: Vec3Like): Vec3Snapshot;
 
-// @public (undocumented)
+// @public
 export interface ThirdPersonGameplayPresetConfig {
     // (undocumented)
     readonly debugId?: string;
@@ -1243,7 +1243,7 @@ export interface ThirdPersonGameplayPresetConfig {
     readonly target: Vec3Like;
 }
 
-// @public (undocumented)
+// @public
 export interface ThirdPersonGameplayPresetResolvedConfig {
     // (undocumented)
     readonly debugId: string;

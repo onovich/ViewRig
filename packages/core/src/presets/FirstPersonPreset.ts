@@ -10,6 +10,7 @@ import {
   type CameraPresetEvaluationContext
 } from "./CameraPreset.js";
 
+/** Input config for the first-person gameplay preset. */
 export interface FirstPersonGameplayPresetConfig {
   readonly id?: string;
   readonly label?: string;
@@ -20,6 +21,7 @@ export interface FirstPersonGameplayPresetConfig {
   readonly debugId?: string;
 }
 
+/** Resolved first-person gameplay config with defaults applied. */
 export interface FirstPersonGameplayPresetResolvedConfig {
   readonly target: Vec3Like;
   readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
@@ -31,6 +33,7 @@ export interface FirstPersonGameplayPresetResolvedConfig {
 export const DEFAULT_FIRST_PERSON_GAMEPLAY_PRESET_ID = "first-person-gameplay";
 export const DEFAULT_FIRST_PERSON_GAMEPLAY_EYE_OFFSET = [0, 1.65, 0] as const;
 
+/** Applies first-person gameplay defaults. */
 export function resolveFirstPersonGameplayPresetConfig(
   config: FirstPersonGameplayPresetConfig
 ): FirstPersonGameplayPresetResolvedConfig {
@@ -45,6 +48,7 @@ export function resolveFirstPersonGameplayPresetConfig(
   });
 }
 
+/** Creates an eye-anchor first-person gameplay preset. */
 export function createFirstPersonGameplayPreset(
   config: FirstPersonGameplayPresetConfig
 ): CameraPreset<FirstPersonGameplayPresetResolvedConfig> {
@@ -99,6 +103,7 @@ export function createFirstPersonGameplayPreset(
   });
 }
 
+/** Evaluates a first-person gameplay preset without retaining the preset object. */
 export function evaluateFirstPersonGameplayPreset(
   config: FirstPersonGameplayPresetConfig,
   context: CameraPresetEvaluationContext = {}
