@@ -67,6 +67,7 @@ v0.3 Changesets dry-run notes live in [ViewRig v0.3 Changesets Dry-Run](docs/Vie
 v0.3 package metadata audit lives in [ViewRig v0.3 Package Metadata Audit](docs/ViewRig_v0.3_Package_Metadata_Audit.md).
 v0.3 Three integration smoke notes live in [ViewRig v0.3 Three Integration Smoke](docs/ViewRig_v0.3_Three_Integration_Smoke.md).
 v0.3 playground smoke notes live in [ViewRig v0.3 Playground Smoke](docs/ViewRig_v0.3_Playground_Smoke.md).
+v0.3 Sinan POC handoff lives in [ViewRig v0.3 Sinan POC Handoff](docs/ViewRig_v0.3_Sinan_POC_Handoff.md).
 
 ## MVP 路线
 
