@@ -113,6 +113,7 @@ v0.6 rail/camera-shot integration notes live in [ViewRig v0.6 Rail/CameraShot In
 v0.6 browser smoke notes live in [ViewRig v0.6 Browser Smoke](docs/ViewRig_v0.6_Browser_Smoke.md).
 v0.6 consumer smoke notes live in [ViewRig v0.6 Consumer Smoke](docs/ViewRig_v0.6_Consumer_Smoke.md).
 v0.6 example gallery notes live in [ViewRig v0.6 Example Gallery](docs/ViewRig_v0.6_Example_Gallery.md).
+v0.6 Sinan integration alignment lives in [ViewRig v0.6 Sinan Integration Alignment](docs/ViewRig_v0.6_Sinan_Integration_Alignment.md).
 
 ## MVP 路线
 
@@ -175,3 +176,4 @@ v0.6 example gallery notes live in [ViewRig v0.6 Example Gallery](docs/ViewRig_v
 - [ViewRig v0.6 Browser Smoke](docs/ViewRig_v0.6_Browser_Smoke.md)
 - [ViewRig v0.6 Consumer Smoke](docs/ViewRig_v0.6_Consumer_Smoke.md)
 - [ViewRig v0.6 Example Gallery](docs/ViewRig_v0.6_Example_Gallery.md)
+- [ViewRig v0.6 Sinan Integration Alignment](docs/ViewRig_v0.6_Sinan_Integration_Alignment.md)
