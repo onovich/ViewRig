@@ -30,12 +30,26 @@ function assert(condition, message) {
   }
 }
 
+function quoteWindowsCommandArg(arg) {
+  if (!/[\s&()^|<>"]/u.test(arg)) {
+    return arg;
+  }
+
+  return `"${arg.replaceAll('"', '""')}"`;
+}
+
 function runPnpm(args, cwd) {
   const npmExecPath = process.env.npm_execpath;
   const invocation =
     npmExecPath !== undefined && (npmExecPath.endsWith(".cjs") || npmExecPath.endsWith(".js"))
       ? { command: process.execPath, args: [npmExecPath, ...args], shell: false }
-      : { command: "pnpm", args, shell: process.platform === "win32" };
+      : process.platform === "win32"
+        ? {
+            command: process.env.ComSpec ?? "cmd.exe",
+            args: ["/d", "/s", "/c", ["pnpm", ...args].map(quoteWindowsCommandArg).join(" ")],
+            shell: false
+          }
+        : { command: "pnpm", args, shell: false };
 
   const result = spawnSync(invocation.command, invocation.args, {
     cwd,
@@ -97,6 +111,12 @@ function packageSpec(tarballPath) {
 
 function writeConsumerProject(consumerDir, tarballs, threeVersion) {
   mkdirSync(consumerDir, { recursive: true });
+  const viewRigDependencySpecs = {
+    "@viewrig/core": packageSpec(tarballs["@viewrig/core"]),
+    "@viewrig/testing": packageSpec(tarballs["@viewrig/testing"]),
+    "@viewrig/adapter-three": packageSpec(tarballs["@viewrig/adapter-three"])
+  };
+
   writeFileSync(
     join(consumerDir, "package.json"),
     `${JSON.stringify(
@@ -107,15 +127,24 @@ function writeConsumerProject(consumerDir, tarballs, threeVersion) {
         type: "module",
         packageManager: "pnpm@11.8.0",
         dependencies: {
-          "@viewrig/core": packageSpec(tarballs["@viewrig/core"]),
-          "@viewrig/testing": packageSpec(tarballs["@viewrig/testing"]),
-          "@viewrig/adapter-three": packageSpec(tarballs["@viewrig/adapter-three"]),
+          ...viewRigDependencySpecs,
           three: threeVersion
         }
       },
       null,
       2
     )}\n`
+  );
+
+  writeFileSync(
+    join(consumerDir, "pnpm-workspace.yaml"),
+    `packages:
+  - .
+overrides:
+  '@viewrig/core': ${viewRigDependencySpecs["@viewrig/core"]}
+  '@viewrig/testing': ${viewRigDependencySpecs["@viewrig/testing"]}
+  '@viewrig/adapter-three': ${viewRigDependencySpecs["@viewrig/adapter-three"]}
+`
   );
 
   writeFileSync(

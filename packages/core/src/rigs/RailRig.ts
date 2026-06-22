@@ -1,18 +1,18 @@
-import type { ControlChannel } from "../channels/ControlChannel";
-import { QUAT_IDENTITY } from "../math/Quat";
+import type { ControlChannel } from "../channels/ControlChannel.js";
+import { QUAT_IDENTITY } from "../math/Quat.js";
 import {
   clampPathT,
   isProjectableCameraPath,
   type CameraPath,
   type PathSample
-} from "../path/CameraPath";
+} from "../path/CameraPath.js";
 import {
   createCameraState,
   type CameraDebugState,
   type CameraState
-} from "../state/CameraState";
-import type { LensState } from "../state/LensState";
-import type { QuatLike, Vec3Like } from "../state/SnapshotTypes";
+} from "../state/CameraState.js";
+import type { LensState } from "../state/LensState.js";
+import type { QuatLike, Vec3Like } from "../state/SnapshotTypes.js";
 
 export type RailRigDriver =
   | {

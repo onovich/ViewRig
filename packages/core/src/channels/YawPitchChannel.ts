@@ -1,5 +1,5 @@
-import type { ControlChannel } from "./ControlChannel";
-import { dampNumber } from "../math/Damping";
+import type { ControlChannel } from "./ControlChannel.js";
+import { dampNumber } from "../math/Damping.js";
 
 export interface YawPitchValue {
   readonly yaw: number;

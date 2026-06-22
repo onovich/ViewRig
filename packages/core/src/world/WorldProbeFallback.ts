@@ -1,5 +1,5 @@
-import { snapshotVec3, type Vec3Like, type Vec3Snapshot } from "../state/SnapshotTypes";
-import type { HitLike, LayerMask, RayLike, WorldProbe } from "./WorldProbe";
+import { snapshotVec3, type Vec3Like, type Vec3Snapshot } from "../state/SnapshotTypes.js";
+import type { HitLike, LayerMask, RayLike, WorldProbe } from "./WorldProbe.js";
 
 export function safeRaycast(
   probe: WorldProbe | undefined,

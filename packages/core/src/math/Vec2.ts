@@ -1,4 +1,4 @@
-import { snapshotVec2, type Vec2Like, type Vec2Snapshot } from "../state/SnapshotTypes";
+import { snapshotVec2, type Vec2Like, type Vec2Snapshot } from "../state/SnapshotTypes.js";
 
 export type Vec2 = Vec2Snapshot;
 

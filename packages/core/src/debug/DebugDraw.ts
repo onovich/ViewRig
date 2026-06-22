@@ -1,7 +1,7 @@
-import type { RectNdc } from "../composer/RectNdc";
-import type { ScreenPointNdc } from "../conventions/ScreenSpace";
-import type { CameraDebugState, CameraState } from "../state/CameraState";
-import type { Vec3Like } from "../state/SnapshotTypes";
+import type { RectNdc } from "../composer/RectNdc.js";
+import type { ScreenPointNdc } from "../conventions/ScreenSpace.js";
+import type { CameraDebugState, CameraState } from "../state/CameraState.js";
+import type { Vec3Like } from "../state/SnapshotTypes.js";
 
 export type DebugDrawCommand =
   | {

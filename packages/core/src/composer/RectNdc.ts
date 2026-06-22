@@ -1,4 +1,4 @@
-import type { ScreenPointNdc } from "../conventions/ScreenSpace";
+import type { ScreenPointNdc } from "../conventions/ScreenSpace.js";
 
 export interface RectNdc {
   readonly center: ScreenPointNdc;

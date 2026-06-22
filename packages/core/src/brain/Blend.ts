@@ -1,7 +1,7 @@
-import { quatNormalize } from "../math/Quat";
-import { vec3Lerp, vec3Normalize } from "../math/Vec3";
-import { createCameraState, type CameraState } from "../state/CameraState";
-import type { LensState } from "../state/LensState";
+import { quatNormalize } from "../math/Quat.js";
+import { vec3Lerp, vec3Normalize } from "../math/Vec3.js";
+import { createCameraState, type CameraState } from "../state/CameraState.js";
+import type { LensState } from "../state/LensState.js";
 
 export type BlendCurve = "linear" | "smoothstep";
 

@@ -1,5 +1,5 @@
-import type { DebugDrawCommand } from "../debug/DebugDraw";
-import type { ScreenZoneComposerConfig, ScreenZoneComposerResult } from "./ScreenZoneComposer";
+import type { DebugDrawCommand } from "../debug/DebugDraw.js";
+import type { ScreenZoneComposerConfig, ScreenZoneComposerResult } from "./ScreenZoneComposer.js";
 
 export function createScreenZoneDebugCommands(
   config: ScreenZoneComposerConfig,

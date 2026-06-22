@@ -1,4 +1,4 @@
-import type { ControlChannel } from "./ControlChannel";
+import type { ControlChannel } from "./ControlChannel.js";
 
 export interface ChannelInheritancePair<TValue = unknown> {
   readonly from: ControlChannel<TValue>;

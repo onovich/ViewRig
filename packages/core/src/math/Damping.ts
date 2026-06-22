@@ -1,6 +1,6 @@
-import { snapshotVec2, snapshotVec3, type Vec2Like, type Vec3Like } from "../state/SnapshotTypes";
-import { vec2, type Vec2 } from "./Vec2";
-import { vec3, type Vec3 } from "./Vec3";
+import { snapshotVec2, snapshotVec3, type Vec2Like, type Vec3Like } from "../state/SnapshotTypes.js";
+import { vec2, type Vec2 } from "./Vec2.js";
+import { vec3, type Vec3 } from "./Vec3.js";
 
 export function halfLifeAlpha(halfLife: number, dt: number): number {
   if (halfLife <= 0) {

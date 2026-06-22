@@ -44,12 +44,13 @@ The temp project is removed after a passing run unless the script is called with
 2. Run `pnpm pack --pack-destination <temp>/tarballs` for each package.
 3. Create a standalone ESM consumer package.
 4. Install dependencies from local tarballs using `file:../tarballs/*.tgz`.
-5. Install `three` using the version range already declared by `@viewrig/adapter-three`.
-6. Execute `smoke.mjs`.
-7. Import public entrypoints only.
-8. Build a real `PerspectiveCamera` from `three`.
-9. Apply a `CameraState` through `applyThreeCameraState`.
-10. Assert position, quaternion, lens values, and testing helper output.
+5. Add `pnpm-workspace.yaml` overrides so transitive ViewRig package dependencies resolve to the same local tarballs.
+6. Install `three` using the version range already declared by `@viewrig/adapter-three`.
+7. Execute `smoke.mjs`.
+8. Import public entrypoints only.
+9. Build a real `PerspectiveCamera` from `three`.
+10. Apply a `CameraState` through `applyThreeCameraState`.
+11. Assert position, quaternion, lens values, and testing helper output.
 
 ## Dry-Run Mode
 

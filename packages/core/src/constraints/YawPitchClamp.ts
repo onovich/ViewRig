@@ -1,4 +1,4 @@
-import type { YawPitchValue } from "../channels/YawPitchChannel";
+import type { YawPitchValue } from "../channels/YawPitchChannel.js";
 
 export interface YawPitchClampConfig {
   readonly minYaw?: number;

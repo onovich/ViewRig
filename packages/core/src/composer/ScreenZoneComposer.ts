@@ -1,8 +1,8 @@
-import type { ScreenPointNdc } from "../conventions/ScreenSpace";
-import { projectPointToNdc, type ProjectToNdcOptions } from "../math/Projection";
-import type { CameraState } from "../state/CameraState";
-import type { Vec3Like } from "../state/SnapshotTypes";
-import { clampPointToRect, rectContainsPoint, type RectNdc } from "./RectNdc";
+import type { ScreenPointNdc } from "../conventions/ScreenSpace.js";
+import { projectPointToNdc, type ProjectToNdcOptions } from "../math/Projection.js";
+import type { CameraState } from "../state/CameraState.js";
+import type { Vec3Like } from "../state/SnapshotTypes.js";
+import { clampPointToRect, rectContainsPoint, type RectNdc } from "./RectNdc.js";
 
 export type ScreenZoneComposerMode = "aim" | "body" | "both";
 export type ScreenZoneResultKind = "dead" | "soft" | "hard" | "outside" | "behind";

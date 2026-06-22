@@ -1,4 +1,4 @@
-import type { CameraState } from "../state/CameraState";
+import type { CameraState } from "../state/CameraState.js";
 
 export interface CameraEvaluationContext {
   readonly dt: number;

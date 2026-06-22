@@ -1,4 +1,4 @@
-import { snapshotLensState, type LensState } from "./LensState";
+import { snapshotLensState, type LensState } from "./LensState.js";
 import {
   snapshotQuat,
   snapshotVec3,
@@ -6,7 +6,7 @@ import {
   type QuatSnapshot,
   type Vec3Like,
   type Vec3Snapshot
-} from "./SnapshotTypes";
+} from "./SnapshotTypes.js";
 
 export interface CameraDebugState {
   readonly liveCameraId?: string;

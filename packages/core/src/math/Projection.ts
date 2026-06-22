@@ -1,8 +1,8 @@
-import { quatConjugate, quatRotateVec3 } from "./Quat";
-import { vec3Sub } from "./Vec3";
-import type { CameraState } from "../state/CameraState";
-import type { Vec3Like } from "../state/SnapshotTypes";
-import type { ScreenPointNdc } from "../conventions/ScreenSpace";
+import { quatConjugate, quatRotateVec3 } from "./Quat.js";
+import { vec3Sub } from "./Vec3.js";
+import type { CameraState } from "../state/CameraState.js";
+import type { Vec3Like } from "../state/SnapshotTypes.js";
+import type { ScreenPointNdc } from "../conventions/ScreenSpace.js";
 
 export interface ProjectToNdcOptions {
   readonly aspect?: number;

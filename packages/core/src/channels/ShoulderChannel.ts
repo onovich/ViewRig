@@ -1,4 +1,4 @@
-import type { ControlChannel } from "./ControlChannel";
+import type { ControlChannel } from "./ControlChannel.js";
 
 export interface ShoulderChannelOptions {
   readonly value?: number;

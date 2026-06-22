@@ -1,8 +1,8 @@
-import { vec3Add, vec3Distance, vec3Normalize, vec3Scale, vec3Sub } from "../math/Vec3";
-import { createCameraState, type CameraState } from "../state/CameraState";
-import type { Vec3Like } from "../state/SnapshotTypes";
-import type { LayerMask, WorldProbe } from "../world/WorldProbe";
-import { safeRaycast } from "../world/WorldProbeFallback";
+import { vec3Add, vec3Distance, vec3Normalize, vec3Scale, vec3Sub } from "../math/Vec3.js";
+import { createCameraState, type CameraState } from "../state/CameraState.js";
+import type { Vec3Like } from "../state/SnapshotTypes.js";
+import type { LayerMask, WorldProbe } from "../world/WorldProbe.js";
+import { safeRaycast } from "../world/WorldProbeFallback.js";
 
 export interface OcclusionConstraintConfig {
   readonly target: Vec3Like;

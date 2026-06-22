@@ -1,10 +1,10 @@
-import type { ControlChannel } from "../channels/ControlChannel";
-import type { YawPitchValue } from "../channels/YawPitchChannel";
-import { quatFromAxisAngle, quatMul, degreesToRadians } from "../math/Quat";
-import { vec3Add } from "../math/Vec3";
-import { createCameraState, type CameraDebugState, type CameraState } from "../state/CameraState";
-import type { LensState } from "../state/LensState";
-import type { Vec3Like } from "../state/SnapshotTypes";
+import type { ControlChannel } from "../channels/ControlChannel.js";
+import type { YawPitchValue } from "../channels/YawPitchChannel.js";
+import { quatFromAxisAngle, quatMul, degreesToRadians } from "../math/Quat.js";
+import { vec3Add } from "../math/Vec3.js";
+import { createCameraState, type CameraDebugState, type CameraState } from "../state/CameraState.js";
+import type { LensState } from "../state/LensState.js";
+import type { Vec3Like } from "../state/SnapshotTypes.js";
 
 export interface FirstPersonRigConfig {
   readonly target: Vec3Like;

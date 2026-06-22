@@ -1,4 +1,4 @@
-import type { Vec3Like } from "../state/SnapshotTypes";
+import type { Vec3Like } from "../state/SnapshotTypes.js";
 
 export type LayerMask = number | string | symbol;
 

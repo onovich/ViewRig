@@ -1,6 +1,6 @@
-import type { CameraDebugState, CameraState } from "../state/CameraState";
-import type { LensState } from "../state/LensState";
-import type { QuatSnapshot, Vec3Snapshot } from "../state/SnapshotTypes";
+import type { CameraDebugState, CameraState } from "../state/CameraState.js";
+import type { LensState } from "../state/LensState.js";
+import type { QuatSnapshot, Vec3Snapshot } from "../state/SnapshotTypes.js";
 
 export interface RuntimeCameraPoseLike {
   readonly position: Vec3Snapshot;

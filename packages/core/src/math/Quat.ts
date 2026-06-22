@@ -4,8 +4,8 @@ import {
   type QuatLike,
   type QuatSnapshot,
   type Vec3Like
-} from "../state/SnapshotTypes";
-import { vec3, vec3Normalize, type Vec3 } from "./Vec3";
+} from "../state/SnapshotTypes.js";
+import { vec3, vec3Normalize, type Vec3 } from "./Vec3.js";
 
 export type Quat = QuatSnapshot;
 

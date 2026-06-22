@@ -69,6 +69,16 @@ function hasCurrentEmptyChangeset() {
   return false;
 }
 
+function hasCurrentChangeset() {
+  for (const fileName of currentChangesetFiles()) {
+    if (fileName.endsWith(".md") && fileName !== ".changeset/README.md") {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 const config = readJson(".changeset/config.json");
 assert(config.baseBranch === "main", "Changesets baseBranch must be main.");
 assert(config.commit === false, "Changesets must not auto-commit in dry-run mode.");
@@ -76,12 +86,16 @@ assert(config.access === "restricted", "Changesets access must stay restricted w
 
 for (const packagePath of packagePaths) {
   const manifest = readJson(packagePath);
-  assert(manifest.private === true, `${manifest.name} must remain private during v0.3 dry-run governance.`);
+  assert(manifest.private === true, `${manifest.name} must remain private during dry-run governance.`);
 }
 
 let result = runChangesetStatus(["--since", "HEAD"]);
 
-if (result.status !== 0 && result.output.includes("Some packages have been changed but no changesets were found") && hasCurrentEmptyChangeset()) {
+if (
+  result.status !== 0 &&
+  result.output.includes("Some packages have been changed but no changesets were found") &&
+  (hasCurrentChangeset() || hasCurrentEmptyChangeset())
+) {
   result = runChangesetStatus([]);
 }
 

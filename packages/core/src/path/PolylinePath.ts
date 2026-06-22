@@ -1,12 +1,12 @@
-import { vec3Distance, vec3Dot, vec3LengthSq, vec3Lerp, vec3Normalize, vec3Sub } from "../math/Vec3";
-import { snapshotVec3, type Vec3Like, type Vec3Snapshot } from "../state/SnapshotTypes";
+import { vec3Distance, vec3Dot, vec3LengthSq, vec3Lerp, vec3Normalize, vec3Sub } from "../math/Vec3.js";
+import { snapshotVec3, type Vec3Like, type Vec3Snapshot } from "../state/SnapshotTypes.js";
 import {
   clampPathDistance,
   clampPathT,
   snapshotPathSample,
   type ProjectableCameraPath,
   type PathSample
-} from "./CameraPath";
+} from "./CameraPath.js";
 
 export interface PolylinePathConfig {
   readonly points: readonly Vec3Like[];

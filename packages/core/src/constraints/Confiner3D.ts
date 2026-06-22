@@ -1,5 +1,5 @@
-import { createCameraState, type CameraState } from "../state/CameraState";
-import { snapshotVec3, type Vec3Like } from "../state/SnapshotTypes";
+import { createCameraState, type CameraState } from "../state/CameraState.js";
+import { snapshotVec3, type Vec3Like } from "../state/SnapshotTypes.js";
 
 export interface Confiner3DAabb {
   readonly min: Vec3Like;

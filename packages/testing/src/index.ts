@@ -11,7 +11,7 @@ export function describeTestingRuntime(): string {
   return `${VIEWRIG_TESTING_PACKAGE} uses ${VIEWRIG_CORE_PACKAGE}`;
 }
 
-export * from "./fakes/FakeChannel";
-export * from "./fakes/FakeTarget";
-export * from "./fakes/FakeWorldProbe";
-export * from "./trace/GoldenTrace";
+export * from "./fakes/FakeChannel.js";
+export * from "./fakes/FakeTarget.js";
+export * from "./fakes/FakeWorldProbe.js";
+export * from "./trace/GoldenTrace.js";

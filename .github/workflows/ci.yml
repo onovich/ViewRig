@@ -58,6 +58,9 @@ jobs:
       - name: Package dry-run
         run: pnpm package:dry-run
 
+      - name: Consumer package smoke
+        run: pnpm package:consumer-smoke
+
       - name: Changesets dry-run
         run: pnpm changeset:dry-run
 

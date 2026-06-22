@@ -1,4 +1,4 @@
-import { createCameraState, type CameraState } from "../state/CameraState";
+import { createCameraState, type CameraState } from "../state/CameraState.js";
 
 export type Confiner2DPlane = "xy" | "xz";
 

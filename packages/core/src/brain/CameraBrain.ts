@@ -1,12 +1,12 @@
-import type { CameraState } from "../state/CameraState";
-import { inheritControlChannels } from "../channels/ChannelInheritance";
+import type { CameraState } from "../state/CameraState.js";
+import { inheritControlChannels } from "../channels/ChannelInheritance.js";
 import {
   normalizeActivationOptions,
   type CameraActivationOptions,
   type CameraActivationRecord
-} from "./Activation";
-import { blendCameraState, blendProgress, type BlendOptions } from "./Blend";
-import { evaluateVirtualCamera, isVirtualCameraEnabled, type VirtualCamera } from "./VirtualCamera";
+} from "./Activation.js";
+import { blendCameraState, blendProgress, type BlendOptions } from "./Blend.js";
+import { evaluateVirtualCamera, isVirtualCameraEnabled, type VirtualCamera } from "./VirtualCamera.js";
 
 export interface CameraBrainUpdateContext {
   readonly dt: number;

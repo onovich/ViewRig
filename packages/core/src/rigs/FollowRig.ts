@@ -1,8 +1,8 @@
-import { QUAT_IDENTITY } from "../math/Quat";
-import { vec3Add } from "../math/Vec3";
-import { createCameraState, type CameraDebugState, type CameraState } from "../state/CameraState";
-import type { LensState } from "../state/LensState";
-import type { QuatLike, Vec3Like } from "../state/SnapshotTypes";
+import { QUAT_IDENTITY } from "../math/Quat.js";
+import { vec3Add } from "../math/Vec3.js";
+import { createCameraState, type CameraDebugState, type CameraState } from "../state/CameraState.js";
+import type { LensState } from "../state/LensState.js";
+import type { QuatLike, Vec3Like } from "../state/SnapshotTypes.js";
 
 export interface FollowTargetSample {
   readonly position: Vec3Like;

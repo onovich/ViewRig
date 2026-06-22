@@ -1,5 +1,5 @@
-import type { BlendOptions } from "./Blend";
-import type { ChannelInheritancePair } from "../channels/ChannelInheritance";
+import type { BlendOptions } from "./Blend.js";
+import type { ChannelInheritancePair } from "../channels/ChannelInheritance.js";
 
 export type ActivationTransition = "cut" | "blend" | "matchThenBlend";
 
