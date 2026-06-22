@@ -67,7 +67,7 @@ if (existsSync("packages/debug-three")) {
 for (const path of walkFiles("packages", (file) => file.endsWith("package.json"))) {
   const manifest = readJson(path);
   if (manifest.name === "@viewrig/sinan") {
-    fail(path, "@viewrig/sinan is out of scope for M0-M8.");
+    fail(path, "@viewrig/sinan is not approved for public ViewRig packages.");
   }
   if (manifest.name === "@viewrig/debug-three") {
     fail(path, "@viewrig/debug-three is deferred for v0.2.");

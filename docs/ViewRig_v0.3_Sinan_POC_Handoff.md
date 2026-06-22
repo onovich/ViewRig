@@ -4,6 +4,7 @@ Status: R11 Sinan POC-2 / POC-3 handoff package.
 
 Related:
 
+- [ViewRig v0.4 Sinan Feedback Gate](ViewRig_v0.4_Sinan_Feedback_Gate.md)
 - [Sinan POC-2 Follow Orbit Contract](sinan-cooperation/viewrig-sinan-poc-2-follow-orbit-contract-2026-06-21.md)
 - [Sinan POC-3 CameraShot Enhancement Contract](sinan-cooperation/viewrig-sinan-poc-3-camera-shot-enhancement-contract-2026-06-21.md)
 - [Sinan Internal POC Adapter Design](sinan-cooperation/viewrig-sinan-internal-poc-adapter-2026-06-20.md)
