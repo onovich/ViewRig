@@ -31,12 +31,12 @@ idempotency:
   last_goalnext_trigger: READY_REAL_INTEGRATION_HARDENING
   last_goalnext_trigger_at: 2026-06-22T21:45:25.0522572+08:00
   last_goalnext_trigger_reason: v0.5 PASS; planner selected the safe next product-hardening route focused on real Three integration examples and smoke while real release and public Sinan adapter decisions remain deferred.
-  last_planner_dispatch_status: pending
+  last_planner_dispatch_status: sent
   last_planner_dispatch_guide: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.6_Goal模式执行指南.md
-  last_planner_dispatch_commit: pending
+  last_planner_dispatch_commit: 3797939
   last_planner_dispatch_thread_id: 019ee57a-ab7c-71a0-b6dc-f513457f5ba4
-  last_planner_dispatch_at: pending
-  last_planner_dispatch: pending v0.6 Real Integration / Examples Hardening dispatch after guide commit and push.
+  last_planner_dispatch_at: 2026-06-22T21:49:52.2069159+08:00
+  last_planner_dispatch: v0.6 Real Integration / Examples Hardening dispatched to executor with $donextgoal.
 
 notes:
   - v0.5 was completed and reported with final commit b134ff9.
