@@ -79,6 +79,7 @@ v0.4 license gate lives in [ViewRig v0.4 License Gate](docs/ViewRig_v0.4_License
 v0.4 package visibility gate lives in [ViewRig v0.4 Package Visibility Gate](docs/ViewRig_v0.4_Package_Visibility_Gate.md).
 v0.4 consumer smoke design lives in [ViewRig v0.4 Consumer Smoke Design](docs/ViewRig_v0.4_Consumer_Smoke_Design.md).
 v0.4 consumer smoke notes live in [ViewRig v0.4 Consumer Smoke](docs/ViewRig_v0.4_Consumer_Smoke.md).
+v0.4 API maturity policy lives in [ViewRig v0.4 API Maturity Policy](docs/ViewRig_v0.4_API_Maturity_Policy.md).
 
 ## MVP 路线
 
