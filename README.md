@@ -105,6 +105,7 @@ v0.5 first-person gameplay recipe lives in [First-Person Gameplay Recipe](docs/r
 v0.5 rail camera shot recipe draft lives in [Rail Camera Shot Recipe](docs/recipes/rail-camera-shot.md).
 v0.5 debug tuning recipe lives in [Debug Tuning Recipe](docs/recipes/debug-tuning.md).
 v0.5 Sinan internal adapter recipe lives in [Sinan Internal Adapter Recipe](docs/recipes/sinan-internal-adapter.md).
+v0.6 goal guide lives in [ViewRig v0.6 Goal 模式执行指南](docs/ViewRig_v0.6_Goal模式执行指南.md).
 
 ## MVP 路线
 
@@ -159,3 +160,4 @@ v0.5 Sinan internal adapter recipe lives in [Sinan Internal Adapter Recipe](docs
 - [Rail Camera Shot Recipe](docs/recipes/rail-camera-shot.md)
 - [Debug Tuning Recipe](docs/recipes/debug-tuning.md)
 - [Sinan Internal Adapter Recipe](docs/recipes/sinan-internal-adapter.md)
+- [ViewRig v0.6 Goal 模式执行指南](docs/ViewRig_v0.6_Goal模式执行指南.md)
