@@ -60,6 +60,7 @@ R13 API docs buffer report lives in [ViewRig v0.2 R13 API Docs Buffer Report](do
 R14 browser smoke buffer report lives in [ViewRig v0.2 R14 Browser Smoke Buffer Report](docs/ViewRig_v0.2_R14_Browser_Smoke_Buffer_Report.md).
 R15 release/Sinan buffer report lives in [ViewRig v0.2 R15 Release Sinan Buffer Report](docs/ViewRig_v0.2_R15_Release_Sinan_Buffer_Report.md).
 v0.2 final report lives in [ViewRig v0.2 Final Report](docs/ViewRig_v0.2_Final_Report.md).
+v0.3 CI workflow notes live in [ViewRig v0.3 CI Workflow](docs/ViewRig_v0.3_CI_Workflow.md).
 
 ## MVP 路线
 
@@ -95,3 +96,4 @@ v0.2 final report lives in [ViewRig v0.2 Final Report](docs/ViewRig_v0.2_Final_R
 - [Sinan CameraShot Optional Solver Mode](docs/sinan-cooperation/viewrig-camera-shot-optional-solver-mode-2026-06-20.md)
 - [M0-M8 Goal 模式执行指南](docs/ViewRig_M0-M8_Goal模式执行指南.md)
 - [v0.2 Goal 模式执行指南](docs/ViewRig_v0.2_Goal模式执行指南.md)
+- [v0.3 Goal 模式执行指南](docs/ViewRig_v0.3_Goal模式执行指南.md)
