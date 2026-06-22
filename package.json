@@ -27,6 +27,7 @@
     "changeset:dry-run": "node scripts/changesets-dry-run.mjs",
     "package:dry-run": "node scripts/package-dry-run.mjs",
     "package:consumer-smoke": "node scripts/package-consumer-smoke.mjs",
+    "rc:evidence": "node scripts/rc-evidence.mjs",
     "release:dry-run": "pnpm build && pnpm package:dry-run && pnpm changeset:dry-run",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
