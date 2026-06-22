@@ -54,6 +54,20 @@ export interface CameraPresetEvaluation {
   readonly draw: readonly DebugDrawCommand[];
 }
 
+export type CameraPresetDebugSource = CameraPresetDebugSummary | CameraPresetEvaluation;
+
+export type CameraPresetTuningSnapshot = Readonly<Record<string, CameraPresetTuningValue>>;
+
+export interface CameraPresetDebugStatus {
+  readonly presetId: string;
+  readonly label: string;
+  readonly mode: CameraPresetMode;
+  readonly liveCameraId?: string;
+  readonly tuning: CameraPresetTuningSnapshot;
+  readonly tags: readonly string[];
+  readonly notes: readonly string[];
+}
+
 export interface CameraPreset<TConfig = unknown> {
   readonly id: string;
   readonly label: string;
@@ -114,6 +128,38 @@ export function createCameraPresetEvaluation(
     state,
     debug,
     draw: Object.freeze([...draw])
+  });
+}
+
+export function getCameraPresetDebugSummary(source: CameraPresetDebugSource): CameraPresetDebugSummary {
+  return "state" in source ? source.debug : source;
+}
+
+export function findCameraPresetTuningControl(
+  source: CameraPresetDebugSource,
+  id: string
+): CameraPresetTuningControl | undefined {
+  return getCameraPresetDebugSummary(source).tuning.find((control) => control.id === id);
+}
+
+export function createCameraPresetTuningSnapshot(source: CameraPresetDebugSource): CameraPresetTuningSnapshot {
+  const summary = getCameraPresetDebugSummary(source);
+  const entries = summary.tuning.map((control) => [control.id, control.value] as const);
+
+  return Object.freeze(Object.fromEntries(entries) as Record<string, CameraPresetTuningValue>);
+}
+
+export function createCameraPresetDebugStatus(source: CameraPresetDebugSource): CameraPresetDebugStatus {
+  const summary = getCameraPresetDebugSummary(source);
+
+  return Object.freeze({
+    presetId: summary.presetId,
+    label: summary.label,
+    mode: summary.mode,
+    ...(summary.liveCameraId === undefined ? {} : { liveCameraId: summary.liveCameraId }),
+    tuning: createCameraPresetTuningSnapshot(summary),
+    tags: summary.tags,
+    notes: summary.notes
   });
 }
 

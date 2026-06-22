@@ -1,6 +1,14 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
 import { createCameraState } from "../state/CameraState";
-import { defineCameraPreset, type CameraPreset, type CameraPresetEvaluation } from "./CameraPreset";
+import {
+  createCameraPresetDebugStatus,
+  createCameraPresetTuningSnapshot,
+  defineCameraPreset,
+  findCameraPresetTuningControl,
+  getCameraPresetDebugSummary,
+  type CameraPreset,
+  type CameraPresetEvaluation
+} from "./CameraPreset";
 
 describe("CameraPreset", () => {
   it("wraps an evaluator with preset metadata, debug summary, and draw commands", () => {
@@ -118,5 +126,69 @@ describe("CameraPreset", () => {
     expectTypeOf(result).toEqualTypeOf<CameraPresetEvaluation>();
     expect(result.debug.tuning).toEqual([]);
     expect(result.draw).toEqual([]);
+  });
+
+  it("creates tuning snapshots and debug status from either evaluation or summary", () => {
+    const preset = defineCameraPreset({
+      id: "orbit-showcase",
+      label: "Orbit Showcase",
+      mode: "orbit",
+      config: {
+        distance: 5,
+        debug: true
+      },
+      evaluate(config) {
+        return createCameraState({
+          position: [0, 0, config.distance],
+          rotation: [0, 0, 0, 1],
+          debug: {
+            liveCameraId: "orbit-showcase",
+            tags: ["state-tag"]
+          }
+        });
+      },
+      describe(config) {
+        return {
+          tags: ["preset-tag"],
+          tuning: [
+            {
+              id: "distance",
+              label: "Distance",
+              value: config.distance
+            },
+            {
+              id: "debug",
+              label: "Debug",
+              value: config.debug
+            }
+          ],
+          notes: ["ready"]
+        };
+      }
+    });
+
+    const result = preset.evaluate();
+    const summary = getCameraPresetDebugSummary(result);
+
+    expect(summary).toBe(result.debug);
+    expect(getCameraPresetDebugSummary(summary)).toBe(summary);
+    expect(findCameraPresetTuningControl(result, "distance")?.value).toBe(5);
+    expect(findCameraPresetTuningControl(summary, "missing")).toBeUndefined();
+    expect(createCameraPresetTuningSnapshot(result)).toEqual({
+      debug: true,
+      distance: 5
+    });
+    expect(createCameraPresetDebugStatus(summary)).toEqual({
+      presetId: "orbit-showcase",
+      label: "Orbit Showcase",
+      mode: "orbit",
+      liveCameraId: "orbit-showcase",
+      tuning: {
+        debug: true,
+        distance: 5
+      },
+      tags: ["state-tag", "preset-tag"],
+      notes: ["ready"]
+    });
   });
 });

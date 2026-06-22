@@ -154,6 +154,27 @@ export interface CameraPreset<TConfig = unknown> {
 }
 
 // @public (undocumented)
+export type CameraPresetDebugSource = CameraPresetDebugSummary | CameraPresetEvaluation;
+
+// @public (undocumented)
+export interface CameraPresetDebugStatus {
+    // (undocumented)
+    readonly label: string;
+    // (undocumented)
+    readonly liveCameraId?: string;
+    // (undocumented)
+    readonly mode: CameraPresetMode;
+    // (undocumented)
+    readonly notes: readonly string[];
+    // (undocumented)
+    readonly presetId: string;
+    // (undocumented)
+    readonly tags: readonly string[];
+    // (undocumented)
+    readonly tuning: CameraPresetTuningSnapshot;
+}
+
+// @public (undocumented)
 export interface CameraPresetDebugSummary {
     // (undocumented)
     readonly label: string;
@@ -251,6 +272,9 @@ export interface CameraPresetTuningControl {
     // (undocumented)
     readonly value: CameraPresetTuningValue;
 }
+
+// @public (undocumented)
+export type CameraPresetTuningSnapshot = Readonly<Record<string, CameraPresetTuningValue>>;
 
 // @public (undocumented)
 export type CameraPresetTuningValue = string | number | boolean;
@@ -409,10 +433,16 @@ export const corePackageInfo: {
 export function createCameraDebugFrame(state: CameraState, draw?: readonly DebugDrawCommand[]): CameraDebugFrame;
 
 // @public (undocumented)
+export function createCameraPresetDebugStatus(source: CameraPresetDebugSource): CameraPresetDebugStatus;
+
+// @public (undocumented)
 export function createCameraPresetDebugSummary(input: CameraPresetDebugSummaryInput): CameraPresetDebugSummary;
 
 // @public (undocumented)
 export function createCameraPresetEvaluation(state: CameraState, debug: CameraPresetDebugSummary, draw?: readonly DebugDrawCommand[]): CameraPresetEvaluation;
+
+// @public (undocumented)
+export function createCameraPresetTuningSnapshot(source: CameraPresetDebugSource): CameraPresetTuningSnapshot;
 
 // @public (undocumented)
 export function createCameraState(input: CameraStateInput): CameraState;
@@ -584,6 +614,9 @@ export function evaluateThirdPersonRig(config: ThirdPersonRigConfig, context?: T
 export function evaluateVirtualCamera(camera: VirtualCamera, context: CameraEvaluationContext): CameraState | null;
 
 // @public (undocumented)
+export function findCameraPresetTuningControl(source: CameraPresetDebugSource, id: string): CameraPresetTuningControl | undefined;
+
+// @public (undocumented)
 export interface FirstPersonGameplayPresetConfig {
     // (undocumented)
     readonly debugId?: string;
@@ -712,6 +745,9 @@ export interface FollowTargetSample {
     // (undocumented)
     readonly up?: Vec3Like;
 }
+
+// @public (undocumented)
+export function getCameraPresetDebugSummary(source: CameraPresetDebugSource): CameraPresetDebugSummary;
 
 // @public (undocumented)
 export function halfLifeAlpha(halfLife: number, dt: number): number;
