@@ -150,13 +150,31 @@ overrides:
   writeFileSync(
     join(consumerDir, "smoke.mjs"),
     `import { strict as assert } from "node:assert";
-import { VIEWRIG_CORE_PACKAGE, evaluateFixedPose } from "@viewrig/core";
+import {
+  VIEWRIG_CORE_PACKAGE,
+  createCameraPresetTuningSnapshot,
+  createFirstPersonGameplayPreset,
+  createFollowShowcasePreset,
+  createOrbitShowcasePreset,
+  createPolylinePath,
+  createRailShotPreset,
+  createShoulderChannel,
+  createThirdPersonGameplayPreset,
+  createYawPitchChannel,
+  createZoomChannel,
+  evaluateFixedPose
+} from "@viewrig/core";
 import { describeTestingRuntime } from "@viewrig/testing";
 import { applyThreeCameraState } from "@viewrig/adapter-three";
 import { PerspectiveCamera } from "three";
 
 assert.equal(VIEWRIG_CORE_PACKAGE, "@viewrig/core");
 assert.equal(describeTestingRuntime(), "@viewrig/testing uses @viewrig/core");
+
+function assertClose(actual, expected, label) {
+  assert.equal(Number.isFinite(actual), true, label);
+  assert.equal(Math.abs(actual - expected) < 0.000001, true, label);
+}
 
 const camera = new PerspectiveCamera(50, 16 / 9, 0.1, 1000);
 const state = evaluateFixedPose({
@@ -172,6 +190,69 @@ assert.deepEqual(camera.quaternion.toArray(), [0, 0.3826834323650898, 0, 0.92387
 assert.equal(camera.fov, 70);
 assert.equal(camera.near, 0.2);
 assert.equal(camera.far, 500);
+
+const look = createYawPitchChannel("look", { yaw: 0, pitch: 0 });
+const shoulder = createShoulderChannel("shoulder", { value: 1 });
+const thirdPerson = createThirdPersonGameplayPreset({
+  target: [0, 0, 0],
+  look,
+  shoulder,
+  distance: 4
+}).evaluate({ time: 1 });
+
+assert.deepEqual(thirdPerson.state.position, { x: 0.45, y: 1.55, z: 4 });
+assert.equal(thirdPerson.debug.mode, "thirdPerson");
+assert.deepEqual(createCameraPresetTuningSnapshot(thirdPerson), {
+  distance: 4,
+  shoulder: 1
+});
+
+look.set({ yaw: 90, pitch: 0 });
+const orbitDistance = createZoomChannel("orbit-distance", { value: 6, min: 2, max: 10 });
+const orbit = createOrbitShowcasePreset({
+  target: [0, 0, 0],
+  look,
+  distance: orbitDistance
+}).evaluate({ time: 2 });
+
+assertClose(orbit.state.position.x, 6, "orbit x");
+assert.equal(orbit.state.position.y, 1);
+assertClose(orbit.state.position.z, 0, "orbit z");
+assert.deepEqual(createCameraPresetTuningSnapshot(orbit), { distance: 6 });
+
+const follow = createFollowShowcasePreset({
+  target: { position: [2, 0, -1] },
+  offset: [0, 2, -6]
+}).evaluate({ time: 3 });
+
+assert.deepEqual(follow.state.position, { x: 2, y: 2, z: -7 });
+assert.equal(follow.debug.mode, "follow");
+
+const firstPerson = createFirstPersonGameplayPreset({
+  target: [1, 0, 2],
+  look: { yaw: 0, pitch: 0 },
+  eyeOffset: [0, 1.8, 0]
+}).evaluate({ time: 4 });
+
+assert.deepEqual(firstPerson.state.position, { x: 1, y: 1.8, z: 2 });
+assert.deepEqual(createCameraPresetTuningSnapshot(firstPerson), { eyeHeight: 1.8 });
+
+const path = createPolylinePath({
+  points: [
+    [0, 0, 0],
+    [0, 0, -4],
+    [4, 0, -4]
+  ]
+});
+const railShot = createRailShotPreset({
+  path,
+  driver: { type: "time", duration: 4 }
+}).evaluate({ time: 2 });
+
+assert.deepEqual(railShot.state.position, { x: 0, y: 0, z: -4 });
+assert.equal(railShot.debug.mode, "railShot");
+assert.equal(railShot.debug.metadata.driver, "time");
+assert.equal(createCameraPresetTuningSnapshot(railShot).duration, 4);
 
 console.log("consumer smoke passed");
 `
