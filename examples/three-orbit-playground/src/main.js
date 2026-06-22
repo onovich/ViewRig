@@ -43,10 +43,16 @@ const galleryModes = [
   {
     id: "thirdPerson",
     label: "Third Person",
-    target: [0, 0, 0],
-    evaluate(controls) {
+    target(controls) {
+      return {
+        x: (controls.railT - 0.5) * 2.4,
+        y: 0,
+        z: Math.sin(controls.railT * Math.PI) * 1.1
+      };
+    },
+    evaluate(controls, target) {
       return evaluateThirdPersonGameplayPreset({
-        target: this.target,
+        target,
         look: { yaw: controls.yaw, pitch: controls.pitch },
         distance: controls.distance,
         shoulder: controls.shoulder,
@@ -58,9 +64,9 @@ const galleryModes = [
     id: "orbit",
     label: "Orbit",
     target: [0, 0, 0],
-    evaluate(controls) {
+    evaluate(controls, target) {
       return evaluateOrbitShowcasePreset({
-        target: this.target,
+        target,
         look: { yaw: controls.yaw, pitch: controls.pitch },
         distance: controls.distance,
         lens
@@ -71,10 +77,10 @@ const galleryModes = [
     id: "follow",
     label: "Follow",
     target: [0, 0, 0],
-    evaluate(controls) {
+    evaluate(controls, target) {
       return evaluateFollowShowcasePreset({
         target: {
-          position: this.target,
+          position: target,
           rotation: [0, 1, 0, 0]
         },
         offset: [controls.shoulder * 0.5, 2, -controls.distance],
@@ -86,9 +92,9 @@ const galleryModes = [
     id: "firstPerson",
     label: "First Person",
     target: [0, 0, 3.5],
-    evaluate(controls) {
+    evaluate(controls, target) {
       return evaluateFirstPersonGameplayPreset({
-        target: this.target,
+        target,
         look: { yaw: controls.yaw, pitch: controls.pitch },
         eyeOffset: [0, 1.65, 0],
         lens: {
@@ -121,6 +127,10 @@ const galleryModes = [
 
 const galleryById = new Map(galleryModes.map((mode) => [mode.id, mode]));
 const camera = new PerspectiveCamera(lens.fov, canvas.width / canvas.height, lens.near, lens.far);
+
+function resolveGalleryTarget(mode, controls) {
+  return typeof mode.target === "function" ? mode.target(controls) : mode.target;
+}
 
 function readControls() {
   return {
@@ -246,21 +256,22 @@ function drawCameraFrustum(state) {
   ctx.stroke();
 }
 
-function drawDebugOverlay(mode, evaluation, controls) {
+function drawDebugOverlay(mode, evaluation, controls, target) {
   if (!debugOverlayInput.checked) {
     return;
   }
 
-  drawLine(mode.target, evaluation.state.position, "#70e0ff", 2);
+  drawLine(target, evaluation.state.position, "#70e0ff", 2);
   ctx.fillStyle = "#70e0ff";
   ctx.font = "14px system-ui, sans-serif";
   ctx.fillText(`live:${mode.id}`, 24, 32);
   ctx.fillText(`preset:${evaluation.debug.presetId}`, 24, 54);
-  ctx.fillText(`composer:${controls.composer} damping:${controls.damping.toFixed(2)}`, 24, 76);
-  ctx.fillText(`adapter:@viewrig/adapter-three`, 24, 98);
+  ctx.fillText(`target x:${toVectorSnapshot(target).x.toFixed(2)} z:${toVectorSnapshot(target).z.toFixed(2)}`, 24, 76);
+  ctx.fillText(`composer:${controls.composer} damping:${controls.damping.toFixed(2)}`, 24, 98);
+  ctx.fillText(`adapter:@viewrig/adapter-three`, 24, 120);
 }
 
-function drawGalleryFrame(mode, evaluation, controls) {
+function drawGalleryFrame(mode, evaluation, controls, target) {
   drawGrid();
 
   if (mode.id === "railShot" || debugOverlayInput.checked) {
@@ -279,13 +290,13 @@ function drawGalleryFrame(mode, evaluation, controls) {
     drawCircle(mode.target, 14, "#72b7ff", "#e8f5ff");
   }
 
-  drawCircle(mode.target, 9, "#f8f5ea");
+  drawCircle(target, 9, "#f8f5ea");
   drawCircle(evaluation.state.position, 12, "#ffcf66", "#fff2bf");
   drawCameraFrustum(evaluation.state);
-  drawDebugOverlay(mode, evaluation, controls);
+  drawDebugOverlay(mode, evaluation, controls, target);
 }
 
-function createPoseOutput(mode, evaluation, controls) {
+function createPoseOutput(mode, evaluation, controls, target) {
   return {
     mode: mode.id,
     label: mode.label,
@@ -298,7 +309,7 @@ function createPoseOutput(mode, evaluation, controls) {
       lens: evaluation.state.lens,
       time: evaluation.state.time
     },
-    target: toVectorSnapshot(mode.target),
+    target: toVectorSnapshot(target),
     camera: {
       position: camera.position.toArray(),
       quaternion: camera.quaternion.toArray(),
@@ -312,7 +323,8 @@ function createPoseOutput(mode, evaluation, controls) {
     tuning: {
       ...createCameraPresetTuningSnapshot(evaluation),
       composer: controls.composer,
-      dampingHalfLife: controls.damping
+      dampingHalfLife: controls.damping,
+      targetRailT: controls.railT
     },
     debug: {
       liveCameraId: evaluation.debug.liveCameraId,
@@ -326,15 +338,16 @@ function createPoseOutput(mode, evaluation, controls) {
 function render() {
   const mode = galleryById.get(modeInput.value) ?? galleryModes[0];
   const controls = readControls();
-  const evaluation = mode.evaluate(controls);
+  const target = resolveGalleryTarget(mode, controls);
+  const evaluation = mode.evaluate(controls, target);
 
   applyThreeCameraState(camera, evaluation.state);
-  drawGalleryFrame(mode, evaluation, controls);
+  drawGalleryFrame(mode, evaluation, controls, target);
 
   debugStateOutput.textContent = debugOverlayInput.checked
     ? `debug:on live:${mode.id} preset:${evaluation.debug.presetId} adapter:three`
     : `debug:off live:${mode.id}`;
-  poseOutput.textContent = JSON.stringify(createPoseOutput(mode, evaluation, controls), null, 2);
+  poseOutput.textContent = JSON.stringify(createPoseOutput(mode, evaluation, controls, target), null, 2);
   globalThis.__viewrigGalleryFrame = (globalThis.__viewrigGalleryFrame ?? 0) + 1;
 }
 

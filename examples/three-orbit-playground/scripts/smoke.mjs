@@ -281,6 +281,12 @@ async function assertMode(page, mode, expectedPresetId) {
   return pose;
 }
 
+function assertThirdPersonOffset(pose, expectedOffsetX, expectedOffsetY, expectedOffsetZ) {
+  assertClose(pose.state.position.x - pose.target.x, expectedOffsetX, "thirdPerson offset x");
+  assertClose(pose.state.position.y - pose.target.y, expectedOffsetY, "thirdPerson offset y");
+  assertClose(pose.state.position.z - pose.target.z, expectedOffsetZ, "thirdPerson offset z");
+}
+
 const { server, url } = await startServer();
 let browser;
 
@@ -325,9 +331,9 @@ try {
   await setSelect(page, "#composer", "wide");
 
   const thirdPersonPose = await assertMode(page, "thirdPerson", "third-person-gameplay");
-  assertClose(thirdPersonPose.state.position.x, -3.12 + 0.45, "thirdPersonPose.state.position.x");
-  assertClose(thirdPersonPose.state.position.y, 5.15, "thirdPersonPose.state.position.y");
-  assertClose(thirdPersonPose.state.position.z, 5.4, "thirdPersonPose.state.position.z");
+  assertThirdPersonOffset(thirdPersonPose, -3.12 + 0.45, 5.15, 5.4);
+  assertClose(thirdPersonPose.target.x, -0.36, "thirdPersonPose.target.x");
+  assertClose(thirdPersonPose.tuning.targetRailT, 0.35, "thirdPersonPose.tuning.targetRailT");
   assertClose(thirdPersonPose.tuning.dampingHalfLife, 0.35, "thirdPersonPose.tuning.dampingHalfLife");
   if (thirdPersonPose.tuning.composer !== "wide") {
     throw new Error(`Composer tuning did not update: ${JSON.stringify(thirdPersonPose.tuning)}`);
@@ -336,7 +342,15 @@ try {
   await setRange(page, "#shoulder", -1);
   const shoulderPose = await assertMode(page, "thirdPerson", "third-person-gameplay");
   assertClose(shoulderPose.tuning.shoulder, -1, "shoulderPose.tuning.shoulder");
+  assertThirdPersonOffset(shoulderPose, -3.12 - 0.45, 5.05, 5.4);
 
+  await setRange(page, "#railT", 0.8);
+  const movingTargetPose = await assertMode(page, "thirdPerson", "third-person-gameplay");
+  assertClose(movingTargetPose.target.x, 0.72, "movingTargetPose.target.x");
+  assertClose(movingTargetPose.tuning.targetRailT, 0.8, "movingTargetPose.tuning.targetRailT");
+  assertThirdPersonOffset(movingTargetPose, -3.12 - 0.45, 5.05, 5.4);
+
+  await setRange(page, "#railT", 0.35);
   const orbitPose = await assertMode(page, "orbit", "orbit-showcase");
   assertClose(orbitPose.state.position.x, -3.12, "orbitPose.state.position.x");
   assertClose(orbitPose.state.position.y, 4.6, "orbitPose.state.position.y");
