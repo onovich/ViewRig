@@ -3,7 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "description": "Structural Three-compatible camera adapter for ViewRig CameraState.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onovich/ViewRig.git",
+    "directory": "packages/adapter-three"
+  },
+  "bugs": {
+    "url": "https://github.com/onovich/ViewRig/issues"
+  },
+  "homepage": "https://github.com/onovich/ViewRig#readme",
   "sideEffects": false,
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -14,8 +26,12 @@
     "dist/**/*.d.ts",
     "dist/**/*.d.ts.map",
     "dist/**/*.js",
-    "dist/**/*.js.map"
+    "dist/**/*.js.map",
+    "README.md"
   ],
+  "publishConfig": {
+    "access": "restricted"
+  },
   "scripts": {
     "build": "tsc -b",
     "typecheck": "tsc -b --pretty false",

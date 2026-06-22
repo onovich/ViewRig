@@ -1,6 +1,6 @@
 # ViewRig v0.3 CI Workflow
 
-Status: R7 CI release governance dry-run.
+Status: R8 CI package metadata dry-run.
 
 ## Scope
 
@@ -40,7 +40,11 @@ R7 adds:
 
 - `pnpm changeset:dry-run`
 
-Later v0.3 rounds extend this workflow with package dry-run and release governance checks.
+R8 adds:
+
+- `pnpm package:dry-run`
+
+Later v0.3 rounds extend this workflow with release candidate audit checks.
 
 ## Local Equivalent
 
@@ -53,6 +57,8 @@ pnpm api:check
 pnpm docs:api
 pnpm docs:check
 pnpm boundary:check
+pnpm package:dry-run
+pnpm changeset:dry-run
 pnpm exec playwright install chromium
 pnpm test:browser
 ```

@@ -4,6 +4,15 @@
   "private": true,
   "type": "module",
   "description": "Engine-agnostic camera pose solver and rig algorithms for games.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onovich/ViewRig.git"
+  },
+  "bugs": {
+    "url": "https://github.com/onovich/ViewRig/issues"
+  },
+  "homepage": "https://github.com/onovich/ViewRig#readme",
   "packageManager": "pnpm@11.8.0",
   "engines": {
     "node": ">=24.0.0"
