@@ -1,12 +1,12 @@
 # ViewRig v0.3 CI Workflow
 
-Status: R1 CI skeleton.
+Status: R2 CI build/typecheck/unit test coverage.
 
 ## Scope
 
 The initial CI workflow is `.github/workflows/ci.yml`.
 
-R1 establishes the minimum reproducible CI base:
+R1 established the minimum reproducible CI base:
 
 - checkout
 - pnpm setup
@@ -14,12 +14,21 @@ R1 establishes the minimum reproducible CI base:
 - pnpm cache through `actions/setup-node`
 - immutable dependency installation with `pnpm install --frozen-lockfile`
 
-Later v0.3 rounds extend this workflow with build, typecheck, unit tests, API/docs checks, browser smoke, package dry-run, and release governance checks.
+R2 extends the same CI job with:
+
+- `pnpm build`
+- `pnpm typecheck`
+- `pnpm test`
+
+Later v0.3 rounds extend this workflow with API/docs checks, browser smoke, package dry-run, and release governance checks.
 
 ## Local Equivalent
 
 ```powershell
 pnpm install --frozen-lockfile
+pnpm build
+pnpm typecheck
+pnpm test
 ```
 
 ## Policy
