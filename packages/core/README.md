@@ -2,7 +2,7 @@
 
 Engine-agnostic camera pose solver and rig algorithms for games.
 
-Status: private v0.5 product usability package. The package is not published.
+Status: private v0.6 integration-hardening package. The package is not published.
 
 License: UNLICENSED until the project owner selects a public license.
 
@@ -14,6 +14,8 @@ import {
   createThirdPersonGameplayPreset,
   createYawPitchChannel
 } from "@viewrig/core";
+import { applyThreeCameraState } from "@viewrig/adapter-three";
+import { PerspectiveCamera } from "three";
 
 const look = createYawPitchChannel("player-look", {
   minPitch: -45,
@@ -31,12 +33,17 @@ const preset = createThirdPersonGameplayPreset({
 });
 
 const result = preset.evaluate({ time: 1 });
-adapter.apply(engineCamera, result.state);
+const camera = new PerspectiveCamera();
+applyThreeCameraState(camera, result.state);
 ```
 
 Presets return `CameraPresetEvaluation`: the solved `CameraState`, a small
 debug/tuning summary, and renderer-agnostic debug draw commands. Engine adapters
 still own applying `CameraState` to real cameras.
+
+The v0.6 example gallery and packed consumer smoke both follow this same path:
+evaluate a preset in core, pass `result.state` to an adapter, then let the host
+engine own rendering and input.
 
 ## Boundary
 

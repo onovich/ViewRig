@@ -112,6 +112,7 @@ v0.6 orbit/follow integration notes live in [ViewRig v0.6 Orbit/Follow Integrati
 v0.6 rail/camera-shot integration notes live in [ViewRig v0.6 Rail/CameraShot Integration](docs/ViewRig_v0.6_Rail_CameraShot_Integration.md).
 v0.6 browser smoke notes live in [ViewRig v0.6 Browser Smoke](docs/ViewRig_v0.6_Browser_Smoke.md).
 v0.6 consumer smoke notes live in [ViewRig v0.6 Consumer Smoke](docs/ViewRig_v0.6_Consumer_Smoke.md).
+v0.6 example gallery notes live in [ViewRig v0.6 Example Gallery](docs/ViewRig_v0.6_Example_Gallery.md).
 
 ## MVP 路线
 
@@ -173,3 +174,4 @@ v0.6 consumer smoke notes live in [ViewRig v0.6 Consumer Smoke](docs/ViewRig_v0.
 - [ViewRig v0.6 Rail/CameraShot Integration](docs/ViewRig_v0.6_Rail_CameraShot_Integration.md)
 - [ViewRig v0.6 Browser Smoke](docs/ViewRig_v0.6_Browser_Smoke.md)
 - [ViewRig v0.6 Consumer Smoke](docs/ViewRig_v0.6_Consumer_Smoke.md)
+- [ViewRig v0.6 Example Gallery](docs/ViewRig_v0.6_Example_Gallery.md)

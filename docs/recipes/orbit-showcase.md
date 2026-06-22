@@ -11,6 +11,7 @@ import {
   createYawPitchChannel,
   createZoomChannel
 } from "@viewrig/core";
+import { applyThreeCameraState } from "@viewrig/adapter-three";
 
 const look = createYawPitchChannel("showcase-look", {
   yaw: 45,
@@ -33,13 +34,16 @@ const orbit = createOrbitShowcasePreset({
 });
 
 const result = orbit.evaluate({ time });
-adapter.apply(engineCamera, result.state);
+applyThreeCameraState(threeCamera, result.state);
 ```
 
 ## Tuning
 
 `result.debug.tuning` includes `distance`. A host UI can expose that control as
 wheel zoom, trigger input, or an editor slider.
+
+The v0.6 gallery smoke verifies this as an `object-viewer` path with a POC-2
+evidence tag.
 
 ## Sinan POC-2 Mapping
 

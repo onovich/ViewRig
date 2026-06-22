@@ -1,9 +1,23 @@
 # ViewRig Recipes
 
-Status: v0.5 R9 recipe index
+Status: v0.6 R11 recipe index
 
-These recipes show the intended developer path for ViewRig v0.5 presets and
-debug/tuning helpers.
+These recipes show the intended developer path for ViewRig presets,
+debug/tuning helpers, and the v0.6 example/adapter flow.
+
+## Preset To Three Camera
+
+Most recipes follow the same integration shape:
+
+```ts
+import { applyThreeCameraState } from "@viewrig/adapter-three";
+
+const result = preset.evaluate({ time });
+applyThreeCameraState(threeCamera, result.state);
+```
+
+`@viewrig/core` stays engine-agnostic. The Three adapter owns applying the
+`CameraState` to a host camera, and the host still owns rendering and input.
 
 ## Recipes
 
@@ -13,6 +27,17 @@ debug/tuning helpers.
 - [Rail Camera Shot](rail-camera-shot.md)
 - [Debug Tuning](debug-tuning.md)
 - [Sinan Internal Adapter](sinan-internal-adapter.md)
+
+## Example Gallery
+
+The v0.6 gallery lives in `examples/three-orbit-playground` and is validated by:
+
+```powershell
+pnpm --dir examples/three-orbit-playground build
+pnpm test:browser
+```
+
+It covers third-person, orbit, follow, first-person, and rail/camera-shot modes.
 
 ## Boundary
 

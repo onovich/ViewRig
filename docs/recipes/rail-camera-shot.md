@@ -7,6 +7,7 @@ needs deterministic camera samples from a ViewRig `CameraPath`.
 
 ```ts
 import { createPolylinePath, createRailShotPreset } from "@viewrig/core";
+import { applyThreeCameraState } from "@viewrig/adapter-three";
 
 const path = createPolylinePath({
   points: [
@@ -26,7 +27,7 @@ const shot = createRailShotPreset({
 });
 
 const preview = shot.evaluate({ time: scrubTimeSeconds });
-adapter.apply(engineCamera, preview.state);
+applyThreeCameraState(threeCamera, preview.state);
 ```
 
 ## CameraShot Rules
@@ -40,6 +41,7 @@ adapter.apply(engineCamera, preview.state);
   `driver`, and `pathLength` for diagnostics.
 - Runtime pose, damping cache, channel cache, and host scene objects must not be
   serialized into authoring JSON.
+- The v0.6 gallery smoke verifies both input scrub and time-driver rail paths.
 
 ## Driver Choices
 

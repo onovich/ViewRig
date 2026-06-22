@@ -1,6 +1,6 @@
 # Debug Tuning Recipe
 
-Status: v0.5 R9 recipe
+Status: v0.6 R11 recipe
 
 Use the preset debug helpers when a playground, smoke test, or internal adapter
 needs a small stable view of preset state.
@@ -28,6 +28,10 @@ expect(tuning).toEqual({
 });
 expect(status.mode).toBe("thirdPerson");
 ```
+
+The v0.6 browser smoke uses this pattern through DOM and pose JSON hooks. It
+checks mode status, tuning snapshots, debug overlay state, and distinct canvas
+signals across gallery modes.
 
 ## Rendering Debug Draw
 

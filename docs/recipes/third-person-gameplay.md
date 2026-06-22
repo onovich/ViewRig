@@ -12,6 +12,7 @@ import {
   createThirdPersonGameplayPreset,
   createYawPitchChannel
 } from "@viewrig/core";
+import { applyThreeCameraState } from "@viewrig/adapter-three";
 
 const look = createYawPitchChannel("player-look", {
   minPitch: -45,
@@ -32,7 +33,7 @@ const camera = createThirdPersonGameplayPreset({
 });
 
 const result = camera.evaluate({ time: worldTime });
-adapter.apply(engineCamera, result.state);
+applyThreeCameraState(threeCamera, result.state);
 ```
 
 ## Notes
@@ -45,6 +46,8 @@ adapter.apply(engineCamera, result.state);
   whether and how to render them.
 - `CameraState` remains the runtime output. Engine adapters apply it to real
   cameras.
+- The v0.6 gallery smoke verifies target movement, shoulder tuning, distance
+  tuning, and adapter application for this preset.
 
 ## Defaults
 

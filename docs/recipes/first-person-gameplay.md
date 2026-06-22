@@ -10,6 +10,7 @@ import {
   createFirstPersonGameplayPreset,
   createYawPitchChannel
 } from "@viewrig/core";
+import { applyThreeCameraState } from "@viewrig/adapter-three";
 
 const look = createYawPitchChannel("player-look", {
   minPitch: -89,
@@ -24,7 +25,7 @@ const firstPerson = createFirstPersonGameplayPreset({
 });
 
 const result = firstPerson.evaluate({ time });
-adapter.apply(engineCamera, result.state);
+applyThreeCameraState(threeCamera, result.state);
 ```
 
 ## Switching
@@ -37,6 +38,9 @@ same spirit as `matchThenBlend`.
 
 `result.debug.tuning` includes `eyeHeight`. Host input and pointer lock remain
 outside `@viewrig/core`.
+
+The v0.6 gallery smoke verifies eye offset, pitch clamp, and adapter application
+for this preset.
 
 ## Boundary
 
