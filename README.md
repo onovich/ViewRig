@@ -69,6 +69,7 @@ v0.3 Three integration smoke notes live in [ViewRig v0.3 Three Integration Smoke
 v0.3 playground smoke notes live in [ViewRig v0.3 Playground Smoke](docs/ViewRig_v0.3_Playground_Smoke.md).
 v0.3 Sinan POC handoff lives in [ViewRig v0.3 Sinan POC Handoff](docs/ViewRig_v0.3_Sinan_POC_Handoff.md).
 v0.3 release candidate checklist lives in [ViewRig v0.3 Release Candidate Checklist](docs/ViewRig_v0.3_Release_Candidate_Checklist.md).
+v0.3 R13 CI/API/docs buffer report lives in [ViewRig v0.3 R13 CI/API/Docs Buffer Report](docs/ViewRig_v0.3_R13_CI_API_Docs_Buffer_Report.md).
 
 ## MVP 路线
 
