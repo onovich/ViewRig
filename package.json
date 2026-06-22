@@ -9,8 +9,8 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "api:check": "node scripts/api-report.mjs --check",
-    "api:report": "node scripts/api-report.mjs --write",
+    "api:check": "pnpm build && node scripts/api-extractor.mjs --check",
+    "api:report": "pnpm build && node scripts/api-extractor.mjs --write",
     "build": "tsc -b",
     "boundary:check": "node scripts/check-boundaries.mjs",
     "docs:api": "typedoc --options typedoc.json",
@@ -23,6 +23,7 @@
     "docs:check": "node scripts/check-docs.mjs"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.58.9",
     "@types/node": "24.13.2",
     "playwright": "^1.61.0",
     "typedoc": "^0.28.19",

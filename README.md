@@ -61,6 +61,7 @@ R14 browser smoke buffer report lives in [ViewRig v0.2 R14 Browser Smoke Buffer 
 R15 release/Sinan buffer report lives in [ViewRig v0.2 R15 Release Sinan Buffer Report](docs/ViewRig_v0.2_R15_Release_Sinan_Buffer_Report.md).
 v0.2 final report lives in [ViewRig v0.2 Final Report](docs/ViewRig_v0.2_Final_Report.md).
 v0.3 CI workflow notes live in [ViewRig v0.3 CI Workflow](docs/ViewRig_v0.3_CI_Workflow.md).
+v0.3 API governance notes live in [ViewRig v0.3 API Governance](docs/ViewRig_v0.3_API_Governance.md).
 
 ## MVP 路线
 
