@@ -427,6 +427,9 @@ export function createScreenZoneDebugCommands(config: ScreenZoneComposerConfig, 
 export function createShoulderChannel(id: string, options?: ShoulderChannelOptions): ShoulderChannel;
 
 // @public (undocumented)
+export function createThirdPersonGameplayPreset(config: ThirdPersonGameplayPresetConfig): CameraPreset<ThirdPersonGameplayPresetResolvedConfig>;
+
+// @public (undocumented)
 export function createVirtualCamera(config: VirtualCameraConfig): VirtualCamera;
 
 // @public (undocumented)
@@ -475,6 +478,21 @@ export const DEFAULT_COORDINATE_CONVENTION: CoordinateConvention;
 export const DEFAULT_LENS_STATE: PerspectiveLensState;
 
 // @public (undocumented)
+export const DEFAULT_THIRD_PERSON_GAMEPLAY_DISTANCE = 4;
+
+// @public (undocumented)
+export const DEFAULT_THIRD_PERSON_GAMEPLAY_PIVOT_OFFSET: readonly [0, 1.5, 0];
+
+// @public (undocumented)
+export const DEFAULT_THIRD_PERSON_GAMEPLAY_PRESET_ID = "third-person-gameplay";
+
+// @public (undocumented)
+export const DEFAULT_THIRD_PERSON_GAMEPLAY_SHOULDER = 1;
+
+// @public (undocumented)
+export const DEFAULT_THIRD_PERSON_GAMEPLAY_SHOULDER_OFFSET: readonly [0.45, 0.05, 0];
+
+// @public (undocumented)
 export function defineCameraPreset<TConfig>(descriptor: CameraPresetDescriptor<TConfig>): CameraPreset<TConfig>;
 
 // @public (undocumented)
@@ -507,6 +525,9 @@ export function evaluateRailRig(config: RailRigConfig, context?: RailRigEvaluati
 
 // @public (undocumented)
 export function evaluateScreenZoneComposer(camera: CameraState, target: Vec3Like, config: ScreenZoneComposerConfig, options?: ProjectToNdcOptions): ScreenZoneComposerResult;
+
+// @public (undocumented)
+export function evaluateThirdPersonGameplayPreset(config: ThirdPersonGameplayPresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
 
 // @public (undocumented)
 export function evaluateThirdPersonRig(config: ThirdPersonRigConfig, context?: ThirdPersonRigEvaluationContext): CameraState;
@@ -868,6 +889,9 @@ export interface RectNdc {
 export function resolveRailRigDriverT(driver: RailRigDriver, context?: RailRigEvaluationContext): number;
 
 // @public (undocumented)
+export function resolveThirdPersonGameplayPresetConfig(config: ThirdPersonGameplayPresetConfig): ThirdPersonGameplayPresetResolvedConfig;
+
+// @public (undocumented)
 export interface RuntimeCameraPoseLike {
     // (undocumented)
     readonly debug?: CameraDebugState;
@@ -966,6 +990,50 @@ export function snapshotVec2(value: Vec2Like): Vec2Snapshot;
 
 // @public (undocumented)
 export function snapshotVec3(value: Vec3Like): Vec3Snapshot;
+
+// @public (undocumented)
+export interface ThirdPersonGameplayPresetConfig {
+    // (undocumented)
+    readonly debugId?: string;
+    // (undocumented)
+    readonly distance?: number;
+    // (undocumented)
+    readonly id?: string;
+    // (undocumented)
+    readonly label?: string;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
+    // (undocumented)
+    readonly pivotOffset?: Vec3Like;
+    // (undocumented)
+    readonly shoulder?: number | ControlChannel<number>;
+    // (undocumented)
+    readonly shoulderOffset?: Vec3Like;
+    // (undocumented)
+    readonly target: Vec3Like;
+}
+
+// @public (undocumented)
+export interface ThirdPersonGameplayPresetResolvedConfig {
+    // (undocumented)
+    readonly debugId: string;
+    // (undocumented)
+    readonly distance: number;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
+    // (undocumented)
+    readonly pivotOffset: Vec3Like;
+    // (undocumented)
+    readonly shoulder: number | ControlChannel<number>;
+    // (undocumented)
+    readonly shoulderOffset: Vec3Like;
+    // (undocumented)
+    readonly target: Vec3Like;
+}
 
 // @public (undocumented)
 export interface ThirdPersonRigConfig {
