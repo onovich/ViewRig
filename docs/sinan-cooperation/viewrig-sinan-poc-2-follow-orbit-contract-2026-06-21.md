@@ -104,6 +104,27 @@ This snippet is conceptual. The real call site and runtime object names belong t
 - Input: target transform, follow offset, optional yaw/shoulder channel.
 - Acceptance: moving the target updates camera pose while preserving editor camera isolation.
 
+## ViewRig v0.5 Preset Mapping
+
+The v0.5 `@viewrig/core` preset layer can be used as the stable ViewRig-side
+shape for this POC while the adapter remains internal to the Sinan repository.
+
+| Sinan POC-2 mode | ViewRig v0.5 preset | Input ownership | Output ownership |
+| --- | --- | --- | --- |
+| Orbit Showcase | `createOrbitShowcasePreset` | Sinan provides normalized look and distance/zoom channel values | ViewRig returns `CameraState`; Sinan maps it to `RuntimeCameraPose` |
+| Follow Showcase | `createFollowShowcasePreset` | Sinan provides resolved target snapshots and follow offsets | ViewRig returns `CameraState`; Sinan applies it through runtime camera ownership |
+
+Preset rules:
+
+- The preset config is runtime composition data, not Sinan authoring JSON.
+- Channel snapshots are supplied by Sinan InputFlow or deterministic fallback
+  values before ViewRig evaluation.
+- `CameraPresetEvaluation.debug` can be displayed by Sinan as diagnostic data,
+  but it must not become CameraShot source-of-truth.
+- `CameraPresetEvaluation.draw` contains renderer-agnostic debug commands only.
+- Failure to create or evaluate a preset must fall back to Sinan's existing
+  gameplay camera path.
+
 ## Acceptance Matrix
 
 - POC can be enabled and disabled by Sinan source selection.

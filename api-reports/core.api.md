@@ -418,6 +418,12 @@ export function createCameraPresetEvaluation(state: CameraState, debug: CameraPr
 export function createCameraState(input: CameraStateInput): CameraState;
 
 // @public (undocumented)
+export function createFollowShowcasePreset(config: FollowShowcasePresetConfig): CameraPreset<FollowShowcasePresetResolvedConfig>;
+
+// @public (undocumented)
+export function createOrbitShowcasePreset(config: OrbitShowcasePresetConfig): CameraPreset<OrbitShowcasePresetResolvedConfig>;
+
+// @public (undocumented)
 export function createPolylinePath(config: PolylinePathConfig): PolylinePath;
 
 // @public (undocumented)
@@ -475,7 +481,22 @@ export type DebugDrawCommand = {
 export const DEFAULT_COORDINATE_CONVENTION: CoordinateConvention;
 
 // @public (undocumented)
+export const DEFAULT_FOLLOW_SHOWCASE_OFFSET: readonly [0, 2, -6];
+
+// @public (undocumented)
+export const DEFAULT_FOLLOW_SHOWCASE_PRESET_ID = "follow-showcase";
+
+// @public (undocumented)
 export const DEFAULT_LENS_STATE: PerspectiveLensState;
+
+// @public (undocumented)
+export const DEFAULT_ORBIT_SHOWCASE_DISTANCE = 5;
+
+// @public (undocumented)
+export const DEFAULT_ORBIT_SHOWCASE_PIVOT_OFFSET: readonly [0, 1, 0];
+
+// @public (undocumented)
+export const DEFAULT_ORBIT_SHOWCASE_PRESET_ID = "orbit-showcase";
 
 // @public (undocumented)
 export const DEFAULT_THIRD_PERSON_GAMEPLAY_DISTANCE = 4;
@@ -518,7 +539,13 @@ export function evaluateFixedPose(config: FixedPoseSolverConfig, context?: Fixed
 export function evaluateFollowRig(config: FollowRigConfig, context?: FollowRigEvaluationContext): CameraState;
 
 // @public (undocumented)
+export function evaluateFollowShowcasePreset(config: FollowShowcasePresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
+
+// @public (undocumented)
 export function evaluateOrbitRig(config: OrbitRigConfig, context?: OrbitRigEvaluationContext): CameraState;
+
+// @public (undocumented)
+export function evaluateOrbitShowcasePreset(config: OrbitShowcasePresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
 
 // @public (undocumented)
 export function evaluateRailRig(config: RailRigConfig, context?: RailRigEvaluationContext): CameraState;
@@ -593,6 +620,34 @@ export interface FollowRigConfig {
 export interface FollowRigEvaluationContext {
     // (undocumented)
     readonly time?: number;
+}
+
+// @public (undocumented)
+export interface FollowShowcasePresetConfig {
+    // (undocumented)
+    readonly debugId?: string;
+    // (undocumented)
+    readonly id?: string;
+    // (undocumented)
+    readonly label?: string;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly offset?: Vec3Like;
+    // (undocumented)
+    readonly target: FollowTargetSample;
+}
+
+// @public (undocumented)
+export interface FollowShowcasePresetResolvedConfig {
+    // (undocumented)
+    readonly debugId: string;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly offset: Vec3Like;
+    // (undocumented)
+    readonly target: FollowTargetSample;
 }
 
 // @public (undocumented)
@@ -687,6 +742,42 @@ export interface OrbitRigConfig {
 export interface OrbitRigEvaluationContext {
     // (undocumented)
     readonly time?: number;
+}
+
+// @public (undocumented)
+export interface OrbitShowcasePresetConfig {
+    // (undocumented)
+    readonly debugId?: string;
+    // (undocumented)
+    readonly distance?: number | ControlChannel<number>;
+    // (undocumented)
+    readonly id?: string;
+    // (undocumented)
+    readonly label?: string;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
+    // (undocumented)
+    readonly pivotOffset?: Vec3Like;
+    // (undocumented)
+    readonly target: Vec3Like;
+}
+
+// @public (undocumented)
+export interface OrbitShowcasePresetResolvedConfig {
+    // (undocumented)
+    readonly debugId: string;
+    // (undocumented)
+    readonly distance: number | ControlChannel<number>;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
+    // (undocumented)
+    readonly pivotOffset: Vec3Like;
+    // (undocumented)
+    readonly target: Vec3Like;
 }
 
 // @public (undocumented)
@@ -884,6 +975,12 @@ export interface RectNdc {
     // (undocumented)
     readonly size: ScreenPointNdc;
 }
+
+// @public (undocumented)
+export function resolveFollowShowcasePresetConfig(config: FollowShowcasePresetConfig): FollowShowcasePresetResolvedConfig;
+
+// @public (undocumented)
+export function resolveOrbitShowcasePresetConfig(config: OrbitShowcasePresetConfig): OrbitShowcasePresetResolvedConfig;
 
 // @public (undocumented)
 export function resolveRailRigDriverT(driver: RailRigDriver, context?: RailRigEvaluationContext): number;

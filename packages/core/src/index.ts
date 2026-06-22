@@ -30,6 +30,8 @@ export * from "./path/CameraPath.js";
 export * from "./path/PolylinePath.js";
 export * from "./pose/RuntimeCameraPoseMapper.js";
 export * from "./presets/CameraPreset.js";
+export * from "./presets/FollowPreset.js";
+export * from "./presets/OrbitPreset.js";
 export * from "./presets/ThirdPersonGameplayPreset.js";
 export * from "./rigs/FixedPoseSolver.js";
 export * from "./rigs/FollowRig.js";
