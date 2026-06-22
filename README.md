@@ -72,6 +72,7 @@ v0.3 release candidate checklist lives in [ViewRig v0.3 Release Candidate Checkl
 v0.3 R13 CI/API/docs buffer report lives in [ViewRig v0.3 R13 CI/API/Docs Buffer Report](docs/ViewRig_v0.3_R13_CI_API_Docs_Buffer_Report.md).
 v0.3 R14 browser/Three buffer report lives in [ViewRig v0.3 R14 Browser/Three Buffer Report](docs/ViewRig_v0.3_R14_Browser_Three_Buffer_Report.md).
 v0.3 R15 release/Sinan buffer report lives in [ViewRig v0.3 R15 Release/Sinan Buffer Report](docs/ViewRig_v0.3_R15_Release_Sinan_Buffer_Report.md).
+v0.3 final report lives in [ViewRig v0.3 Final Report](docs/ViewRig_v0.3_Final_Report.md).
 
 ## MVP 路线
 
