@@ -93,8 +93,13 @@ v0.5 product usability brief lives in [ViewRig v0.5 Product Usability Brief](doc
 v0.5 preset API design lives in [ViewRig v0.5 Preset API Design](docs/ViewRig_v0.5_Preset_API_Design.md).
 v0.5 debug and tuning notes live in [ViewRig v0.5 Debug And Tuning](docs/ViewRig_v0.5_Debug_Tuning.md).
 v0.5 playground usability notes live in [ViewRig v0.5 Playground Usability](docs/ViewRig_v0.5_Playground_Usability.md).
+v0.5 recipe index lives in [ViewRig Recipes](docs/recipes/README.md).
 v0.5 third-person gameplay recipe draft lives in [Third-Person Gameplay Recipe](docs/recipes/third-person-gameplay.md).
+v0.5 orbit showcase recipe lives in [Orbit Showcase Recipe](docs/recipes/orbit-showcase.md).
+v0.5 first-person gameplay recipe lives in [First-Person Gameplay Recipe](docs/recipes/first-person-gameplay.md).
 v0.5 rail camera shot recipe draft lives in [Rail Camera Shot Recipe](docs/recipes/rail-camera-shot.md).
+v0.5 debug tuning recipe lives in [Debug Tuning Recipe](docs/recipes/debug-tuning.md).
+v0.5 Sinan internal adapter recipe lives in [Sinan Internal Adapter Recipe](docs/recipes/sinan-internal-adapter.md).
 
 ## MVP 路线
 
@@ -137,5 +142,10 @@ v0.5 rail camera shot recipe draft lives in [Rail Camera Shot Recipe](docs/recip
 - [v0.5 Preset API Design](docs/ViewRig_v0.5_Preset_API_Design.md)
 - [ViewRig v0.5 Debug And Tuning](docs/ViewRig_v0.5_Debug_Tuning.md)
 - [ViewRig v0.5 Playground Usability](docs/ViewRig_v0.5_Playground_Usability.md)
+- [ViewRig Recipes](docs/recipes/README.md)
 - [Third-Person Gameplay Recipe](docs/recipes/third-person-gameplay.md)
+- [Orbit Showcase Recipe](docs/recipes/orbit-showcase.md)
+- [First-Person Gameplay Recipe](docs/recipes/first-person-gameplay.md)
 - [Rail Camera Shot Recipe](docs/recipes/rail-camera-shot.md)
+- [Debug Tuning Recipe](docs/recipes/debug-tuning.md)
+- [Sinan Internal Adapter Recipe](docs/recipes/sinan-internal-adapter.md)
