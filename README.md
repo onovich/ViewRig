@@ -87,6 +87,7 @@ v0.4 release notes template lives in [ViewRig v0.4 Release Notes Template](docs/
 v0.4 TypeDoc publication gate lives in [ViewRig v0.4 TypeDoc Publication Gate](docs/ViewRig_v0.4_TypeDoc_Publication_Gate.md).
 v0.4 RC evidence bundle lives in [ViewRig v0.4 RC Evidence Bundle](docs/ViewRig_v0.4_RC_Evidence_Bundle.md).
 v0.4 Sinan feedback gate lives in [ViewRig v0.4 Sinan Feedback Gate](docs/ViewRig_v0.4_Sinan_Feedback_Gate.md).
+v0.4 final report lives in [ViewRig v0.4 Final Report](docs/ViewRig_v0.4_Final_Report.md).
 
 ## MVP 路线
 
