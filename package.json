@@ -14,8 +14,9 @@
     "build": "tsc -b",
     "boundary:check": "node scripts/check-boundaries.mjs",
     "docs:api": "typedoc --options typedoc.json",
+    "changeset:dry-run": "node scripts/changesets-dry-run.mjs",
     "package:dry-run": "node scripts/package-dry-run.mjs",
-    "release:dry-run": "pnpm build && pnpm package:dry-run",
+    "release:dry-run": "pnpm build && pnpm package:dry-run && pnpm changeset:dry-run",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
     "test:browser": "pnpm --dir examples/three-orbit-playground build && pnpm --dir examples/three-orbit-playground smoke",
@@ -23,6 +24,7 @@
     "docs:check": "node scripts/check-docs.mjs"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "@microsoft/api-extractor": "^7.58.9",
     "@types/node": "24.13.2",
     "playwright": "^1.61.0",

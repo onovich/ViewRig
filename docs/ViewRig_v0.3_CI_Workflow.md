@@ -1,6 +1,6 @@
 # ViewRig v0.3 CI Workflow
 
-Status: R6 CI and TypeDoc artifact policy.
+Status: R7 CI release governance dry-run.
 
 ## Scope
 
@@ -35,6 +35,10 @@ R4 extends the same CI job with:
 - `pnpm test:browser`
 
 R6 formalizes `viewrig-api-docs` as a CI inspection artifact. It is not a Pages deployment or release artifact.
+
+R7 adds:
+
+- `pnpm changeset:dry-run`
 
 Later v0.3 rounds extend this workflow with package dry-run and release governance checks.
 
