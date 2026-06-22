@@ -116,6 +116,7 @@ v0.6 example gallery notes live in [ViewRig v0.6 Example Gallery](docs/ViewRig_v
 v0.6 Sinan integration alignment lives in [ViewRig v0.6 Sinan Integration Alignment](docs/ViewRig_v0.6_Sinan_Integration_Alignment.md).
 v0.6 R13 adapter/example/browser buffer report lives in [ViewRig v0.6 R13 Adapter/Example/Browser Buffer Report](docs/ViewRig_v0.6_R13_Adapter_Example_Browser_Buffer_Report.md).
 v0.6 R14 API/docs/package buffer report lives in [ViewRig v0.6 R14 API/Docs/Package Buffer Report](docs/ViewRig_v0.6_R14_API_Docs_Package_Buffer_Report.md).
+v0.6 R15 CI/release boundary buffer report lives in [ViewRig v0.6 R15 CI/Release Boundary Buffer Report](docs/ViewRig_v0.6_R15_CI_Release_Boundary_Buffer_Report.md).
 
 ## MVP 路线
 
@@ -181,3 +182,4 @@ v0.6 R14 API/docs/package buffer report lives in [ViewRig v0.6 R14 API/Docs/Pack
 - [ViewRig v0.6 Sinan Integration Alignment](docs/ViewRig_v0.6_Sinan_Integration_Alignment.md)
 - [ViewRig v0.6 R13 Adapter/Example/Browser Buffer Report](docs/ViewRig_v0.6_R13_Adapter_Example_Browser_Buffer_Report.md)
 - [ViewRig v0.6 R14 API/Docs/Package Buffer Report](docs/ViewRig_v0.6_R14_API_Docs_Package_Buffer_Report.md)
+- [ViewRig v0.6 R15 CI/Release Boundary Buffer Report](docs/ViewRig_v0.6_R15_CI_Release_Boundary_Buffer_Report.md)
