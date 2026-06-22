@@ -197,7 +197,8 @@ const thirdPerson = createThirdPersonGameplayPreset({
   target: [0, 0, 0],
   look,
   shoulder,
-  distance: 4
+  distance: 4,
+  lens: { projection: "perspective", fov: 62, near: 0.3, far: 250 }
 }).evaluate({ time: 1 });
 
 assert.deepEqual(thirdPerson.state.position, { x: 0.45, y: 1.55, z: 4 });
@@ -206,6 +207,17 @@ assert.deepEqual(createCameraPresetTuningSnapshot(thirdPerson), {
   distance: 4,
   shoulder: 1
 });
+
+applyThreeCameraState(camera, thirdPerson.state);
+assertClose(camera.position.x, thirdPerson.state.position.x, "third-person camera x");
+assertClose(camera.position.y, thirdPerson.state.position.y, "third-person camera y");
+assertClose(camera.position.z, thirdPerson.state.position.z, "third-person camera z");
+assert.equal(camera.fov, 62);
+assert.equal(camera.near, 0.3);
+assert.equal(camera.far, 250);
+assertClose(camera.matrixWorld.elements[12], thirdPerson.state.position.x, "third-person matrix x");
+assertClose(camera.matrixWorld.elements[13], thirdPerson.state.position.y, "third-person matrix y");
+assertClose(camera.matrixWorld.elements[14], thirdPerson.state.position.z, "third-person matrix z");
 
 look.set({ yaw: 90, pitch: 0 });
 const orbitDistance = createZoomChannel("orbit-distance", { value: 6, min: 2, max: 10 });
