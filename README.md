@@ -73,6 +73,7 @@ v0.3 R13 CI/API/docs buffer report lives in [ViewRig v0.3 R13 CI/API/Docs Buffer
 v0.3 R14 browser/Three buffer report lives in [ViewRig v0.3 R14 Browser/Three Buffer Report](docs/ViewRig_v0.3_R14_Browser_Three_Buffer_Report.md).
 v0.3 R15 release/Sinan buffer report lives in [ViewRig v0.3 R15 Release/Sinan Buffer Report](docs/ViewRig_v0.3_R15_Release_Sinan_Buffer_Report.md).
 v0.3 final report lives in [ViewRig v0.3 Final Report](docs/ViewRig_v0.3_Final_Report.md).
+v0.4 goal guide lives in [ViewRig v0.4 Goal 模式执行指南](docs/ViewRig_v0.4_Goal模式执行指南.md).
 
 ## MVP 路线
 
@@ -109,3 +110,4 @@ v0.3 final report lives in [ViewRig v0.3 Final Report](docs/ViewRig_v0.3_Final_R
 - [M0-M8 Goal 模式执行指南](docs/ViewRig_M0-M8_Goal模式执行指南.md)
 - [v0.2 Goal 模式执行指南](docs/ViewRig_v0.2_Goal模式执行指南.md)
 - [v0.3 Goal 模式执行指南](docs/ViewRig_v0.3_Goal模式执行指南.md)
+- [v0.4 Goal 模式执行指南](docs/ViewRig_v0.4_Goal模式执行指南.md)
