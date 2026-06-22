@@ -75,6 +75,7 @@ v0.3 R15 release/Sinan buffer report lives in [ViewRig v0.3 R15 Release/Sinan Bu
 v0.3 final report lives in [ViewRig v0.3 Final Report](docs/ViewRig_v0.3_Final_Report.md).
 v0.4 goal guide lives in [ViewRig v0.4 Goal 模式执行指南](docs/ViewRig_v0.4_Goal模式执行指南.md).
 v0.4 release decision register lives in [ViewRig v0.4 Release Decision Register](docs/ViewRig_v0.4_Release_Decision_Register.md).
+v0.4 license gate lives in [ViewRig v0.4 License Gate](docs/ViewRig_v0.4_License_Gate.md).
 
 ## MVP 路线
 
