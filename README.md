@@ -96,6 +96,7 @@ v0.5 playground usability notes live in [ViewRig v0.5 Playground Usability](docs
 v0.5 Sinan feedback alignment lives in [ViewRig v0.5 Sinan Feedback Alignment](docs/ViewRig_v0.5_Sinan_Feedback_Alignment.md).
 v0.5 R13 API/preset/trace buffer report lives in [ViewRig v0.5 R13 API/Preset/Trace Buffer Report](docs/ViewRig_v0.5_R13_API_Preset_Trace_Buffer_Report.md).
 v0.5 R14 playground/browser buffer report lives in [ViewRig v0.5 R14 Playground/Browser Buffer Report](docs/ViewRig_v0.5_R14_Playground_Browser_Buffer_Report.md).
+v0.5 R15 package/consumer buffer report lives in [ViewRig v0.5 R15 Package/Consumer Buffer Report](docs/ViewRig_v0.5_R15_Package_Consumer_Buffer_Report.md).
 v0.5 recipe index lives in [ViewRig Recipes](docs/recipes/README.md).
 v0.5 third-person gameplay recipe draft lives in [Third-Person Gameplay Recipe](docs/recipes/third-person-gameplay.md).
 v0.5 orbit showcase recipe lives in [Orbit Showcase Recipe](docs/recipes/orbit-showcase.md).
@@ -148,6 +149,7 @@ v0.5 Sinan internal adapter recipe lives in [Sinan Internal Adapter Recipe](docs
 - [ViewRig v0.5 Sinan Feedback Alignment](docs/ViewRig_v0.5_Sinan_Feedback_Alignment.md)
 - [ViewRig v0.5 R13 API/Preset/Trace Buffer Report](docs/ViewRig_v0.5_R13_API_Preset_Trace_Buffer_Report.md)
 - [ViewRig v0.5 R14 Playground/Browser Buffer Report](docs/ViewRig_v0.5_R14_Playground_Browser_Buffer_Report.md)
+- [ViewRig v0.5 R15 Package/Consumer Buffer Report](docs/ViewRig_v0.5_R15_Package_Consumer_Buffer_Report.md)
 - [ViewRig Recipes](docs/recipes/README.md)
 - [Third-Person Gameplay Recipe](docs/recipes/third-person-gameplay.md)
 - [Orbit Showcase Recipe](docs/recipes/orbit-showcase.md)
