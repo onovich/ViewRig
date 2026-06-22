@@ -39,3 +39,22 @@ jobs:
 
       - name: Unit tests
         run: pnpm test
+
+      - name: API report check
+        run: pnpm api:check
+
+      - name: Generate API docs
+        run: pnpm docs:api
+
+      - name: Docs guard
+        run: pnpm docs:check
+
+      - name: Boundary check
+        run: pnpm boundary:check
+
+      - name: Upload API docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: viewrig-api-docs
+          path: generated-docs/api/workspace
+          if-no-files-found: error
