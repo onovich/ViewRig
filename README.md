@@ -106,6 +106,7 @@ v0.5 rail camera shot recipe draft lives in [Rail Camera Shot Recipe](docs/recip
 v0.5 debug tuning recipe lives in [Debug Tuning Recipe](docs/recipes/debug-tuning.md).
 v0.5 Sinan internal adapter recipe lives in [Sinan Internal Adapter Recipe](docs/recipes/sinan-internal-adapter.md).
 v0.6 goal guide lives in [ViewRig v0.6 Goal 模式执行指南](docs/ViewRig_v0.6_Goal模式执行指南.md).
+v0.6 integration hardening brief lives in [ViewRig v0.6 Integration Hardening Brief](docs/ViewRig_v0.6_Integration_Hardening_Brief.md).
 
 ## MVP 路线
 
@@ -161,3 +162,4 @@ v0.6 goal guide lives in [ViewRig v0.6 Goal 模式执行指南](docs/ViewRig_v0.
 - [Debug Tuning Recipe](docs/recipes/debug-tuning.md)
 - [Sinan Internal Adapter Recipe](docs/recipes/sinan-internal-adapter.md)
 - [ViewRig v0.6 Goal 模式执行指南](docs/ViewRig_v0.6_Goal模式执行指南.md)
+- [ViewRig v0.6 Integration Hardening Brief](docs/ViewRig_v0.6_Integration_Hardening_Brief.md)
