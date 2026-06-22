@@ -30,6 +30,8 @@ for (const token of [
   "#distance",
   "#shoulder",
   "#railT",
+  "#railDriver",
+  "#duration",
   "#damping",
   "#composer",
   "#debugOverlay",
@@ -392,10 +394,23 @@ try {
   }
 
   await setRange(page, "#pitch", 30);
+  await setSelect(page, "#railDriver", "input");
   await setRange(page, "#railT", 0.72);
   const railPose = await assertMode(page, "railShot", "rail-shot");
+  assertIntegrationRole(railPose, "camera-shot", "POC-3");
   if (railPose.tuning.railT !== 0.72 || railPose.tuning.input !== 0.72) {
     throw new Error(`Rail tuning did not update: ${JSON.stringify(railPose.tuning)}`);
+  }
+  if (railPose.tuning.railDriver !== "input") {
+    throw new Error(`Rail input driver did not persist: ${JSON.stringify(railPose.tuning)}`);
+  }
+
+  await setSelect(page, "#railDriver", "time");
+  await setRange(page, "#duration", 6);
+  await setRange(page, "#railT", 0.5);
+  const timedRailPose = await assertMode(page, "railShot", "rail-shot");
+  if (timedRailPose.tuning.driver !== "time" || timedRailPose.tuning.duration !== 6 || timedRailPose.tuning.railT !== 0.5) {
+    throw new Error(`Rail time driver did not update: ${JSON.stringify(timedRailPose.tuning)}`);
   }
 
   await page.locator("#debugOverlay").uncheck();

@@ -19,6 +19,8 @@ const pitchInput = document.querySelector("#pitch");
 const distanceInput = document.querySelector("#distance");
 const shoulderInput = document.querySelector("#shoulder");
 const railTInput = document.querySelector("#railT");
+const railDriverInput = document.querySelector("#railDriver");
+const durationInput = document.querySelector("#duration");
 const dampingInput = document.querySelector("#damping");
 const composerInput = document.querySelector("#composer");
 const debugOverlayInput = document.querySelector("#debugOverlay");
@@ -139,12 +141,19 @@ const galleryModes = [
     sinanPoc: "POC-3",
     target: [0, 0, 0],
     evaluate(controls) {
+      const driver = controls.railDriver === "time"
+        ? {
+            type: "time",
+            duration: controls.duration
+          }
+        : {
+            type: "input",
+            channel: controls.railT
+          };
+
       return evaluateRailShotPreset({
         path: railPath,
-        driver: {
-          type: "input",
-          channel: controls.railT
-        },
+        driver,
         rotation: [0, 0, 0, 1],
         lens: {
           ...lens,
@@ -173,9 +182,11 @@ function readControls() {
     distance: Number(distanceInput.value),
     shoulder: Number(shoulderInput.value),
     railT: Number(railTInput.value),
+    railDriver: railDriverInput.value,
+    duration: Number(durationInput.value),
     damping: Number(dampingInput.value),
     composer: composerInput.value,
-    time: Number(railTInput.value) * 4
+    time: Number(railTInput.value) * Number(durationInput.value)
   };
 }
 
@@ -301,8 +312,9 @@ function drawDebugOverlay(mode, evaluation, controls, target) {
   ctx.fillText(`live:${mode.id}`, 24, 32);
   ctx.fillText(`preset:${evaluation.debug.presetId}`, 24, 54);
   ctx.fillText(`target x:${toVectorSnapshot(target).x.toFixed(2)} z:${toVectorSnapshot(target).z.toFixed(2)}`, 24, 76);
-  ctx.fillText(`composer:${controls.composer} damping:${controls.damping.toFixed(2)}`, 24, 98);
-  ctx.fillText(`adapter:@viewrig/adapter-three`, 24, 120);
+  ctx.fillText(`driver:${controls.railDriver} duration:${controls.duration.toFixed(2)}`, 24, 98);
+  ctx.fillText(`composer:${controls.composer} damping:${controls.damping.toFixed(2)}`, 24, 120);
+  ctx.fillText(`adapter:@viewrig/adapter-three`, 24, 142);
 }
 
 function drawGalleryFrame(mode, evaluation, controls, target) {
@@ -367,7 +379,9 @@ function createPoseOutput(mode, evaluation, controls, target) {
       ...createCameraPresetTuningSnapshot(evaluation),
       composer: controls.composer,
       dampingHalfLife: controls.damping,
-      targetRailT: controls.railT
+      targetRailT: controls.railT,
+      railDriver: controls.railDriver,
+      duration: controls.duration
     },
     debug: {
       liveCameraId: evaluation.debug.liveCameraId,
@@ -401,6 +415,8 @@ for (const input of [
   distanceInput,
   shoulderInput,
   railTInput,
+  railDriverInput,
+  durationInput,
   dampingInput,
   composerInput,
   debugOverlayInput
