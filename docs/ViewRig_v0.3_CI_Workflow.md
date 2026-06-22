@@ -1,6 +1,6 @@
 # ViewRig v0.3 CI Workflow
 
-Status: R4 CI browser smoke coverage.
+Status: R6 CI and TypeDoc artifact policy.
 
 ## Scope
 
@@ -33,6 +33,8 @@ R4 extends the same CI job with:
 - Playwright browser cache at `~/.cache/ms-playwright`
 - `pnpm exec playwright install --with-deps chromium`
 - `pnpm test:browser`
+
+R6 formalizes `viewrig-api-docs` as a CI inspection artifact. It is not a Pages deployment or release artifact.
 
 Later v0.3 rounds extend this workflow with package dry-run and release governance checks.
 

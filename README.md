@@ -62,6 +62,7 @@ R15 release/Sinan buffer report lives in [ViewRig v0.2 R15 Release Sinan Buffer 
 v0.2 final report lives in [ViewRig v0.2 Final Report](docs/ViewRig_v0.2_Final_Report.md).
 v0.3 CI workflow notes live in [ViewRig v0.3 CI Workflow](docs/ViewRig_v0.3_CI_Workflow.md).
 v0.3 API governance notes live in [ViewRig v0.3 API Governance](docs/ViewRig_v0.3_API_Governance.md).
+v0.3 TypeDoc artifact policy lives in [ViewRig v0.3 TypeDoc Artifact Policy](docs/ViewRig_v0.3_TypeDoc_Artifact_Policy.md).
 
 ## MVP 路线
 
