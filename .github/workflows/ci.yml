@@ -52,6 +52,20 @@ jobs:
       - name: Boundary check
         run: pnpm boundary:check
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Browser smoke
+        run: pnpm test:browser
+
       - name: Upload API docs artifact
         uses: actions/upload-artifact@v4
         with:

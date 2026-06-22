@@ -1,6 +1,6 @@
 # ViewRig v0.3 CI Workflow
 
-Status: R3 CI API/docs/boundary coverage.
+Status: R4 CI browser smoke coverage.
 
 ## Scope
 
@@ -28,7 +28,13 @@ R3 extends the same CI job with:
 - `pnpm boundary:check`
 - API docs artifact upload from `generated-docs/api/workspace`
 
-Later v0.3 rounds extend this workflow with browser smoke, package dry-run, and release governance checks.
+R4 extends the same CI job with:
+
+- Playwright browser cache at `~/.cache/ms-playwright`
+- `pnpm exec playwright install --with-deps chromium`
+- `pnpm test:browser`
+
+Later v0.3 rounds extend this workflow with package dry-run and release governance checks.
 
 ## Local Equivalent
 
@@ -41,6 +47,8 @@ pnpm api:check
 pnpm docs:api
 pnpm docs:check
 pnpm boundary:check
+pnpm exec playwright install chromium
+pnpm test:browser
 ```
 
 ## Policy
@@ -53,6 +61,16 @@ pnpm boundary:check
 - `generated-docs/` remains ignored by git.
 - CI may upload `generated-docs/api/workspace` as the `viewrig-api-docs` artifact for inspection.
 - The artifact is not a Pages deployment and is not a release artifact.
+
+## Browser Policy
+
+CI installs Playwright-managed Chromium with browser dependencies:
+
+```bash
+pnpm exec playwright install --with-deps chromium
+```
+
+Local Windows smoke can still use the installed Edge or Chrome channel if the Playwright Chromium cache is missing. CI should prefer Playwright-managed Chromium so browser smoke does not depend on a preinstalled runner browser.
 
 ## Workflow Review
 
