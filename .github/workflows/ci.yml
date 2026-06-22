@@ -40,6 +40,9 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
+      - name: Three adapter integration smoke
+        run: pnpm --filter @viewrig/adapter-three test
+
       - name: API report check
         run: pnpm api:check
 

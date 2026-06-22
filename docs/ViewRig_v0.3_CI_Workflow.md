@@ -1,6 +1,6 @@
 # ViewRig v0.3 CI Workflow
 
-Status: R8 CI package metadata dry-run.
+Status: R9 CI Three adapter smoke.
 
 ## Scope
 
@@ -44,6 +44,10 @@ R8 adds:
 
 - `pnpm package:dry-run`
 
+R9 adds:
+
+- `pnpm --filter @viewrig/adapter-three test`
+
 Later v0.3 rounds extend this workflow with release candidate audit checks.
 
 ## Local Equivalent
@@ -53,6 +57,7 @@ pnpm install --frozen-lockfile
 pnpm build
 pnpm typecheck
 pnpm test
+pnpm --filter @viewrig/adapter-three test
 pnpm api:check
 pnpm docs:api
 pnpm docs:check

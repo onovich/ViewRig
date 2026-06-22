@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 
 const packagePaths = [
@@ -34,13 +34,33 @@ function runChangesetStatus(args) {
   };
 }
 
-function hasEmptyChangeset() {
-  for (const fileName of readdirSync(".changeset")) {
-    if (!fileName.endsWith(".md") || fileName === "README.md") {
+function gitLines(args) {
+  const result = spawnSync("git", args, {
+    cwd: process.cwd(),
+    encoding: "utf8"
+  });
+
+  if (result.status !== 0) {
+    throw new Error(`Git command failed: git ${args.join(" ")}\n${result.stdout ?? ""}${result.stderr ?? ""}`);
+  }
+
+  return (result.stdout ?? "").split(/\r?\n/).filter((line) => line.length > 0);
+}
+
+function currentChangesetFiles() {
+  return new Set([
+    ...gitLines(["diff", "--name-only", "--diff-filter=AM", "HEAD", "--", ".changeset"]),
+    ...gitLines(["ls-files", "--others", "--exclude-standard", "--", ".changeset"])
+  ]);
+}
+
+function hasCurrentEmptyChangeset() {
+  for (const fileName of currentChangesetFiles()) {
+    if (!fileName.endsWith(".md") || fileName === ".changeset/README.md") {
       continue;
     }
 
-    const content = readFileSync(`.changeset/${fileName}`, "utf8").replace(/\r\n/g, "\n").trim();
+    const content = readFileSync(fileName, "utf8").replace(/\r\n/g, "\n").trim();
     if (content === "---\n---") {
       return true;
     }
@@ -61,7 +81,7 @@ for (const packagePath of packagePaths) {
 
 let result = runChangesetStatus(["--since", "HEAD"]);
 
-if (result.status !== 0 && result.output.includes("Some packages have been changed but no changesets were found") && hasEmptyChangeset()) {
+if (result.status !== 0 && result.output.includes("Some packages have been changed but no changesets were found") && hasCurrentEmptyChangeset()) {
   result = runChangesetStatus([]);
 }
 

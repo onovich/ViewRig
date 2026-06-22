@@ -3,9 +3,14 @@ import { OrthographicCamera, PerspectiveCamera } from "three";
 import { describe, expect, it, vi } from "vitest";
 import { applyThreeCameraState } from "./index";
 
+function projectionElements(camera: PerspectiveCamera | OrthographicCamera): number[] {
+  return [...camera.projectionMatrix.elements];
+}
+
 describe("applyThreeCameraState Three integration", () => {
   it("writes a CameraState into a real PerspectiveCamera", () => {
     const camera = new PerspectiveCamera(50, 16 / 9, 0.1, 1000);
+    const beforeProjection = projectionElements(camera);
     const updateProjectionMatrix = vi.spyOn(camera, "updateProjectionMatrix");
     const state = evaluateFixedPose({
       position: [1, 2, 3],
@@ -21,10 +26,12 @@ describe("applyThreeCameraState Three integration", () => {
     expect(camera.near).toBe(0.2);
     expect(camera.far).toBe(500);
     expect(updateProjectionMatrix).toHaveBeenCalledTimes(1);
+    expect(projectionElements(camera)).not.toEqual(beforeProjection);
   });
 
   it("writes an orthographic CameraState into a real OrthographicCamera", () => {
     const camera = new OrthographicCamera(-2, 2, 2, -2, 0.1, 1000);
+    const beforeProjection = projectionElements(camera);
     const updateProjectionMatrix = vi.spyOn(camera, "updateProjectionMatrix");
     const state = evaluateFixedPose({
       position: [-1, 4, 8],
@@ -40,5 +47,27 @@ describe("applyThreeCameraState Three integration", () => {
     expect(camera.near).toBe(0.5);
     expect(camera.far).toBe(80);
     expect(updateProjectionMatrix).toHaveBeenCalledTimes(1);
+    expect(projectionElements(camera)).not.toEqual(beforeProjection);
+  });
+
+  it("preserves real camera clip planes when optional lens fields are missing", () => {
+    const camera = new PerspectiveCamera(45, 4 / 3, 0.25, 90);
+    const beforeProjection = projectionElements(camera);
+    const updateProjectionMatrix = vi.spyOn(camera, "updateProjectionMatrix");
+    const state = evaluateFixedPose({
+      position: [0, 1, 2],
+      rotation: [0, 0, 0, 1],
+      lens: { projection: "perspective", fov: 65 }
+    });
+
+    applyThreeCameraState(camera, state);
+
+    expect(camera.position.toArray()).toEqual([0, 1, 2]);
+    expect(camera.quaternion.toArray()).toEqual([0, 0, 0, 1]);
+    expect(camera.fov).toBe(65);
+    expect(camera.near).toBe(0.25);
+    expect(camera.far).toBe(90);
+    expect(updateProjectionMatrix).toHaveBeenCalledTimes(1);
+    expect(projectionElements(camera)).not.toEqual(beforeProjection);
   });
 });

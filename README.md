@@ -65,6 +65,7 @@ v0.3 API governance notes live in [ViewRig v0.3 API Governance](docs/ViewRig_v0.
 v0.3 TypeDoc artifact policy lives in [ViewRig v0.3 TypeDoc Artifact Policy](docs/ViewRig_v0.3_TypeDoc_Artifact_Policy.md).
 v0.3 Changesets dry-run notes live in [ViewRig v0.3 Changesets Dry-Run](docs/ViewRig_v0.3_Changesets_Dry_Run.md).
 v0.3 package metadata audit lives in [ViewRig v0.3 Package Metadata Audit](docs/ViewRig_v0.3_Package_Metadata_Audit.md).
+v0.3 Three integration smoke notes live in [ViewRig v0.3 Three Integration Smoke](docs/ViewRig_v0.3_Three_Integration_Smoke.md).
 
 ## MVP 路线
 
