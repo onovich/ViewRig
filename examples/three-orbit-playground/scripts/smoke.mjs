@@ -151,6 +151,19 @@ function assertClose(actual, expected, label) {
   }
 }
 
+function assertPoseVector(vector, label) {
+  for (const axis of ["x", "y", "z"]) {
+    if (typeof vector?.[axis] !== "number" || !Number.isFinite(vector[axis])) {
+      throw new Error(`${label}.${axis} must be a finite number: ${JSON.stringify(vector)}`);
+    }
+  }
+}
+
+function assertPoseShape(pose) {
+  assertPoseVector(pose?.position, "pose.position");
+  assertPoseVector(pose?.target, "pose.target");
+}
+
 async function setRange(page, selector, value) {
   await page.locator(selector).evaluate((input, nextValue) => {
     input.value = String(nextValue);
@@ -163,14 +176,17 @@ async function readCanvasSignal(page) {
     const context = canvas.getContext("2d");
     const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
     let paintedPixels = 0;
+    let colorHash = 0;
 
     for (let i = 3; i < data.length; i += 4) {
       if (data[i] !== 0) {
         paintedPixels += 1;
+        colorHash = (colorHash + data[i - 3] * 3 + data[i - 2] * 5 + data[i - 1] * 7 + i) % 1_000_000_007;
       }
     }
 
     return {
+      colorHash,
       height: canvas.height,
       paintedPixels,
       width: canvas.width
@@ -221,6 +237,14 @@ try {
   page.on("pageerror", (error) => {
     consoleErrors.push(error.message);
   });
+  page.on("requestfailed", (request) => {
+    consoleErrors.push(`Request failed: ${request.url()} ${request.failure()?.errorText ?? "unknown"}`);
+  });
+  page.on("response", (browserResponse) => {
+    if (browserResponse.status() >= 400) {
+      consoleErrors.push(`HTTP ${browserResponse.status()}: ${browserResponse.url()}`);
+    }
+  });
 
   const response = await page.goto(url, { waitUntil: "networkidle" });
   if (response == null || !response.ok()) {
@@ -238,14 +262,22 @@ try {
   await setRange(page, "#distance", 7.2);
 
   const pose = JSON.parse(await page.locator("#pose").textContent());
+  assertPoseShape(pose);
   assertClose(pose.position.x, -3.12, "pose.position.x");
   assertClose(pose.position.y, 3.6, "pose.position.y");
   assertClose(pose.position.z, 5.4, "pose.position.z");
+  assertClose(pose.target.x, 0, "pose.target.x");
+  assertClose(pose.target.y, 0, "pose.target.y");
+  assertClose(pose.target.z, 0, "pose.target.z");
 
   await page.locator("#debugOverlay").uncheck();
   const debugOff = await page.locator("#debugState").textContent();
   if (debugOff !== "debug:off") {
     throw new Error(`Debug toggle did not update off state: ${debugOff}`);
+  }
+  const debugOffCanvasSignal = await readCanvasSignal(page);
+  if (debugOffCanvasSignal.paintedPixels < 1_000) {
+    throw new Error(`Canvas became blank with debug off: ${JSON.stringify(debugOffCanvasSignal)}`);
   }
 
   await page.locator("#debugOverlay").check();
@@ -257,6 +289,9 @@ try {
   const secondCanvasSignal = await readCanvasSignal(page);
   if (secondCanvasSignal.paintedPixels < 1_000) {
     throw new Error(`Canvas became blank after interaction: ${JSON.stringify(secondCanvasSignal)}`);
+  }
+  if (secondCanvasSignal.colorHash === debugOffCanvasSignal.colorHash) {
+    throw new Error(`Debug overlay did not visibly change the canvas: ${JSON.stringify({ debugOffCanvasSignal, secondCanvasSignal })}`);
   }
 
   if (consoleErrors.length > 0) {

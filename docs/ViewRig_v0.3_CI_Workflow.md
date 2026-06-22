@@ -1,6 +1,6 @@
 # ViewRig v0.3 CI Workflow
 
-Status: R9 CI Three adapter smoke.
+Status: R10 CI browser smoke hardening.
 
 ## Scope
 
@@ -47,6 +47,10 @@ R8 adds:
 R9 adds:
 
 - `pnpm --filter @viewrig/adapter-three test`
+
+R10 hardens:
+
+- `pnpm test:browser`
 
 Later v0.3 rounds extend this workflow with release candidate audit checks.
 
