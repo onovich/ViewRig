@@ -382,7 +382,16 @@ try {
   if (followTargetDelta < 0.2) {
     throw new Error(`Follow target did not move enough: ${JSON.stringify({ before: followPose.target, after: movingFollowPose.target })}`);
   }
-  await assertMode(page, "firstPerson", "first-person-gameplay");
+  await setRange(page, "#pitch", 75);
+  const firstPersonPose = await assertMode(page, "firstPerson", "first-person-gameplay");
+  assertIntegrationRole(firstPersonPose, "eye-anchor", "POC-2");
+  assertClose(firstPersonPose.state.position.y - firstPersonPose.target.y, 1.65, "firstPerson eye offset");
+  assertClose(firstPersonPose.tuning.eyeHeight, 1.65, "firstPerson eyeHeight tuning");
+  if (firstPersonPose.integration.pitchClamp?.max !== 60 || firstPersonPose.integration.appliedPitch !== 60) {
+    throw new Error(`First-person pitch clamp did not apply: ${JSON.stringify(firstPersonPose.integration)}`);
+  }
+
+  await setRange(page, "#pitch", 30);
   await setRange(page, "#railT", 0.72);
   const railPose = await assertMode(page, "railShot", "rail-shot");
   if (railPose.tuning.railT !== 0.72 || railPose.tuning.input !== 0.72) {

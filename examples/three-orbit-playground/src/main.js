@@ -3,6 +3,7 @@ import { applyThreeCameraState } from "@viewrig/adapter-three";
 import {
   createCameraPresetTuningSnapshot,
   createPolylinePath,
+  createYawPitchChannel,
   evaluateFirstPersonGameplayPreset,
   evaluateFollowShowcasePreset,
   evaluateOrbitShowcasePreset,
@@ -107,11 +108,22 @@ const galleryModes = [
     label: "First Person",
     role: "eye-anchor",
     sinanPoc: "POC-2",
+    pitchClamp: {
+      min: -45,
+      max: 60
+    },
     target: [0, 0, 3.5],
     evaluate(controls, target) {
+      const look = createYawPitchChannel("gallery-first-person-look", {
+        yaw: controls.yaw,
+        pitch: controls.pitch,
+        minPitch: this.pitchClamp.min,
+        maxPitch: this.pitchClamp.max
+      });
+
       return evaluateFirstPersonGameplayPreset({
         target,
-        look: { yaw: controls.yaw, pitch: controls.pitch },
+        look,
         eyeOffset: [0, 1.65, 0],
         lens: {
           ...lens,
@@ -145,6 +157,10 @@ const galleryModes = [
 
 const galleryById = new Map(galleryModes.map((mode) => [mode.id, mode]));
 const camera = new PerspectiveCamera(lens.fov, canvas.width / canvas.height, lens.near, lens.far);
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
 
 function resolveGalleryTarget(mode, controls) {
   return typeof mode.target === "function" ? mode.target(controls) : mode.target;
@@ -324,7 +340,11 @@ function createPoseOutput(mode, evaluation, controls, target) {
     integration: {
       role: mode.role,
       sinanPoc: mode.sinanPoc,
-      sourceOfTruth: "ViewRig example input only"
+      sourceOfTruth: "ViewRig example input only",
+      ...(mode.pitchClamp === undefined ? {} : {
+        pitchClamp: mode.pitchClamp,
+        appliedPitch: clamp(controls.pitch, mode.pitchClamp.min, mode.pitchClamp.max)
+      })
     },
     state: {
       position: evaluation.state.position,
