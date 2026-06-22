@@ -31,8 +31,12 @@ idempotency:
   last_goalnext_trigger: READY_PRODUCT_USABILITY
   last_goalnext_trigger_at: 2026-06-22T17:24:39.1413219+08:00
   last_goalnext_trigger_reason: Owner accepted planner recommendation to run v0.5 Product Usability / Camera Experience Hardening instead of real release execution.
-  last_planner_dispatch_status: pending
+  last_planner_dispatch_status: sent
   last_planner_dispatch_guide: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.5_Goal模式执行指南.md
+  last_planner_dispatch_commit: 5842e67
+  last_planner_dispatch_thread_id: 019ee57a-ab7c-71a0-b6dc-f513457f5ba4
+  last_planner_dispatch_at: 2026-06-22T17:30:23.0462199+08:00
+  last_planner_dispatch: v0.5 Product Usability / Camera Experience Hardening dispatched to executor with $donextgoal.
 
 notes:
   - v0.4 was already completed and reported with final commit 4144cfc.
