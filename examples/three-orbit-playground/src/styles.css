@@ -41,7 +41,8 @@ label {
   gap: 8px;
 }
 
-input {
+input,
+select {
   width: 100%;
 }
 

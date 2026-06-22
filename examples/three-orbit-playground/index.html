@@ -3,15 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ViewRig Orbit Playground</title>
+    <title>ViewRig Camera Playground</title>
     <link rel="stylesheet" href="./src/styles.css">
   </head>
   <body>
     <main class="app">
-      <section class="viewport" aria-label="Orbit camera playground">
+      <section class="viewport" aria-label="ViewRig camera playground">
         <canvas id="view" width="960" height="540"></canvas>
       </section>
       <aside class="panel">
+        <label>
+          Mode
+          <select id="mode">
+            <option value="orbit">Orbit</option>
+            <option value="thirdPerson">Third Person</option>
+          </select>
+        </label>
         <label>
           Yaw
           <input id="yaw" type="range" min="-180" max="180" value="45">

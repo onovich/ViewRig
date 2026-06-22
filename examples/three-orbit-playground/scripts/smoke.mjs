@@ -22,19 +22,19 @@ const html = readFileSync(resolve(root, "index.html"), "utf8");
 const js = readFileSync(resolve(root, "src/main.js"), "utf8");
 const css = readFileSync(resolve(root, "src/styles.css"), "utf8");
 
-for (const token of ["#view", "#yaw", "#pitch", "#distance", "#debugOverlay", "#debugState", "#pose"]) {
+for (const token of ["#view", "#mode", "#yaw", "#pitch", "#distance", "#debugOverlay", "#debugState", "#pose"]) {
   if (!html.includes(token.slice(1)) && !js.includes(token)) {
     throw new Error(`Missing smoke token: ${token}`);
   }
 }
 
-for (const token of ["addEventListener(\"input\", render)", "JSON.stringify(pose", "orbitPose(", "drawDebugOverlay(", "ctx.setLineDash"]) {
+for (const token of ["addEventListener(\"input\", render)", "JSON.stringify(pose", "orbitPose(", "thirdPersonPose(", "computePose(", "drawDebugOverlay(", "ctx.setLineDash"]) {
   if (!js.includes(token)) {
     throw new Error(`Missing interactive pose token: ${token}`);
   }
 }
 
-for (const token of ["canvas", "input", "output", "pre"]) {
+for (const token of ["canvas", "input", "select", "output", "pre"]) {
   if (!css.includes(token)) {
     throw new Error(`Missing playground style token: ${token}`);
   }
@@ -171,6 +171,10 @@ async function setRange(page, selector, value) {
   }, value);
 }
 
+async function setSelect(page, selector, value) {
+  await page.locator(selector).selectOption(value);
+}
+
 async function readCanvasSignal(page) {
   return page.locator("#view").evaluate((canvas) => {
     const context = canvas.getContext("2d");
@@ -263,12 +267,29 @@ try {
 
   const pose = JSON.parse(await page.locator("#pose").textContent());
   assertPoseShape(pose);
+  if (pose.mode !== "orbit" || pose.presetId !== "orbit-showcase") {
+    throw new Error(`Unexpected orbit pose identity: ${JSON.stringify(pose)}`);
+  }
   assertClose(pose.position.x, -3.12, "pose.position.x");
   assertClose(pose.position.y, 3.6, "pose.position.y");
   assertClose(pose.position.z, 5.4, "pose.position.z");
   assertClose(pose.target.x, 0, "pose.target.x");
   assertClose(pose.target.y, 0, "pose.target.y");
   assertClose(pose.target.z, 0, "pose.target.z");
+
+  await setSelect(page, "#mode", "thirdPerson");
+  const thirdPersonPose = JSON.parse(await page.locator("#pose").textContent());
+  assertPoseShape(thirdPersonPose);
+  if (thirdPersonPose.mode !== "thirdPerson" || thirdPersonPose.presetId !== "third-person-gameplay") {
+    throw new Error(`Unexpected third-person pose identity: ${JSON.stringify(thirdPersonPose)}`);
+  }
+  assertClose(thirdPersonPose.position.x, -2.67, "thirdPersonPose.position.x");
+  assertClose(thirdPersonPose.position.y, 5.15, "thirdPersonPose.position.y");
+  assertClose(thirdPersonPose.position.z, 5.4, "thirdPersonPose.position.z");
+  const thirdPersonCanvasSignal = await readCanvasSignal(page);
+  if (thirdPersonCanvasSignal.paintedPixels < 1_000) {
+    throw new Error(`Canvas became blank after mode switch: ${JSON.stringify(thirdPersonCanvasSignal)}`);
+  }
 
   await page.locator("#debugOverlay").uncheck();
   const debugOff = await page.locator("#debugState").textContent();
@@ -282,7 +303,7 @@ try {
 
   await page.locator("#debugOverlay").check();
   const debugOn = await page.locator("#debugState").textContent();
-  if (debugOn !== "debug:on live:orbit") {
+  if (debugOn !== "debug:on live:thirdPerson") {
     throw new Error(`Debug toggle did not update on state: ${debugOn}`);
   }
 

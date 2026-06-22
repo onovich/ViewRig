@@ -1,5 +1,6 @@
 const canvas = document.querySelector("#view");
 const ctx = canvas.getContext("2d");
+const modeInput = document.querySelector("#mode");
 const yawInput = document.querySelector("#yaw");
 const pitchInput = document.querySelector("#pitch");
 const distanceInput = document.querySelector("#distance");
@@ -7,18 +8,57 @@ const debugOverlayInput = document.querySelector("#debugOverlay");
 const debugStateOutput = document.querySelector("#debugState");
 const poseOutput = document.querySelector("#pose");
 
-function orbitPose({ yaw, pitch, distance }) {
+function resolveOrbitOffset({ yaw, pitch, distance }) {
   const yawRad = yaw * Math.PI / 180;
   const pitchRad = pitch * Math.PI / 180;
   const cosPitch = Math.cos(pitchRad);
   return {
-    position: {
-      x: Math.sin(yawRad) * cosPitch * distance,
-      y: Math.sin(pitchRad) * distance,
-      z: Math.cos(yawRad) * cosPitch * distance
-    },
-    target: { x: 0, y: 0, z: 0 }
+    x: Math.sin(yawRad) * cosPitch * distance,
+    y: Math.sin(pitchRad) * distance,
+    z: Math.cos(yawRad) * cosPitch * distance
   };
+}
+
+function orbitPose({ yaw, pitch, distance }) {
+  const offset = resolveOrbitOffset({ yaw, pitch, distance });
+  return {
+    mode: "orbit",
+    presetId: "orbit-showcase",
+    position: offset,
+    pivot: { x: 0, y: 0, z: 0 },
+    target: { x: 0, y: 0, z: 0 },
+    tuning: { distance }
+  };
+}
+
+function thirdPersonPose({ yaw, pitch, distance }) {
+  const target = { x: 0, y: 0, z: 0 };
+  const pivot = { x: 0, y: 1.5, z: 0 };
+  const shoulderOffset = { x: 0.45, y: 0.05, z: 0 };
+  const offset = resolveOrbitOffset({ yaw, pitch, distance });
+  return {
+    mode: "thirdPerson",
+    presetId: "third-person-gameplay",
+    position: {
+      x: pivot.x + offset.x + shoulderOffset.x,
+      y: pivot.y + offset.y + shoulderOffset.y,
+      z: pivot.z + offset.z + shoulderOffset.z
+    },
+    pivot,
+    target,
+    tuning: {
+      distance,
+      shoulder: 1
+    }
+  };
+}
+
+function computePose({ mode, yaw, pitch, distance }) {
+  if (mode === "thirdPerson") {
+    return thirdPersonPose({ yaw, pitch, distance });
+  }
+
+  return orbitPose({ yaw, pitch, distance });
 }
 
 function projectTopDown(point) {
@@ -54,7 +94,7 @@ function drawDebugOverlay({ pose, camera, target }) {
 
   ctx.font = "14px system-ui, sans-serif";
   ctx.fillStyle = "#68e6a6";
-  ctx.fillText("live: orbit", 24, 32);
+  ctx.fillText(`live: ${pose.mode}`, 24, 32);
   ctx.fillText(`camera x:${pose.position.x.toFixed(2)} z:${pose.position.z.toFixed(2)}`, 24, 54);
   ctx.fillText(`target x:${pose.target.x.toFixed(2)} z:${pose.target.z.toFixed(2)}`, 24, 76);
 
@@ -70,13 +110,15 @@ function drawDebugOverlay({ pose, camera, target }) {
 }
 
 function render() {
-  const pose = orbitPose({
+  const pose = computePose({
+    mode: modeInput.value,
     yaw: Number(yawInput.value),
     pitch: Number(pitchInput.value),
     distance: Number(distanceInput.value)
   });
   const camera = projectTopDown(pose.position);
   const target = projectTopDown(pose.target);
+  const pivot = projectTopDown(pose.pivot);
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.strokeStyle = "#39414c";
@@ -97,7 +139,7 @@ function render() {
   ctx.strokeStyle = "#7cc7ff";
   ctx.lineWidth = 3;
   ctx.beginPath();
-  ctx.moveTo(target.x, target.y);
+  ctx.moveTo(pivot.x, pivot.y);
   ctx.lineTo(camera.x, camera.y);
   ctx.stroke();
 
@@ -105,6 +147,13 @@ function render() {
   ctx.beginPath();
   ctx.arc(target.x, target.y, 10, 0, Math.PI * 2);
   ctx.fill();
+
+  if (pose.mode === "thirdPerson") {
+    ctx.fillStyle = "#68e6a6";
+    ctx.beginPath();
+    ctx.arc(pivot.x, pivot.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+  }
 
   ctx.fillStyle = "#ffcf66";
   ctx.beginPath();
@@ -115,11 +164,11 @@ function render() {
     drawDebugOverlay({ pose, camera, target });
   }
 
-  debugStateOutput.textContent = debugOverlayInput.checked ? "debug:on live:orbit" : "debug:off";
+  debugStateOutput.textContent = debugOverlayInput.checked ? `debug:on live:${pose.mode}` : "debug:off";
   poseOutput.textContent = JSON.stringify(pose, null, 2);
 }
 
-for (const input of [yawInput, pitchInput, distanceInput, debugOverlayInput]) {
+for (const input of [modeInput, yawInput, pitchInput, distanceInput, debugOverlayInput]) {
   input.addEventListener("input", render);
 }
 
