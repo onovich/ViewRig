@@ -74,6 +74,7 @@ v0.3 R14 browser/Three buffer report lives in [ViewRig v0.3 R14 Browser/Three Bu
 v0.3 R15 release/Sinan buffer report lives in [ViewRig v0.3 R15 Release/Sinan Buffer Report](docs/ViewRig_v0.3_R15_Release_Sinan_Buffer_Report.md).
 v0.3 final report lives in [ViewRig v0.3 Final Report](docs/ViewRig_v0.3_Final_Report.md).
 v0.4 goal guide lives in [ViewRig v0.4 Goal 模式执行指南](docs/ViewRig_v0.4_Goal模式执行指南.md).
+v0.4 release decision register lives in [ViewRig v0.4 Release Decision Register](docs/ViewRig_v0.4_Release_Decision_Register.md).
 
 ## MVP 路线
 
