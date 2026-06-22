@@ -21,6 +21,14 @@ idempotency:
   last_planner_notification_state: DUPLICATE
   last_planner_notification_thread_id: 019ee4c1-a5a8-7ff2-9176-2cecd08d9ce3
   last_dispatch_handled_as: idempotent_duplicate_completed
+  last_check_status: PASS
+  last_check_phase: ViewRig v0.4
+  last_check_commit: 53ea7ef11f14c4ae260468f5d0824ed70246fa96
+  last_check_report: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.4_Final_Report.md
+  last_check_at: 2026-06-22T17:08:14.5782451+08:00
+  last_goalnext_trigger: BLOCKED_PENDING_OWNER_DECISIONS
+  last_goalnext_trigger_at: 2026-06-22T17:08:14.5782451+08:00
+  last_goalnext_trigger_reason: v0.5 release execution requires owner decisions for license, package visibility, npm access, trusted publishing, Changesets version workflow, GitHub tag/release, and TypeDoc publication target.
 
 notes:
   - v0.4 was already completed and reported with final commit 4144cfc.
