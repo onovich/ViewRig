@@ -31,6 +31,16 @@ importers:
         version: 4.1.9(@types/node@24.13.2)(vite@8.0.16(@types/node@24.13.2)(yaml@2.9.0))
 
   examples/three-orbit-playground:
+    dependencies:
+      '@viewrig/adapter-three':
+        specifier: workspace:*
+        version: link:../../packages/adapter-three
+      '@viewrig/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      three:
+        specifier: ^0.184.0
+        version: 0.184.0
     devDependencies:
       vite:
         specifier: ^8.0.16

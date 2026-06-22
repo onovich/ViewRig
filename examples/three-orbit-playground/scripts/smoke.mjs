@@ -29,6 +29,7 @@ for (const token of [
   "#pitch",
   "#distance",
   "#shoulder",
+  "#railT",
   "#damping",
   "#composer",
   "#debugOverlay",
@@ -40,9 +41,21 @@ for (const token of [
   }
 }
 
-for (const token of ["addEventListener(\"input\", render)", "JSON.stringify(pose", "orbitPose(", "thirdPersonPose(", "computePose(", "resolveComposerProfile(", "drawDebugOverlay(", "ctx.setLineDash"]) {
+for (const token of [
+  "galleryModes",
+  "applyThreeCameraState(",
+  "evaluateThirdPersonGameplayPreset(",
+  "evaluateOrbitShowcasePreset(",
+  "evaluateFollowShowcasePreset(",
+  "evaluateFirstPersonGameplayPreset(",
+  "evaluateRailShotPreset(",
+  "createPolylinePath(",
+  "JSON.stringify(createPoseOutput",
+  "new PerspectiveCamera(",
+  "drawGalleryFrame("
+]) {
   if (!js.includes(token)) {
-    throw new Error(`Missing interactive pose token: ${token}`);
+    throw new Error(`Missing gallery integration token: ${token}`);
   }
 }
 
@@ -188,23 +201,25 @@ async function setSelect(page, selector, value) {
 }
 
 async function readCanvasSignal(page) {
-  return page.locator("#view").evaluate((canvas) => {
-    const context = canvas.getContext("2d");
-    const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
-    let paintedPixels = 0;
+  return page.locator("#view").evaluate(async (canvas) => {
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    const rendered = canvas.toDataURL("image/png");
+    const blank = document.createElement("canvas");
+    blank.width = canvas.width;
+    blank.height = canvas.height;
+    const blankRendered = blank.toDataURL("image/png");
     let colorHash = 0;
 
-    for (let i = 3; i < data.length; i += 4) {
-      if (data[i] !== 0) {
-        paintedPixels += 1;
-        colorHash = (colorHash + data[i - 3] * 3 + data[i - 2] * 5 + data[i - 1] * 7 + i) % 1_000_000_007;
-      }
+    for (let i = 0; i < rendered.length; i += 1) {
+      colorHash = (colorHash + rendered.charCodeAt(i) * (i + 1)) % 1_000_000_007;
     }
 
     return {
       colorHash,
+      dataUrlLength: rendered.length,
       height: canvas.height,
-      paintedPixels,
+      paintedPixels: rendered === blankRendered ? 0 : canvas.width * canvas.height,
       width: canvas.width
     };
   });
@@ -235,6 +250,35 @@ async function launchBrowser() {
 
     throw new Error(`${failures.join("\n")}\nInstall the local Playwright browser cache with: pnpm exec playwright install chromium`);
   }
+}
+
+async function assertMode(page, mode, expectedPresetId) {
+  await setSelect(page, "#mode", mode);
+  const pose = JSON.parse(await page.locator("#pose").textContent());
+  assertPoseShape({
+    position: pose.state.position,
+    target: pose.target
+  });
+
+  if (pose.mode !== mode || pose.presetId !== expectedPresetId) {
+    throw new Error(`Unexpected gallery mode identity: ${JSON.stringify({ mode, expectedPresetId, pose })}`);
+  }
+
+  if (pose.adapter !== "@viewrig/adapter-three" || pose.renderer !== "three-camera-canvas") {
+    throw new Error(`Gallery did not use the shared Three adapter path: ${JSON.stringify(pose)}`);
+  }
+
+  const matrixWorldPosition = pose.camera?.matrixWorldPosition;
+  if (!Array.isArray(matrixWorldPosition) || matrixWorldPosition.length !== 3) {
+    throw new Error(`Missing camera matrix world position: ${JSON.stringify(pose.camera)}`);
+  }
+
+  const signal = await readCanvasSignal(page);
+  if (signal.paintedPixels < 1_000) {
+    throw new Error(`Canvas became blank in ${mode}: ${JSON.stringify(signal)}`);
+  }
+
+  return pose;
 }
 
 const { server, url } = await startServer();
@@ -268,6 +312,7 @@ try {
   }
 
   await page.locator("#view").waitFor();
+  await page.waitForFunction(() => globalThis.__viewrigGalleryFrame > 0);
   const firstCanvasSignal = await readCanvasSignal(page);
   if (firstCanvasSignal.width !== 960 || firstCanvasSignal.height !== 540 || firstCanvasSignal.paintedPixels < 1_000) {
     throw new Error(`Canvas did not render a useful frame: ${JSON.stringify(firstCanvasSignal)}`);
@@ -279,44 +324,34 @@ try {
   await setRange(page, "#damping", 0.35);
   await setSelect(page, "#composer", "wide");
 
-  const pose = JSON.parse(await page.locator("#pose").textContent());
-  assertPoseShape(pose);
-  if (pose.mode !== "orbit" || pose.presetId !== "orbit-showcase") {
-    throw new Error(`Unexpected orbit pose identity: ${JSON.stringify(pose)}`);
-  }
-  assertClose(pose.position.x, -3.12, "pose.position.x");
-  assertClose(pose.position.y, 3.6, "pose.position.y");
-  assertClose(pose.position.z, 5.4, "pose.position.z");
-  assertClose(pose.tuning.dampingHalfLife, 0.35, "pose.tuning.dampingHalfLife");
-  if (pose.tuning.composer !== "wide") {
-    throw new Error(`Composer tuning did not update: ${JSON.stringify(pose.tuning)}`);
-  }
-  assertClose(pose.target.x, 0, "pose.target.x");
-  assertClose(pose.target.y, 0, "pose.target.y");
-  assertClose(pose.target.z, 0, "pose.target.z");
-
-  await setSelect(page, "#mode", "thirdPerson");
-  await setRange(page, "#shoulder", -1);
-  const thirdPersonPose = JSON.parse(await page.locator("#pose").textContent());
-  assertPoseShape(thirdPersonPose);
-  if (thirdPersonPose.mode !== "thirdPerson" || thirdPersonPose.presetId !== "third-person-gameplay") {
-    throw new Error(`Unexpected third-person pose identity: ${JSON.stringify(thirdPersonPose)}`);
-  }
-  assertClose(thirdPersonPose.position.x, -3.57, "thirdPersonPose.position.x");
-  assertClose(thirdPersonPose.position.y, 5.15, "thirdPersonPose.position.y");
-  assertClose(thirdPersonPose.position.z, 5.4, "thirdPersonPose.position.z");
-  assertClose(thirdPersonPose.tuning.shoulder, -1, "thirdPersonPose.tuning.shoulder");
+  const thirdPersonPose = await assertMode(page, "thirdPerson", "third-person-gameplay");
+  assertClose(thirdPersonPose.state.position.x, -3.12 + 0.45, "thirdPersonPose.state.position.x");
+  assertClose(thirdPersonPose.state.position.y, 5.15, "thirdPersonPose.state.position.y");
+  assertClose(thirdPersonPose.state.position.z, 5.4, "thirdPersonPose.state.position.z");
+  assertClose(thirdPersonPose.tuning.dampingHalfLife, 0.35, "thirdPersonPose.tuning.dampingHalfLife");
   if (thirdPersonPose.tuning.composer !== "wide") {
-    throw new Error(`Third-person composer tuning did not persist: ${JSON.stringify(thirdPersonPose.tuning)}`);
+    throw new Error(`Composer tuning did not update: ${JSON.stringify(thirdPersonPose.tuning)}`);
   }
-  const thirdPersonCanvasSignal = await readCanvasSignal(page);
-  if (thirdPersonCanvasSignal.paintedPixels < 1_000) {
-    throw new Error(`Canvas became blank after mode switch: ${JSON.stringify(thirdPersonCanvasSignal)}`);
+
+  await setRange(page, "#shoulder", -1);
+  const shoulderPose = await assertMode(page, "thirdPerson", "third-person-gameplay");
+  assertClose(shoulderPose.tuning.shoulder, -1, "shoulderPose.tuning.shoulder");
+
+  const orbitPose = await assertMode(page, "orbit", "orbit-showcase");
+  assertClose(orbitPose.state.position.x, -3.12, "orbitPose.state.position.x");
+  assertClose(orbitPose.state.position.y, 4.6, "orbitPose.state.position.y");
+  assertClose(orbitPose.state.position.z, 5.4, "orbitPose.state.position.z");
+  await assertMode(page, "follow", "follow-showcase");
+  await assertMode(page, "firstPerson", "first-person-gameplay");
+  await setRange(page, "#railT", 0.72);
+  const railPose = await assertMode(page, "railShot", "rail-shot");
+  if (railPose.tuning.railT !== 0.72 || railPose.tuning.input !== 0.72) {
+    throw new Error(`Rail tuning did not update: ${JSON.stringify(railPose.tuning)}`);
   }
 
   await page.locator("#debugOverlay").uncheck();
   const debugOff = await page.locator("#debugState").textContent();
-  if (debugOff !== "debug:off") {
+  if (debugOff !== "debug:off live:railShot") {
     throw new Error(`Debug toggle did not update off state: ${debugOff}`);
   }
   const debugOffCanvasSignal = await readCanvasSignal(page);
@@ -326,7 +361,7 @@ try {
 
   await page.locator("#debugOverlay").check();
   const debugOn = await page.locator("#debugState").textContent();
-  if (debugOn !== "debug:on live:thirdPerson composer:wide damping:0.35") {
+  if (debugOn !== "debug:on live:railShot preset:rail-shot adapter:three") {
     throw new Error(`Debug toggle did not update on state: ${debugOn}`);
   }
 

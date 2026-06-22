@@ -1,3 +1,15 @@
+import { PerspectiveCamera, Vector3 } from "three";
+import { applyThreeCameraState } from "@viewrig/adapter-three";
+import {
+  createCameraPresetTuningSnapshot,
+  createPolylinePath,
+  evaluateFirstPersonGameplayPreset,
+  evaluateFollowShowcasePreset,
+  evaluateOrbitShowcasePreset,
+  evaluateRailShotPreset,
+  evaluateThirdPersonGameplayPreset
+} from "@viewrig/core";
+
 const canvas = document.querySelector("#view");
 const ctx = canvas.getContext("2d");
 const modeInput = document.querySelector("#mode");
@@ -5,205 +17,325 @@ const yawInput = document.querySelector("#yaw");
 const pitchInput = document.querySelector("#pitch");
 const distanceInput = document.querySelector("#distance");
 const shoulderInput = document.querySelector("#shoulder");
+const railTInput = document.querySelector("#railT");
 const dampingInput = document.querySelector("#damping");
 const composerInput = document.querySelector("#composer");
 const debugOverlayInput = document.querySelector("#debugOverlay");
 const debugStateOutput = document.querySelector("#debugState");
 const poseOutput = document.querySelector("#pose");
 
-const composerProfiles = {
-  center: {
-    label: "center",
-    dead: { x: 0.36, y: 0.32, width: 0.28, height: 0.36 },
-    soft: { x: 0.24, y: 0.2, width: 0.52, height: 0.6 }
-  },
-  lookAhead: {
-    label: "lookAhead",
-    dead: { x: 0.42, y: 0.3, width: 0.26, height: 0.34 },
-    soft: { x: 0.32, y: 0.18, width: 0.5, height: 0.62 }
-  },
-  wide: {
-    label: "wide",
-    dead: { x: 0.3, y: 0.28, width: 0.4, height: 0.44 },
-    soft: { x: 0.16, y: 0.14, width: 0.68, height: 0.72 }
-  }
-};
+const lens = Object.freeze({
+  projection: "perspective",
+  fov: 58,
+  near: 0.1,
+  far: 120
+});
 
-function resolveComposerProfile(composer) {
-  return composerProfiles[composer] ?? composerProfiles.center;
-}
+const railPoints = [
+  [-4, 2.2, 7],
+  [-1, 2.6, 4],
+  [3, 2.1, 0],
+  [0, 1.8, -4]
+];
+const railPath = createPolylinePath({ points: railPoints });
 
-function resolveOrbitOffset({ yaw, pitch, distance }) {
-  const yawRad = yaw * Math.PI / 180;
-  const pitchRad = pitch * Math.PI / 180;
-  const cosPitch = Math.cos(pitchRad);
-  return {
-    x: Math.sin(yawRad) * cosPitch * distance,
-    y: Math.sin(pitchRad) * distance,
-    z: Math.cos(yawRad) * cosPitch * distance
-  };
-}
-
-function orbitPose({ yaw, pitch, distance, damping, composer }) {
-  const offset = resolveOrbitOffset({ yaw, pitch, distance });
-  return {
-    mode: "orbit",
-    presetId: "orbit-showcase",
-    position: offset,
-    pivot: { x: 0, y: 0, z: 0 },
-    target: { x: 0, y: 0, z: 0 },
-    tuning: {
-      composer,
-      dampingHalfLife: damping,
-      distance
+const galleryModes = [
+  {
+    id: "thirdPerson",
+    label: "Third Person",
+    target: [0, 0, 0],
+    evaluate(controls) {
+      return evaluateThirdPersonGameplayPreset({
+        target: this.target,
+        look: { yaw: controls.yaw, pitch: controls.pitch },
+        distance: controls.distance,
+        shoulder: controls.shoulder,
+        lens
+      }, { time: controls.time });
     }
-  };
-}
-
-function thirdPersonPose({ yaw, pitch, distance, shoulder, damping, composer }) {
-  const target = { x: 0, y: 0, z: 0 };
-  const pivot = { x: 0, y: 1.5, z: 0 };
-  const shoulderOffset = { x: 0.45 * shoulder, y: 0.05 * Math.abs(shoulder), z: 0 };
-  const offset = resolveOrbitOffset({ yaw, pitch, distance });
-  return {
-    mode: "thirdPerson",
-    presetId: "third-person-gameplay",
-    position: {
-      x: pivot.x + offset.x + shoulderOffset.x,
-      y: pivot.y + offset.y + shoulderOffset.y,
-      z: pivot.z + offset.z + shoulderOffset.z
-    },
-    pivot,
-    target,
-    tuning: {
-      composer,
-      dampingHalfLife: damping,
-      distance,
-      shoulder
+  },
+  {
+    id: "orbit",
+    label: "Orbit",
+    target: [0, 0, 0],
+    evaluate(controls) {
+      return evaluateOrbitShowcasePreset({
+        target: this.target,
+        look: { yaw: controls.yaw, pitch: controls.pitch },
+        distance: controls.distance,
+        lens
+      }, { time: controls.time });
     }
-  };
-}
-
-function computePose({ mode, yaw, pitch, distance, shoulder, damping, composer }) {
-  if (mode === "thirdPerson") {
-    return thirdPersonPose({ yaw, pitch, distance, shoulder, damping, composer });
+  },
+  {
+    id: "follow",
+    label: "Follow",
+    target: [0, 0, 0],
+    evaluate(controls) {
+      return evaluateFollowShowcasePreset({
+        target: {
+          position: this.target,
+          rotation: [0, 1, 0, 0]
+        },
+        offset: [controls.shoulder * 0.5, 2, -controls.distance],
+        lens
+      }, { time: controls.time });
+    }
+  },
+  {
+    id: "firstPerson",
+    label: "First Person",
+    target: [0, 0, 3.5],
+    evaluate(controls) {
+      return evaluateFirstPersonGameplayPreset({
+        target: this.target,
+        look: { yaw: controls.yaw, pitch: controls.pitch },
+        eyeOffset: [0, 1.65, 0],
+        lens: {
+          ...lens,
+          fov: 66
+        }
+      }, { time: controls.time });
+    }
+  },
+  {
+    id: "railShot",
+    label: "Rail Shot",
+    target: [0, 0, 0],
+    evaluate(controls) {
+      return evaluateRailShotPreset({
+        path: railPath,
+        driver: {
+          type: "input",
+          channel: controls.railT
+        },
+        rotation: [0, 0, 0, 1],
+        lens: {
+          ...lens,
+          fov: 52
+        }
+      }, { time: controls.time });
+    }
   }
+];
 
-  return orbitPose({ yaw, pitch, distance, damping, composer });
-}
+const galleryById = new Map(galleryModes.map((mode) => [mode.id, mode]));
+const camera = new PerspectiveCamera(lens.fov, canvas.width / canvas.height, lens.near, lens.far);
 
-function projectTopDown(point) {
-  const scale = 34;
+function readControls() {
   return {
-    x: canvas.width * 0.5 + point.x * scale,
-    y: canvas.height * 0.5 + point.z * scale
-  };
-}
-
-function drawDebugOverlay({ pose, camera, target }) {
-  const composer = resolveComposerProfile(pose.tuning.composer);
-  const deadZone = {
-    x: canvas.width * composer.dead.x,
-    y: canvas.height * composer.dead.y,
-    width: canvas.width * composer.dead.width,
-    height: canvas.height * composer.dead.height
-  };
-  const softZone = {
-    x: canvas.width * composer.soft.x,
-    y: canvas.height * composer.soft.y,
-    width: canvas.width * composer.soft.width,
-    height: canvas.height * composer.soft.height
-  };
-
-  ctx.save();
-  ctx.setLineDash([10, 8]);
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = "#68e6a6";
-  ctx.strokeRect(softZone.x, softZone.y, softZone.width, softZone.height);
-  ctx.strokeStyle = "#ffcf66";
-  ctx.strokeRect(deadZone.x, deadZone.y, deadZone.width, deadZone.height);
-  ctx.setLineDash([]);
-
-  ctx.font = "14px system-ui, sans-serif";
-  ctx.fillStyle = "#68e6a6";
-  ctx.fillText(`live: ${pose.mode}`, 24, 32);
-  ctx.fillText(`camera x:${pose.position.x.toFixed(2)} z:${pose.position.z.toFixed(2)}`, 24, 54);
-  ctx.fillText(`target x:${pose.target.x.toFixed(2)} z:${pose.target.z.toFixed(2)}`, 24, 76);
-  ctx.fillText(`composer:${composer.label} damping:${pose.tuning.dampingHalfLife.toFixed(2)}`, 24, 98);
-
-  ctx.strokeStyle = "#ffffff";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.arc(target.x, target.y, 18, 0, Math.PI * 2);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(camera.x, camera.y, 20, 0, Math.PI * 2);
-  ctx.stroke();
-  ctx.restore();
-}
-
-function render() {
-  const pose = computePose({
-    mode: modeInput.value,
     yaw: Number(yawInput.value),
     pitch: Number(pitchInput.value),
     distance: Number(distanceInput.value),
     shoulder: Number(shoulderInput.value),
+    railT: Number(railTInput.value),
     damping: Number(dampingInput.value),
-    composer: composerInput.value
-  });
-  const camera = projectTopDown(pose.position);
-  const target = projectTopDown(pose.target);
-  const pivot = projectTopDown(pose.pivot);
+    composer: composerInput.value,
+    time: Number(railTInput.value) * 4
+  };
+}
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = "#39414c";
+function toVector3(point) {
+  return new Vector3(point.x ?? point[0], point.y ?? point[1], point.z ?? point[2]);
+}
+
+function toVectorSnapshot(point) {
+  const vector = toVector3(point);
+
+  return {
+    x: vector.x,
+    y: vector.y,
+    z: vector.z
+  };
+}
+
+function projectTopDown(point) {
+  const vector = toVector3(point);
+  const scale = 36;
+
+  return {
+    x: canvas.width * 0.5 + vector.x * scale,
+    y: canvas.height * 0.58 + vector.z * scale
+  };
+}
+
+function drawGrid() {
+  ctx.fillStyle = "#171719";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "#2f3438";
   ctx.lineWidth = 1;
+
   for (let x = 0; x <= canvas.width; x += 48) {
     ctx.beginPath();
     ctx.moveTo(x, 0);
     ctx.lineTo(x, canvas.height);
     ctx.stroke();
   }
+
   for (let y = 0; y <= canvas.height; y += 48) {
     ctx.beginPath();
     ctx.moveTo(0, y);
     ctx.lineTo(canvas.width, y);
     ctx.stroke();
   }
+}
 
-  ctx.strokeStyle = "#7cc7ff";
-  ctx.lineWidth = 3;
+function drawCircle(point, radius, fill, stroke) {
+  const projected = projectTopDown(point);
   ctx.beginPath();
-  ctx.moveTo(pivot.x, pivot.y);
-  ctx.lineTo(camera.x, camera.y);
+  ctx.arc(projected.x, projected.y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = fill;
+  ctx.fill();
+
+  if (stroke !== undefined) {
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = stroke;
+    ctx.stroke();
+  }
+}
+
+function drawLine(from, to, color, width = 3) {
+  const start = projectTopDown(from);
+  const end = projectTopDown(to);
+  ctx.beginPath();
+  ctx.moveTo(start.x, start.y);
+  ctx.lineTo(end.x, end.y);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
   ctx.stroke();
+}
 
-  ctx.fillStyle = "#f7f7f2";
+function drawRailPath() {
   ctx.beginPath();
-  ctx.arc(target.x, target.y, 10, 0, Math.PI * 2);
-  ctx.fill();
+  for (let i = 0; i < railPoints.length; i += 1) {
+    const point = projectTopDown(railPoints[i]);
+    if (i === 0) {
+      ctx.moveTo(point.x, point.y);
+    } else {
+      ctx.lineTo(point.x, point.y);
+    }
+  }
+  ctx.strokeStyle = "#f36f6f";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
 
-  if (pose.mode === "thirdPerson") {
-    ctx.fillStyle = "#68e6a6";
-    ctx.beginPath();
-    ctx.arc(pivot.x, pivot.y, 8, 0, Math.PI * 2);
-    ctx.fill();
+function drawCameraFrustum(state) {
+  const cameraPoint = projectTopDown(state.position);
+  const forward = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+  const left = new Vector3(forward.x * 1.4 - forward.z * 0.35, 0, forward.z * 1.4 + forward.x * 0.35);
+  const right = new Vector3(forward.x * 1.4 + forward.z * 0.35, 0, forward.z * 1.4 - forward.x * 0.35);
+  const leftPoint = projectTopDown({
+    x: state.position.x + left.x,
+    y: state.position.y,
+    z: state.position.z + left.z
+  });
+  const rightPoint = projectTopDown({
+    x: state.position.x + right.x,
+    y: state.position.y,
+    z: state.position.z + right.z
+  });
+
+  ctx.beginPath();
+  ctx.moveTo(cameraPoint.x, cameraPoint.y);
+  ctx.lineTo(leftPoint.x, leftPoint.y);
+  ctx.moveTo(cameraPoint.x, cameraPoint.y);
+  ctx.lineTo(rightPoint.x, rightPoint.y);
+  ctx.strokeStyle = "#ffcf66";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function drawDebugOverlay(mode, evaluation, controls) {
+  if (!debugOverlayInput.checked) {
+    return;
   }
 
-  ctx.fillStyle = "#ffcf66";
-  ctx.beginPath();
-  ctx.arc(camera.x, camera.y, 12, 0, Math.PI * 2);
-  ctx.fill();
+  drawLine(mode.target, evaluation.state.position, "#70e0ff", 2);
+  ctx.fillStyle = "#70e0ff";
+  ctx.font = "14px system-ui, sans-serif";
+  ctx.fillText(`live:${mode.id}`, 24, 32);
+  ctx.fillText(`preset:${evaluation.debug.presetId}`, 24, 54);
+  ctx.fillText(`composer:${controls.composer} damping:${controls.damping.toFixed(2)}`, 24, 76);
+  ctx.fillText(`adapter:@viewrig/adapter-three`, 24, 98);
+}
 
-  if (debugOverlayInput.checked) {
-    drawDebugOverlay({ pose, camera, target });
+function drawGalleryFrame(mode, evaluation, controls) {
+  drawGrid();
+
+  if (mode.id === "railShot" || debugOverlayInput.checked) {
+    drawRailPath();
   }
+
+  if (mode.id === "orbit") {
+    drawCircle([0, 1, 0], 18, "#f4b84a", "#fff2bf");
+  }
+
+  if (mode.id === "thirdPerson" || mode.id === "follow") {
+    drawCircle([controls.shoulder * 0.5, 0, 0], 14, "#3fcf8e", "#d8ffe9");
+  }
+
+  if (mode.id === "firstPerson") {
+    drawCircle(mode.target, 14, "#72b7ff", "#e8f5ff");
+  }
+
+  drawCircle(mode.target, 9, "#f8f5ea");
+  drawCircle(evaluation.state.position, 12, "#ffcf66", "#fff2bf");
+  drawCameraFrustum(evaluation.state);
+  drawDebugOverlay(mode, evaluation, controls);
+}
+
+function createPoseOutput(mode, evaluation, controls) {
+  return {
+    mode: mode.id,
+    label: mode.label,
+    presetId: evaluation.debug.presetId,
+    adapter: "@viewrig/adapter-three",
+    renderer: "three-camera-canvas",
+    state: {
+      position: evaluation.state.position,
+      rotation: evaluation.state.rotation,
+      lens: evaluation.state.lens,
+      time: evaluation.state.time
+    },
+    target: toVectorSnapshot(mode.target),
+    camera: {
+      position: camera.position.toArray(),
+      quaternion: camera.quaternion.toArray(),
+      matrixWorldPosition: [
+        camera.matrixWorld.elements[12],
+        camera.matrixWorld.elements[13],
+        camera.matrixWorld.elements[14]
+      ]
+    },
+    controls,
+    tuning: {
+      ...createCameraPresetTuningSnapshot(evaluation),
+      composer: controls.composer,
+      dampingHalfLife: controls.damping
+    },
+    debug: {
+      liveCameraId: evaluation.debug.liveCameraId,
+      tags: evaluation.debug.tags,
+      drawCount: evaluation.draw.length,
+      overlay: debugOverlayInput.checked
+    }
+  };
+}
+
+function render() {
+  const mode = galleryById.get(modeInput.value) ?? galleryModes[0];
+  const controls = readControls();
+  const evaluation = mode.evaluate(controls);
+
+  applyThreeCameraState(camera, evaluation.state);
+  drawGalleryFrame(mode, evaluation, controls);
 
   debugStateOutput.textContent = debugOverlayInput.checked
-    ? `debug:on live:${pose.mode} composer:${pose.tuning.composer} damping:${pose.tuning.dampingHalfLife.toFixed(2)}`
-    : "debug:off";
-  poseOutput.textContent = JSON.stringify(pose, null, 2);
+    ? `debug:on live:${mode.id} preset:${evaluation.debug.presetId} adapter:three`
+    : `debug:off live:${mode.id}`;
+  poseOutput.textContent = JSON.stringify(createPoseOutput(mode, evaluation, controls), null, 2);
+  globalThis.__viewrigGalleryFrame = (globalThis.__viewrigGalleryFrame ?? 0) + 1;
 }
 
 for (const input of [
@@ -212,6 +344,7 @@ for (const input of [
   pitchInput,
   distanceInput,
   shoulderInput,
+  railTInput,
   dampingInput,
   composerInput,
   debugOverlayInput

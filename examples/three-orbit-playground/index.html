@@ -15,8 +15,11 @@
         <label>
           Mode
           <select id="mode">
-            <option value="orbit">Orbit</option>
             <option value="thirdPerson">Third Person</option>
+            <option value="orbit">Orbit</option>
+            <option value="follow">Follow</option>
+            <option value="firstPerson">First Person</option>
+            <option value="railShot">Rail Shot</option>
           </select>
         </label>
         <label>
@@ -34,6 +37,10 @@
         <label>
           Shoulder
           <input id="shoulder" type="range" min="-1" max="1" value="1" step="0.1">
+        </label>
+        <label>
+          Rail T
+          <input id="railT" type="range" min="0" max="1" value="0.35" step="0.01">
         </label>
         <label>
           Damping

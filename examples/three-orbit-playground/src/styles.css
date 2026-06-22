@@ -4,8 +4,8 @@
 
 body {
   margin: 0;
-  background: #111;
-  color: #f7f7f2;
+  background: #151515;
+  color: #f7f4ea;
   font: 14px/1.4 system-ui, sans-serif;
 }
 
@@ -16,21 +16,22 @@ body {
 }
 
 .viewport {
+  position: relative;
   display: grid;
   place-items: center;
-  background: #171a1f;
+  background: #1a1b1b;
 }
 
 canvas {
   width: min(100%, 960px);
   aspect-ratio: 16 / 9;
-  background: #20242b;
+  background: #171719;
 }
 
 .panel {
   padding: 20px;
-  border-left: 1px solid #333941;
-  background: #1d2229;
+  border-left: 1px solid #3a3934;
+  background: #24231f;
   display: grid;
   align-content: start;
   gap: 16px;
@@ -56,7 +57,7 @@ select {
 }
 
 output {
-  color: #68e6a6;
+  color: #70e0ff;
   min-height: 20px;
 }
 
@@ -65,8 +66,8 @@ pre {
   padding: 12px;
   min-height: 120px;
   overflow: auto;
-  background: #11161c;
-  border: 1px solid #333941;
+  background: #171719;
+  border: 1px solid #3a3934;
 }
 
 @media (max-width: 760px) {
@@ -76,6 +77,6 @@ pre {
 
   .panel {
     border-left: 0;
-    border-top: 1px solid #333941;
+    border-top: 1px solid #3a3934;
   }
 }
