@@ -90,6 +90,7 @@ v0.4 Sinan feedback gate lives in [ViewRig v0.4 Sinan Feedback Gate](docs/ViewRi
 v0.4 final report lives in [ViewRig v0.4 Final Report](docs/ViewRig_v0.4_Final_Report.md).
 v0.5 goal guide lives in [ViewRig v0.5 Goal 模式执行指南](docs/ViewRig_v0.5_Goal模式执行指南.md).
 v0.5 product usability brief lives in [ViewRig v0.5 Product Usability Brief](docs/ViewRig_v0.5_Product_Usability_Brief.md).
+v0.5 preset API design lives in [ViewRig v0.5 Preset API Design](docs/ViewRig_v0.5_Preset_API_Design.md).
 
 ## MVP 路线
 
@@ -129,3 +130,4 @@ v0.5 product usability brief lives in [ViewRig v0.5 Product Usability Brief](doc
 - [v0.4 Goal 模式执行指南](docs/ViewRig_v0.4_Goal模式执行指南.md)
 - [v0.5 Goal 模式执行指南](docs/ViewRig_v0.5_Goal模式执行指南.md)
 - [v0.5 Product Usability Brief](docs/ViewRig_v0.5_Product_Usability_Brief.md)
+- [v0.5 Preset API Design](docs/ViewRig_v0.5_Preset_API_Design.md)

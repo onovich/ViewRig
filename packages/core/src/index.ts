@@ -29,6 +29,7 @@ export * from "./math/Projection.js";
 export * from "./path/CameraPath.js";
 export * from "./path/PolylinePath.js";
 export * from "./pose/RuntimeCameraPoseMapper.js";
+export * from "./presets/CameraPreset.js";
 export * from "./rigs/FixedPoseSolver.js";
 export * from "./rigs/FollowRig.js";
 export * from "./rigs/FirstPersonRig.js";

@@ -140,6 +140,122 @@ export interface CameraPath {
 }
 
 // @public (undocumented)
+export interface CameraPreset<TConfig = unknown> {
+    // (undocumented)
+    readonly config: TConfig;
+    // (undocumented)
+    evaluate(context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
+    // (undocumented)
+    readonly id: string;
+    // (undocumented)
+    readonly label: string;
+    // (undocumented)
+    readonly mode: CameraPresetMode;
+}
+
+// @public (undocumented)
+export interface CameraPresetDebugSummary {
+    // (undocumented)
+    readonly label: string;
+    // (undocumented)
+    readonly liveCameraId?: string;
+    // (undocumented)
+    readonly metadata: Readonly<Record<string, unknown>>;
+    // (undocumented)
+    readonly mode: CameraPresetMode;
+    // (undocumented)
+    readonly notes: readonly string[];
+    // (undocumented)
+    readonly presetId: string;
+    // (undocumented)
+    readonly tags: readonly string[];
+    // (undocumented)
+    readonly tuning: readonly CameraPresetTuningControl[];
+}
+
+// @public (undocumented)
+export interface CameraPresetDebugSummaryInput {
+    // (undocumented)
+    readonly label: string;
+    // (undocumented)
+    readonly metadata?: Readonly<Record<string, unknown>>;
+    // (undocumented)
+    readonly mode: CameraPresetMode;
+    // (undocumented)
+    readonly notes?: readonly string[];
+    // (undocumented)
+    readonly presetId: string;
+    // (undocumented)
+    readonly state?: CameraState;
+    // (undocumented)
+    readonly tags?: readonly string[];
+    // (undocumented)
+    readonly tuning?: readonly CameraPresetTuningControl[];
+}
+
+// @public (undocumented)
+export interface CameraPresetDescriptor<TConfig> {
+    // (undocumented)
+    readonly config: TConfig;
+    // (undocumented)
+    readonly describe?: (config: TConfig, state: CameraState, context: CameraPresetEvaluationContext) => Omit<CameraPresetDebugSummaryInput, "presetId" | "label" | "mode" | "state">;
+    // (undocumented)
+    readonly draw?: (config: TConfig, state: CameraState, context: CameraPresetEvaluationContext) => readonly DebugDrawCommand[];
+    // (undocumented)
+    readonly evaluate: (config: TConfig, context: CameraPresetEvaluationContext) => CameraState;
+    // (undocumented)
+    readonly id: string;
+    // (undocumented)
+    readonly label: string;
+    // (undocumented)
+    readonly mode: CameraPresetMode;
+}
+
+// @public (undocumented)
+export interface CameraPresetEvaluation {
+    // (undocumented)
+    readonly debug: CameraPresetDebugSummary;
+    // (undocumented)
+    readonly draw: readonly DebugDrawCommand[];
+    // (undocumented)
+    readonly state: CameraState;
+}
+
+// @public (undocumented)
+export interface CameraPresetEvaluationContext {
+    // (undocumented)
+    readonly dt?: number;
+    // (undocumented)
+    readonly previous?: CameraState;
+    // (undocumented)
+    readonly time?: number;
+}
+
+// @public (undocumented)
+export type CameraPresetMode = "thirdPerson" | "orbit" | "follow" | "firstPerson" | "railShot";
+
+// @public (undocumented)
+export interface CameraPresetTuningControl {
+    // (undocumented)
+    readonly id: string;
+    // (undocumented)
+    readonly label: string;
+    // (undocumented)
+    readonly max?: number;
+    // (undocumented)
+    readonly min?: number;
+    // (undocumented)
+    readonly step?: number;
+    // (undocumented)
+    readonly unit?: string;
+    // (undocumented)
+    readonly value: CameraPresetTuningValue;
+}
+
+// @public (undocumented)
+export type CameraPresetTuningValue = string | number | boolean;
+
+// @public (undocumented)
 export interface CameraState {
     // (undocumented)
     readonly debug?: CameraDebugState;
@@ -293,6 +409,12 @@ export const corePackageInfo: {
 export function createCameraDebugFrame(state: CameraState, draw?: readonly DebugDrawCommand[]): CameraDebugFrame;
 
 // @public (undocumented)
+export function createCameraPresetDebugSummary(input: CameraPresetDebugSummaryInput): CameraPresetDebugSummary;
+
+// @public (undocumented)
+export function createCameraPresetEvaluation(state: CameraState, debug: CameraPresetDebugSummary, draw?: readonly DebugDrawCommand[]): CameraPresetEvaluation;
+
+// @public (undocumented)
 export function createCameraState(input: CameraStateInput): CameraState;
 
 // @public (undocumented)
@@ -351,6 +473,9 @@ export const DEFAULT_COORDINATE_CONVENTION: CoordinateConvention;
 
 // @public (undocumented)
 export const DEFAULT_LENS_STATE: PerspectiveLensState;
+
+// @public (undocumented)
+export function defineCameraPreset<TConfig>(descriptor: CameraPresetDescriptor<TConfig>): CameraPreset<TConfig>;
 
 // @public (undocumented)
 export function degreesToRadians(degrees: number): number;
