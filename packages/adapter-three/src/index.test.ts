@@ -5,11 +5,13 @@ import { applyThreeCameraState, type ThreeCameraLike } from "./index";
 function createFakeCamera(): ThreeCameraLike & {
   positionValue: number[];
   quaternionValue: number[];
+  matrixWorldUpdates: number;
   projectionUpdates: number;
 } {
   const camera = {
     positionValue: [0, 0, 0],
     quaternionValue: [0, 0, 0, 1],
+    matrixWorldUpdates: 0,
     projectionUpdates: 0,
     position: {
       set: (x: number, y: number, z: number) => {
@@ -20,6 +22,9 @@ function createFakeCamera(): ThreeCameraLike & {
       set: (x: number, y: number, z: number, w: number) => {
         camera.quaternionValue = [x, y, z, w];
       }
+    },
+    updateMatrixWorld: (_force?: boolean) => {
+      camera.matrixWorldUpdates += 1;
     },
     updateProjectionMatrix: () => {
       camera.projectionUpdates += 1;
@@ -45,6 +50,7 @@ describe("applyThreeCameraState", () => {
     expect(camera.fov).toBe(70);
     expect(camera.near).toBe(0.2);
     expect(camera.far).toBe(500);
+    expect(camera.matrixWorldUpdates).toBe(1);
     expect(camera.projectionUpdates).toBe(1);
   });
 });

@@ -18,6 +18,10 @@ export interface ThreeCameraLike {
   updateProjectionMatrix?(): void;
 }
 
+interface ThreeMatrixWorldLike {
+  updateMatrixWorld?(force?: boolean): void;
+}
+
 export function applyThreeCameraState(camera: ThreeCameraLike, state: CameraState): void {
   camera.position.set(state.position.x, state.position.y, state.position.z);
   camera.quaternion.set(state.rotation.x, state.rotation.y, state.rotation.z, state.rotation.w);
@@ -36,5 +40,6 @@ export function applyThreeCameraState(camera: ThreeCameraLike, state: CameraStat
     camera.far = state.lens.far;
   }
 
+  (camera as ThreeCameraLike & ThreeMatrixWorldLike).updateMatrixWorld?.(true);
   camera.updateProjectionMatrix?.();
 }
