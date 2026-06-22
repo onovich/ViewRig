@@ -84,6 +84,7 @@ v0.4 Changesets version gate lives in [ViewRig v0.4 Changesets Version Gate](doc
 v0.4 trusted publishing gate lives in [ViewRig v0.4 Trusted Publishing Gate](docs/ViewRig_v0.4_Trusted_Publishing_Gate.md).
 v0.4 GitHub release gate lives in [ViewRig v0.4 GitHub Release Gate](docs/ViewRig_v0.4_GitHub_Release_Gate.md).
 v0.4 release notes template lives in [ViewRig v0.4 Release Notes Template](docs/ViewRig_v0.4_Release_Notes_Template.md).
+v0.4 TypeDoc publication gate lives in [ViewRig v0.4 TypeDoc Publication Gate](docs/ViewRig_v0.4_TypeDoc_Publication_Gate.md).
 
 ## MVP 路线
 
