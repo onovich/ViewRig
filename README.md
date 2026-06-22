@@ -110,6 +110,7 @@ v0.6 integration hardening brief lives in [ViewRig v0.6 Integration Hardening Br
 v0.6 adapter-three integration notes live in [ViewRig v0.6 Adapter-Three Integration](docs/ViewRig_v0.6_Adapter_Three_Integration.md).
 v0.6 orbit/follow integration notes live in [ViewRig v0.6 Orbit/Follow Integration](docs/ViewRig_v0.6_Orbit_Follow_Integration.md).
 v0.6 rail/camera-shot integration notes live in [ViewRig v0.6 Rail/CameraShot Integration](docs/ViewRig_v0.6_Rail_CameraShot_Integration.md).
+v0.6 browser smoke notes live in [ViewRig v0.6 Browser Smoke](docs/ViewRig_v0.6_Browser_Smoke.md).
 
 ## MVP 路线
 
@@ -169,3 +170,4 @@ v0.6 rail/camera-shot integration notes live in [ViewRig v0.6 Rail/CameraShot In
 - [ViewRig v0.6 Adapter-Three Integration](docs/ViewRig_v0.6_Adapter_Three_Integration.md)
 - [ViewRig v0.6 Orbit/Follow Integration](docs/ViewRig_v0.6_Orbit_Follow_Integration.md)
 - [ViewRig v0.6 Rail/CameraShot Integration](docs/ViewRig_v0.6_Rail_CameraShot_Integration.md)
+- [ViewRig v0.6 Browser Smoke](docs/ViewRig_v0.6_Browser_Smoke.md)

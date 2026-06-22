@@ -343,6 +343,7 @@ try {
   if (firstCanvasSignal.width !== 960 || firstCanvasSignal.height !== 540 || firstCanvasSignal.paintedPixels < 1_000) {
     throw new Error(`Canvas did not render a useful frame: ${JSON.stringify(firstCanvasSignal)}`);
   }
+  const modeCanvasHashes = new Map();
 
   await setRange(page, "#yaw", -30);
   await setRange(page, "#pitch", 30);
@@ -351,6 +352,7 @@ try {
   await setSelect(page, "#composer", "wide");
 
   const thirdPersonPose = await assertMode(page, "thirdPerson", "third-person-gameplay");
+  modeCanvasHashes.set("thirdPerson", (await readCanvasSignal(page)).colorHash);
   assertIntegrationRole(thirdPersonPose, "gameplay-target-follow", "POC-2");
   assertThirdPersonOffset(thirdPersonPose, -3.12 + 0.45, 5.15, 5.4);
   assertClose(thirdPersonPose.target.x, -0.36, "thirdPersonPose.target.x");
@@ -373,11 +375,13 @@ try {
 
   await setRange(page, "#railT", 0.35);
   const orbitPose = await assertMode(page, "orbit", "orbit-showcase");
+  modeCanvasHashes.set("orbit", (await readCanvasSignal(page)).colorHash);
   assertIntegrationRole(orbitPose, "object-viewer", "POC-2");
   assertClose(orbitPose.state.position.x, -3.12, "orbitPose.state.position.x");
   assertClose(orbitPose.state.position.y, 4.6, "orbitPose.state.position.y");
   assertClose(orbitPose.state.position.z, 5.4, "orbitPose.state.position.z");
   const followPose = await assertMode(page, "follow", "follow-showcase");
+  modeCanvasHashes.set("follow", (await readCanvasSignal(page)).colorHash);
   assertIntegrationRole(followPose, "actor-follow", "POC-2");
   assertFollowOffset(followPose, -0.5, 2, -7.2);
   await setRange(page, "#railT", 0.65);
@@ -392,6 +396,7 @@ try {
   }
   await setRange(page, "#pitch", 75);
   const firstPersonPose = await assertMode(page, "firstPerson", "first-person-gameplay");
+  modeCanvasHashes.set("firstPerson", (await readCanvasSignal(page)).colorHash);
   assertIntegrationRole(firstPersonPose, "eye-anchor", "POC-2");
   assertClose(firstPersonPose.state.position.y - firstPersonPose.target.y, 1.65, "firstPerson eye offset");
   assertClose(firstPersonPose.tuning.eyeHeight, 1.65, "firstPerson eyeHeight tuning");
@@ -404,6 +409,7 @@ try {
   await setSelect(page, "#railDriver", "input");
   await setRange(page, "#railT", 0.72);
   const railPose = await assertMode(page, "railShot", "rail-shot");
+  modeCanvasHashes.set("railShot", (await readCanvasSignal(page)).colorHash);
   assertIntegrationRole(railPose, "camera-shot", "POC-3");
   if (railPose.tuning.railT !== 0.72 || railPose.tuning.input !== 0.72) {
     throw new Error(`Rail tuning did not update: ${JSON.stringify(railPose.tuning)}`);
@@ -418,6 +424,9 @@ try {
   const timedRailPose = await assertMode(page, "railShot", "rail-shot");
   if (timedRailPose.tuning.driver !== "time" || timedRailPose.tuning.duration !== 6 || timedRailPose.tuning.railT !== 0.5) {
     throw new Error(`Rail time driver did not update: ${JSON.stringify(timedRailPose.tuning)}`);
+  }
+  if (new Set(modeCanvasHashes.values()).size < 4) {
+    throw new Error(`Gallery mode canvas matrix is not distinct enough: ${JSON.stringify(Object.fromEntries(modeCanvasHashes))}`);
   }
   const railControls = await page.evaluate(() => ({
     durationDisabled: document.querySelector("#duration").disabled,
