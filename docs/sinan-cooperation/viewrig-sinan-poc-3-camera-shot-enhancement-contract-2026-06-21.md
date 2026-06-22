@@ -7,6 +7,7 @@ Related:
 - `viewrig-camera-shot-optional-solver-mode-2026-06-20.md`
 - `viewrig-sinan-poc-2-follow-orbit-contract-2026-06-21.md`
 - `rfc-004-sinan-camera-pose-shot-rig-boundary.md`
+- `../ViewRig_v0.5_Sinan_Feedback_Alignment.md`
 
 ## Goal
 
@@ -46,6 +47,17 @@ Sinan CameraShot JSON
 ```
 
 ViewRig returns data. Sinan applies data.
+
+## ViewRig v0.5 Preset Mapping
+
+The v0.5 `createRailShotPreset` API can provide the ViewRig-side deterministic
+solver shape for CameraShot preview or playback. Sinan remains responsible for
+mapping reviewed authoring fields into `CameraPath` and `RailRigDriver` values,
+passing scrub time into `preset.evaluate({ time })`, and applying the returned
+`CameraState` through Sinan runtime ownership.
+
+`CameraPresetEvaluation.debug` and `CameraPresetEvaluation.draw` are diagnostic
+outputs only. They must not become CameraShot source-of-truth.
 
 ## Timeline Scrub Contract
 

@@ -7,6 +7,7 @@ Related:
 - `rfc-004-sinan-camera-pose-shot-rig-boundary.md`
 - `viewrig-sinan-internal-poc-adapter-2026-06-20.md`
 - `viewrig-camera-shot-optional-solver-mode-2026-06-20.md`
+- `../ViewRig_v0.5_Sinan_Feedback_Alignment.md`
 
 ## Goal
 
