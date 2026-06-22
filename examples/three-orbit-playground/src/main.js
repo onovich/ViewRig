@@ -43,6 +43,8 @@ const galleryModes = [
   {
     id: "thirdPerson",
     label: "Third Person",
+    role: "gameplay-target-follow",
+    sinanPoc: "POC-2",
     target(controls) {
       return {
         x: (controls.railT - 0.5) * 2.4,
@@ -63,6 +65,8 @@ const galleryModes = [
   {
     id: "orbit",
     label: "Orbit",
+    role: "object-viewer",
+    sinanPoc: "POC-2",
     target: [0, 0, 0],
     evaluate(controls, target) {
       return evaluateOrbitShowcasePreset({
@@ -76,7 +80,17 @@ const galleryModes = [
   {
     id: "follow",
     label: "Follow",
-    target: [0, 0, 0],
+    role: "actor-follow",
+    sinanPoc: "POC-2",
+    target(controls) {
+      const angle = controls.railT * Math.PI * 2;
+
+      return {
+        x: Math.cos(angle) * 1.4,
+        y: 0,
+        z: Math.sin(angle) * 1.1
+      };
+    },
     evaluate(controls, target) {
       return evaluateFollowShowcasePreset({
         target: {
@@ -91,6 +105,8 @@ const galleryModes = [
   {
     id: "firstPerson",
     label: "First Person",
+    role: "eye-anchor",
+    sinanPoc: "POC-2",
     target: [0, 0, 3.5],
     evaluate(controls, target) {
       return evaluateFirstPersonGameplayPreset({
@@ -107,6 +123,8 @@ const galleryModes = [
   {
     id: "railShot",
     label: "Rail Shot",
+    role: "camera-shot",
+    sinanPoc: "POC-3",
     target: [0, 0, 0],
     evaluate(controls) {
       return evaluateRailShotPreset({
@@ -283,7 +301,7 @@ function drawGalleryFrame(mode, evaluation, controls, target) {
   }
 
   if (mode.id === "thirdPerson" || mode.id === "follow") {
-    drawCircle([controls.shoulder * 0.5, 0, 0], 14, "#3fcf8e", "#d8ffe9");
+    drawCircle(target, 14, "#3fcf8e", "#d8ffe9");
   }
 
   if (mode.id === "firstPerson") {
@@ -303,6 +321,11 @@ function createPoseOutput(mode, evaluation, controls, target) {
     presetId: evaluation.debug.presetId,
     adapter: "@viewrig/adapter-three",
     renderer: "three-camera-canvas",
+    integration: {
+      role: mode.role,
+      sinanPoc: mode.sinanPoc,
+      sourceOfTruth: "ViewRig example input only"
+    },
     state: {
       position: evaluation.state.position,
       rotation: evaluation.state.rotation,

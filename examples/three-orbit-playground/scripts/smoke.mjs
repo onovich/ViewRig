@@ -287,6 +287,18 @@ function assertThirdPersonOffset(pose, expectedOffsetX, expectedOffsetY, expecte
   assertClose(pose.state.position.z - pose.target.z, expectedOffsetZ, "thirdPerson offset z");
 }
 
+function assertIntegrationRole(pose, role, sinanPoc) {
+  if (pose.integration?.role !== role || pose.integration?.sinanPoc !== sinanPoc) {
+    throw new Error(`Unexpected integration role: ${JSON.stringify(pose.integration)}`);
+  }
+}
+
+function assertFollowOffset(pose, expectedOffsetX, expectedOffsetY, expectedOffsetZ) {
+  assertClose(pose.state.position.x - pose.target.x, expectedOffsetX, "follow offset x");
+  assertClose(pose.state.position.y - pose.target.y, expectedOffsetY, "follow offset y");
+  assertClose(pose.state.position.z - pose.target.z, expectedOffsetZ, "follow offset z");
+}
+
 const { server, url } = await startServer();
 let browser;
 
@@ -331,6 +343,7 @@ try {
   await setSelect(page, "#composer", "wide");
 
   const thirdPersonPose = await assertMode(page, "thirdPerson", "third-person-gameplay");
+  assertIntegrationRole(thirdPersonPose, "gameplay-target-follow", "POC-2");
   assertThirdPersonOffset(thirdPersonPose, -3.12 + 0.45, 5.15, 5.4);
   assertClose(thirdPersonPose.target.x, -0.36, "thirdPersonPose.target.x");
   assertClose(thirdPersonPose.tuning.targetRailT, 0.35, "thirdPersonPose.tuning.targetRailT");
@@ -352,10 +365,23 @@ try {
 
   await setRange(page, "#railT", 0.35);
   const orbitPose = await assertMode(page, "orbit", "orbit-showcase");
+  assertIntegrationRole(orbitPose, "object-viewer", "POC-2");
   assertClose(orbitPose.state.position.x, -3.12, "orbitPose.state.position.x");
   assertClose(orbitPose.state.position.y, 4.6, "orbitPose.state.position.y");
   assertClose(orbitPose.state.position.z, 5.4, "orbitPose.state.position.z");
-  await assertMode(page, "follow", "follow-showcase");
+  const followPose = await assertMode(page, "follow", "follow-showcase");
+  assertIntegrationRole(followPose, "actor-follow", "POC-2");
+  assertFollowOffset(followPose, -0.5, 2, -7.2);
+  await setRange(page, "#railT", 0.65);
+  const movingFollowPose = await assertMode(page, "follow", "follow-showcase");
+  assertFollowOffset(movingFollowPose, -0.5, 2, -7.2);
+  const followTargetDelta = Math.hypot(
+    movingFollowPose.target.x - followPose.target.x,
+    movingFollowPose.target.z - followPose.target.z
+  );
+  if (followTargetDelta < 0.2) {
+    throw new Error(`Follow target did not move enough: ${JSON.stringify({ before: followPose.target, after: movingFollowPose.target })}`);
+  }
   await assertMode(page, "firstPerson", "first-person-gameplay");
   await setRange(page, "#railT", 0.72);
   const railPose = await assertMode(page, "railShot", "rail-shot");
