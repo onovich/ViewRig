@@ -24,6 +24,7 @@ const durationInput = document.querySelector("#duration");
 const dampingInput = document.querySelector("#damping");
 const composerInput = document.querySelector("#composer");
 const debugOverlayInput = document.querySelector("#debugOverlay");
+const modeStateOutput = document.querySelector("#modeState");
 const debugStateOutput = document.querySelector("#debugState");
 const poseOutput = document.querySelector("#pose");
 
@@ -311,9 +312,9 @@ function drawDebugOverlay(mode, evaluation, controls, target) {
   ctx.font = "14px system-ui, sans-serif";
   ctx.fillText(`live:${mode.id}`, 24, 32);
   ctx.fillText(`preset:${evaluation.debug.presetId}`, 24, 54);
-  ctx.fillText(`target x:${toVectorSnapshot(target).x.toFixed(2)} z:${toVectorSnapshot(target).z.toFixed(2)}`, 24, 76);
-  ctx.fillText(`driver:${controls.railDriver} duration:${controls.duration.toFixed(2)}`, 24, 98);
-  ctx.fillText(`composer:${controls.composer} damping:${controls.damping.toFixed(2)}`, 24, 120);
+  ctx.fillText(`role:${mode.role}`, 24, 76);
+  ctx.fillText(`target x:${toVectorSnapshot(target).x.toFixed(2)} z:${toVectorSnapshot(target).z.toFixed(2)}`, 24, 98);
+  ctx.fillText(`driver:${controls.railDriver} duration:${controls.duration.toFixed(2)}`, 24, 120);
   ctx.fillText(`adapter:@viewrig/adapter-three`, 24, 142);
 }
 
@@ -392,20 +393,48 @@ function createPoseOutput(mode, evaluation, controls, target) {
   };
 }
 
-function render() {
-  const mode = galleryById.get(modeInput.value) ?? galleryModes[0];
+function updateControlState(mode) {
+  const isRail = mode.id === "railShot";
+  const usesShoulder = mode.id === "thirdPerson" || mode.id === "follow";
+
+  shoulderInput.disabled = !usesShoulder;
+  railDriverInput.disabled = !isRail;
+  durationInput.disabled = !isRail || railDriverInput.value !== "time";
+}
+
+function renderGallery() {
+  const requestedMode = modeInput.value;
+  const mode = galleryById.get(requestedMode) ?? galleryModes[0];
+  const usedFallback = mode.id !== requestedMode;
   const controls = readControls();
   const target = resolveGalleryTarget(mode, controls);
   const evaluation = mode.evaluate(controls, target);
 
+  updateControlState(mode);
   applyThreeCameraState(camera, evaluation.state);
   drawGalleryFrame(mode, evaluation, controls, target);
 
+  modeStateOutput.textContent = `mode:${mode.id} role:${mode.role} driver:${controls.railDriver}${usedFallback ? " fallback:on" : ""}`;
   debugStateOutput.textContent = debugOverlayInput.checked
     ? `debug:on live:${mode.id} preset:${evaluation.debug.presetId} adapter:three`
     : `debug:off live:${mode.id}`;
   poseOutput.textContent = JSON.stringify(createPoseOutput(mode, evaluation, controls, target), null, 2);
   globalThis.__viewrigGalleryFrame = (globalThis.__viewrigGalleryFrame ?? 0) + 1;
+}
+
+function render() {
+  try {
+    renderGallery();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    modeStateOutput.textContent = "mode:error";
+    debugStateOutput.textContent = `debug:error ${message}`;
+    poseOutput.textContent = JSON.stringify({
+      status: "error",
+      message
+    }, null, 2);
+    throw error;
+  }
 }
 
 for (const input of [

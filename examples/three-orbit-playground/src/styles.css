@@ -47,6 +47,11 @@ select {
   width: 100%;
 }
 
+input:disabled,
+select:disabled {
+  opacity: 0.45;
+}
+
 .toggle {
   grid-template-columns: auto 1fr;
   align-items: center;

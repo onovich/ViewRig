@@ -35,6 +35,7 @@ for (const token of [
   "#damping",
   "#composer",
   "#debugOverlay",
+  "#modeState",
   "#debugState",
   "#pose"
 ]) {
@@ -270,6 +271,11 @@ async function assertMode(page, mode, expectedPresetId) {
     throw new Error(`Gallery did not use the shared Three adapter path: ${JSON.stringify(pose)}`);
   }
 
+  const modeState = await page.locator("#modeState").textContent();
+  if (!modeState?.includes(`mode:${mode}`) || !modeState.includes(`role:${pose.integration.role}`)) {
+    throw new Error(`Mode state did not reflect ${mode}: ${modeState}`);
+  }
+
   const matrixWorldPosition = pose.camera?.matrixWorldPosition;
   if (!Array.isArray(matrixWorldPosition) || matrixWorldPosition.length !== 3) {
     throw new Error(`Missing camera matrix world position: ${JSON.stringify(pose.camera)}`);
@@ -394,6 +400,7 @@ try {
   }
 
   await setRange(page, "#pitch", 30);
+  await setSelect(page, "#mode", "railShot");
   await setSelect(page, "#railDriver", "input");
   await setRange(page, "#railT", 0.72);
   const railPose = await assertMode(page, "railShot", "rail-shot");
@@ -411,6 +418,14 @@ try {
   const timedRailPose = await assertMode(page, "railShot", "rail-shot");
   if (timedRailPose.tuning.driver !== "time" || timedRailPose.tuning.duration !== 6 || timedRailPose.tuning.railT !== 0.5) {
     throw new Error(`Rail time driver did not update: ${JSON.stringify(timedRailPose.tuning)}`);
+  }
+  const railControls = await page.evaluate(() => ({
+    durationDisabled: document.querySelector("#duration").disabled,
+    railDriverDisabled: document.querySelector("#railDriver").disabled,
+    shoulderDisabled: document.querySelector("#shoulder").disabled
+  }));
+  if (railControls.durationDisabled || railControls.railDriverDisabled || !railControls.shoulderDisabled) {
+    throw new Error(`Rail control state is not polished: ${JSON.stringify(railControls)}`);
   }
 
   await page.locator("#debugOverlay").uncheck();
