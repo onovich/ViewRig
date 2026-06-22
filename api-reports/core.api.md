@@ -418,6 +418,9 @@ export function createCameraPresetEvaluation(state: CameraState, debug: CameraPr
 export function createCameraState(input: CameraStateInput): CameraState;
 
 // @public (undocumented)
+export function createFirstPersonGameplayPreset(config: FirstPersonGameplayPresetConfig): CameraPreset<FirstPersonGameplayPresetResolvedConfig>;
+
+// @public (undocumented)
 export function createFollowShowcasePreset(config: FollowShowcasePresetConfig): CameraPreset<FollowShowcasePresetResolvedConfig>;
 
 // @public (undocumented)
@@ -425,6 +428,9 @@ export function createOrbitShowcasePreset(config: OrbitShowcasePresetConfig): Ca
 
 // @public (undocumented)
 export function createPolylinePath(config: PolylinePathConfig): PolylinePath;
+
+// @public (undocumented)
+export function createRailShotPreset(config: RailShotPresetConfig): CameraPreset<RailShotPresetResolvedConfig>;
 
 // @public (undocumented)
 export function createScreenZoneDebugCommands(config: ScreenZoneComposerConfig, result: ScreenZoneComposerResult): readonly DebugDrawCommand[];
@@ -481,6 +487,12 @@ export type DebugDrawCommand = {
 export const DEFAULT_COORDINATE_CONVENTION: CoordinateConvention;
 
 // @public (undocumented)
+export const DEFAULT_FIRST_PERSON_GAMEPLAY_EYE_OFFSET: readonly [0, 1.65, 0];
+
+// @public (undocumented)
+export const DEFAULT_FIRST_PERSON_GAMEPLAY_PRESET_ID = "first-person-gameplay";
+
+// @public (undocumented)
 export const DEFAULT_FOLLOW_SHOWCASE_OFFSET: readonly [0, 2, -6];
 
 // @public (undocumented)
@@ -497,6 +509,9 @@ export const DEFAULT_ORBIT_SHOWCASE_PIVOT_OFFSET: readonly [0, 1, 0];
 
 // @public (undocumented)
 export const DEFAULT_ORBIT_SHOWCASE_PRESET_ID = "orbit-showcase";
+
+// @public (undocumented)
+export const DEFAULT_RAIL_SHOT_PRESET_ID = "rail-shot";
 
 // @public (undocumented)
 export const DEFAULT_THIRD_PERSON_GAMEPLAY_DISTANCE = 4;
@@ -530,6 +545,9 @@ export interface DistanceClampConfig {
 }
 
 // @public (undocumented)
+export function evaluateFirstPersonGameplayPreset(config: FirstPersonGameplayPresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
+
+// @public (undocumented)
 export function evaluateFirstPersonRig(config: FirstPersonRigConfig, context?: FirstPersonRigEvaluationContext): CameraState;
 
 // @public (undocumented)
@@ -551,6 +569,9 @@ export function evaluateOrbitShowcasePreset(config: OrbitShowcasePresetConfig, c
 export function evaluateRailRig(config: RailRigConfig, context?: RailRigEvaluationContext): CameraState;
 
 // @public (undocumented)
+export function evaluateRailShotPreset(config: RailShotPresetConfig, context?: CameraPresetEvaluationContext): CameraPresetEvaluation;
+
+// @public (undocumented)
 export function evaluateScreenZoneComposer(camera: CameraState, target: Vec3Like, config: ScreenZoneComposerConfig, options?: ProjectToNdcOptions): ScreenZoneComposerResult;
 
 // @public (undocumented)
@@ -561,6 +582,38 @@ export function evaluateThirdPersonRig(config: ThirdPersonRigConfig, context?: T
 
 // @public (undocumented)
 export function evaluateVirtualCamera(camera: VirtualCamera, context: CameraEvaluationContext): CameraState | null;
+
+// @public (undocumented)
+export interface FirstPersonGameplayPresetConfig {
+    // (undocumented)
+    readonly debugId?: string;
+    // (undocumented)
+    readonly eyeOffset?: Vec3Like;
+    // (undocumented)
+    readonly id?: string;
+    // (undocumented)
+    readonly label?: string;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
+    // (undocumented)
+    readonly target: Vec3Like;
+}
+
+// @public (undocumented)
+export interface FirstPersonGameplayPresetResolvedConfig {
+    // (undocumented)
+    readonly debugId: string;
+    // (undocumented)
+    readonly eyeOffset: Vec3Like;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly look: YawPitchValue | ControlChannel<YawPitchValue>;
+    // (undocumented)
+    readonly target: Vec3Like;
+}
 
 // @public (undocumented)
 export interface FirstPersonRigConfig {
@@ -955,6 +1008,42 @@ export interface RailRigEvaluationContext {
 }
 
 // @public (undocumented)
+export interface RailShotPresetConfig {
+    // (undocumented)
+    readonly debugId?: string;
+    // (undocumented)
+    readonly driver: RailRigDriver;
+    // (undocumented)
+    readonly id?: string;
+    // (undocumented)
+    readonly label?: string;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly path: CameraPath;
+    // (undocumented)
+    readonly rotation?: QuatLike;
+    // (undocumented)
+    readonly up?: Vec3Like;
+}
+
+// @public (undocumented)
+export interface RailShotPresetResolvedConfig {
+    // (undocumented)
+    readonly debugId: string;
+    // (undocumented)
+    readonly driver: RailRigDriver;
+    // (undocumented)
+    readonly lens?: LensState;
+    // (undocumented)
+    readonly path: CameraPath;
+    // (undocumented)
+    readonly rotation?: QuatLike;
+    // (undocumented)
+    readonly up?: Vec3Like;
+}
+
+// @public (undocumented)
 export interface RayLike {
     // (undocumented)
     readonly direction: Vec3Like;
@@ -977,6 +1066,9 @@ export interface RectNdc {
 }
 
 // @public (undocumented)
+export function resolveFirstPersonGameplayPresetConfig(config: FirstPersonGameplayPresetConfig): FirstPersonGameplayPresetResolvedConfig;
+
+// @public (undocumented)
 export function resolveFollowShowcasePresetConfig(config: FollowShowcasePresetConfig): FollowShowcasePresetResolvedConfig;
 
 // @public (undocumented)
@@ -984,6 +1076,9 @@ export function resolveOrbitShowcasePresetConfig(config: OrbitShowcasePresetConf
 
 // @public (undocumented)
 export function resolveRailRigDriverT(driver: RailRigDriver, context?: RailRigEvaluationContext): number;
+
+// @public (undocumented)
+export function resolveRailShotPresetConfig(config: RailShotPresetConfig): RailShotPresetResolvedConfig;
 
 // @public (undocumented)
 export function resolveThirdPersonGameplayPresetConfig(config: ThirdPersonGameplayPresetConfig): ThirdPersonGameplayPresetResolvedConfig;

@@ -92,6 +92,7 @@ v0.5 goal guide lives in [ViewRig v0.5 Goal 模式执行指南](docs/ViewRig_v0.
 v0.5 product usability brief lives in [ViewRig v0.5 Product Usability Brief](docs/ViewRig_v0.5_Product_Usability_Brief.md).
 v0.5 preset API design lives in [ViewRig v0.5 Preset API Design](docs/ViewRig_v0.5_Preset_API_Design.md).
 v0.5 third-person gameplay recipe draft lives in [Third-Person Gameplay Recipe](docs/recipes/third-person-gameplay.md).
+v0.5 rail camera shot recipe draft lives in [Rail Camera Shot Recipe](docs/recipes/rail-camera-shot.md).
 
 ## MVP 路线
 
@@ -133,3 +134,4 @@ v0.5 third-person gameplay recipe draft lives in [Third-Person Gameplay Recipe](
 - [v0.5 Product Usability Brief](docs/ViewRig_v0.5_Product_Usability_Brief.md)
 - [v0.5 Preset API Design](docs/ViewRig_v0.5_Preset_API_Design.md)
 - [Third-Person Gameplay Recipe](docs/recipes/third-person-gameplay.md)
+- [Rail Camera Shot Recipe](docs/recipes/rail-camera-shot.md)
