@@ -4,9 +4,34 @@ const modeInput = document.querySelector("#mode");
 const yawInput = document.querySelector("#yaw");
 const pitchInput = document.querySelector("#pitch");
 const distanceInput = document.querySelector("#distance");
+const shoulderInput = document.querySelector("#shoulder");
+const dampingInput = document.querySelector("#damping");
+const composerInput = document.querySelector("#composer");
 const debugOverlayInput = document.querySelector("#debugOverlay");
 const debugStateOutput = document.querySelector("#debugState");
 const poseOutput = document.querySelector("#pose");
+
+const composerProfiles = {
+  center: {
+    label: "center",
+    dead: { x: 0.36, y: 0.32, width: 0.28, height: 0.36 },
+    soft: { x: 0.24, y: 0.2, width: 0.52, height: 0.6 }
+  },
+  lookAhead: {
+    label: "lookAhead",
+    dead: { x: 0.42, y: 0.3, width: 0.26, height: 0.34 },
+    soft: { x: 0.32, y: 0.18, width: 0.5, height: 0.62 }
+  },
+  wide: {
+    label: "wide",
+    dead: { x: 0.3, y: 0.28, width: 0.4, height: 0.44 },
+    soft: { x: 0.16, y: 0.14, width: 0.68, height: 0.72 }
+  }
+};
+
+function resolveComposerProfile(composer) {
+  return composerProfiles[composer] ?? composerProfiles.center;
+}
 
 function resolveOrbitOffset({ yaw, pitch, distance }) {
   const yawRad = yaw * Math.PI / 180;
@@ -19,7 +44,7 @@ function resolveOrbitOffset({ yaw, pitch, distance }) {
   };
 }
 
-function orbitPose({ yaw, pitch, distance }) {
+function orbitPose({ yaw, pitch, distance, damping, composer }) {
   const offset = resolveOrbitOffset({ yaw, pitch, distance });
   return {
     mode: "orbit",
@@ -27,14 +52,18 @@ function orbitPose({ yaw, pitch, distance }) {
     position: offset,
     pivot: { x: 0, y: 0, z: 0 },
     target: { x: 0, y: 0, z: 0 },
-    tuning: { distance }
+    tuning: {
+      composer,
+      dampingHalfLife: damping,
+      distance
+    }
   };
 }
 
-function thirdPersonPose({ yaw, pitch, distance }) {
+function thirdPersonPose({ yaw, pitch, distance, shoulder, damping, composer }) {
   const target = { x: 0, y: 0, z: 0 };
   const pivot = { x: 0, y: 1.5, z: 0 };
-  const shoulderOffset = { x: 0.45, y: 0.05, z: 0 };
+  const shoulderOffset = { x: 0.45 * shoulder, y: 0.05 * Math.abs(shoulder), z: 0 };
   const offset = resolveOrbitOffset({ yaw, pitch, distance });
   return {
     mode: "thirdPerson",
@@ -47,18 +76,20 @@ function thirdPersonPose({ yaw, pitch, distance }) {
     pivot,
     target,
     tuning: {
+      composer,
+      dampingHalfLife: damping,
       distance,
-      shoulder: 1
+      shoulder
     }
   };
 }
 
-function computePose({ mode, yaw, pitch, distance }) {
+function computePose({ mode, yaw, pitch, distance, shoulder, damping, composer }) {
   if (mode === "thirdPerson") {
-    return thirdPersonPose({ yaw, pitch, distance });
+    return thirdPersonPose({ yaw, pitch, distance, shoulder, damping, composer });
   }
 
-  return orbitPose({ yaw, pitch, distance });
+  return orbitPose({ yaw, pitch, distance, damping, composer });
 }
 
 function projectTopDown(point) {
@@ -70,17 +101,18 @@ function projectTopDown(point) {
 }
 
 function drawDebugOverlay({ pose, camera, target }) {
+  const composer = resolveComposerProfile(pose.tuning.composer);
   const deadZone = {
-    x: canvas.width * 0.36,
-    y: canvas.height * 0.32,
-    width: canvas.width * 0.28,
-    height: canvas.height * 0.36
+    x: canvas.width * composer.dead.x,
+    y: canvas.height * composer.dead.y,
+    width: canvas.width * composer.dead.width,
+    height: canvas.height * composer.dead.height
   };
   const softZone = {
-    x: canvas.width * 0.24,
-    y: canvas.height * 0.2,
-    width: canvas.width * 0.52,
-    height: canvas.height * 0.6
+    x: canvas.width * composer.soft.x,
+    y: canvas.height * composer.soft.y,
+    width: canvas.width * composer.soft.width,
+    height: canvas.height * composer.soft.height
   };
 
   ctx.save();
@@ -97,6 +129,7 @@ function drawDebugOverlay({ pose, camera, target }) {
   ctx.fillText(`live: ${pose.mode}`, 24, 32);
   ctx.fillText(`camera x:${pose.position.x.toFixed(2)} z:${pose.position.z.toFixed(2)}`, 24, 54);
   ctx.fillText(`target x:${pose.target.x.toFixed(2)} z:${pose.target.z.toFixed(2)}`, 24, 76);
+  ctx.fillText(`composer:${composer.label} damping:${pose.tuning.dampingHalfLife.toFixed(2)}`, 24, 98);
 
   ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 1;
@@ -114,7 +147,10 @@ function render() {
     mode: modeInput.value,
     yaw: Number(yawInput.value),
     pitch: Number(pitchInput.value),
-    distance: Number(distanceInput.value)
+    distance: Number(distanceInput.value),
+    shoulder: Number(shoulderInput.value),
+    damping: Number(dampingInput.value),
+    composer: composerInput.value
   });
   const camera = projectTopDown(pose.position);
   const target = projectTopDown(pose.target);
@@ -164,11 +200,22 @@ function render() {
     drawDebugOverlay({ pose, camera, target });
   }
 
-  debugStateOutput.textContent = debugOverlayInput.checked ? `debug:on live:${pose.mode}` : "debug:off";
+  debugStateOutput.textContent = debugOverlayInput.checked
+    ? `debug:on live:${pose.mode} composer:${pose.tuning.composer} damping:${pose.tuning.dampingHalfLife.toFixed(2)}`
+    : "debug:off";
   poseOutput.textContent = JSON.stringify(pose, null, 2);
 }
 
-for (const input of [modeInput, yawInput, pitchInput, distanceInput, debugOverlayInput]) {
+for (const input of [
+  modeInput,
+  yawInput,
+  pitchInput,
+  distanceInput,
+  shoulderInput,
+  dampingInput,
+  composerInput,
+  debugOverlayInput
+]) {
   input.addEventListener("input", render);
 }
 
