@@ -89,6 +89,7 @@ v0.4 RC evidence bundle lives in [ViewRig v0.4 RC Evidence Bundle](docs/ViewRig_
 v0.4 Sinan feedback gate lives in [ViewRig v0.4 Sinan Feedback Gate](docs/ViewRig_v0.4_Sinan_Feedback_Gate.md).
 v0.4 final report lives in [ViewRig v0.4 Final Report](docs/ViewRig_v0.4_Final_Report.md).
 v0.5 goal guide lives in [ViewRig v0.5 Goal 模式执行指南](docs/ViewRig_v0.5_Goal模式执行指南.md).
+v0.5 product usability brief lives in [ViewRig v0.5 Product Usability Brief](docs/ViewRig_v0.5_Product_Usability_Brief.md).
 
 ## MVP 路线
 
@@ -127,3 +128,4 @@ v0.5 goal guide lives in [ViewRig v0.5 Goal 模式执行指南](docs/ViewRig_v0.
 - [v0.3 Goal 模式执行指南](docs/ViewRig_v0.3_Goal模式执行指南.md)
 - [v0.4 Goal 模式执行指南](docs/ViewRig_v0.4_Goal模式执行指南.md)
 - [v0.5 Goal 模式执行指南](docs/ViewRig_v0.5_Goal模式执行指南.md)
+- [v0.5 Product Usability Brief](docs/ViewRig_v0.5_Product_Usability_Brief.md)
