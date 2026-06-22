@@ -57,7 +57,7 @@ function assertRootManifest() {
 
 function assertPackageManifest(manifest, expectedName, expectedDirectory) {
   assert(manifest.name === expectedName, `Expected package name ${expectedName}, got ${manifest.name}`);
-  assert(manifest.private === true, `${expectedName} must remain private for v0.3 dry-runs`);
+  assert(manifest.private === true, `${expectedName} must remain private until package visibility is approved`);
   assert(manifest.type === "module", `${expectedName} must remain ESM-first`);
   assert(manifest.sideEffects === false, `${expectedName} must remain side-effect free`);
   assert(manifest.types === "./dist/index.d.ts", `${expectedName} must expose package-level types`);
