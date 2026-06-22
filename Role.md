@@ -1,9 +1,9 @@
 # ViewRig Role Routing
 
 workspace: D:\LabProjects\Engine\ViewRig
-phase: ViewRig v0.4
-active_goal_guide: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.4_Goal模式执行指南.md
-expected_final_report: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.4_Final_Report.md
+phase: ViewRig v0.5
+active_goal_guide: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.5_Goal模式执行指南.md
+expected_final_report: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.5_Final_Report.md
 
 planner:
   role: planner/checker
@@ -23,13 +23,18 @@ idempotency:
   last_dispatch_handled_as: idempotent_duplicate_completed
   last_check_status: PASS
   last_check_phase: ViewRig v0.4
-  last_check_commit: 53ea7ef11f14c4ae260468f5d0824ed70246fa96
+  last_check_commit: 170a14bab7ef9cf0087a7f0a074502825fe645f9
   last_check_report: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.4_Final_Report.md
   last_check_at: 2026-06-22T17:08:14.5782451+08:00
-  last_goalnext_trigger: BLOCKED_PENDING_OWNER_DECISIONS
-  last_goalnext_trigger_at: 2026-06-22T17:08:14.5782451+08:00
-  last_goalnext_trigger_reason: v0.5 release execution requires owner decisions for license, package visibility, npm access, trusted publishing, Changesets version workflow, GitHub tag/release, and TypeDoc publication target.
+  last_owner_decision: Product usability route approved; defer real release execution.
+  last_owner_decision_at: 2026-06-22T17:24:39.1413219+08:00
+  last_goalnext_trigger: READY_PRODUCT_USABILITY
+  last_goalnext_trigger_at: 2026-06-22T17:24:39.1413219+08:00
+  last_goalnext_trigger_reason: Owner accepted planner recommendation to run v0.5 Product Usability / Camera Experience Hardening instead of real release execution.
+  last_planner_dispatch_status: pending
+  last_planner_dispatch_guide: D:\LabProjects\Engine\ViewRig\docs\ViewRig_v0.5_Goal模式执行指南.md
 
 notes:
   - v0.4 was already completed and reported with final commit 4144cfc.
-  - Do not start v0.5 or any next phase without a new explicit planner/checker guide dispatch.
+  - v0.5 product usability route approved by owner after v0.4 PASS.
+  - Do not start any next phase after v0.5 without a new explicit planner/checker guide dispatch.
